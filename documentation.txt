@@ -1,0 +1,236 @@
+INSTALL THE LATEST LARAVEL: 
+composer create-project --prefer-dist laravel/laravel convuemer
+
+Remove /public:
+Copy server.php and change server.php to index.php, and then copy .htaccess file from
+public folder to root project.
+
+STYLING THEME
+npm cache clean --force
+npm install -g @vue/cli
+vue --version
+vue create <your name of vue app> (Default (Vue 3) ([Vue 3] babel, eslint).
+cd <your name of vue app>
+vue add vuetify
+Once prompted, choose v3 (alpha) (if only alpha is available)
+
+INSTALL ADMINLTE IN NODE MODULES
+cd <your name of vue app>
+npm install admin-lte@^3.1 --save
+
+FRONTEND THEME INSTALATION
+<your name of vue app>\src\assets
+
+CREATE MULTIAUTH API WITH LARAVEL PASSPORT
+composer require laravel/passport (it will create token keys for security)
+php artisan migrate (to create tables related with Laravel passport)
+php artisan passport:install (if the key is missing, run this)
+php artisan make:model Staff -m
+php artisan migrate
+app/Providers/AuthServiceProvider.php
+config\auth.php
+app\Http\Kernel.php
+Add HasApiTokens in app\Models\User.php
+also in app\Models\Staff.php
+app\Http\Controllers\LoginController.php
+php artisan make:controller RegisterController
+app\Providers\RouteServiceProvider.php
+routes\api\staff.php
+routes\api\user.php
+php artisan serve --host=localhost --port=8080
+
+For testing: 
+URL: http://127.0.0.1:8000/api/user/register
+Method: POST
+input data location: Body > x-www-form-urlencoded
+input data key: name, email, password, password_confirmation
+input data value: <create new data following data above>
+
+URL: http://127.0.0.1:8000/api/staff/login
+Method: POST
+input data location: Headers
+input data key: Accept, Authorization
+input data value: application/json, 'Bearer '.$accessToken
+input data location: Body > x-www-form-urlencoded
+input data key: email, password
+input data value: Following above
+
+URL: http://127.0.0.1:8000/api/staff/dashboard
+Method: GET
+input data location: Headers
+input data key: Accept, Authorization
+input data value: application/json, Bearer<space><token generated when login>
+
+URL: http://127.0.0.1:8000/api/staff/logout
+Method: POST
+input data location: Headers
+input data key: Authorization
+input data value: Bearer<space><token generated when login>
+
+CREATE MULTIAUTH WEB WITH LARAVEL PASSPORT 
+Make sure step by step multi auth API above already performed. 
+npm i axios
+npm i vue-router@next
+npm i bootstrap jquery popper.js
+npm install @popperjs/core --save
+npm install sweetalert2
+<your name of vue app>\src\router\web-api.js
+<your name of vue app>\src\main.js
+<your name of vue app>\src\App.vue
+<your name of vue app>\public\index.html
+<your name of vue app>\src\components\Nav.vue
+<your name of vue app>\src\views\staff\auth (Login.vue)
+<your name of vue app>\src\views\user\auth (Login.vue, Register.vue)
+<your name of vue app>\src\views\staff\home.vue
+<your name of vue app>\src\views\user\home.vue
+cd <your name of vue app> 
+npm run serve
+For the first testing, open the web url: http://localhost:8080
+Make sure the Vue view is exist. 
+
+JETSTREAM INSTALATION: 
+composer require laravel/jetstream
+php artisan jetstream:install livewire
+php artisan livewire:publish --config
+php artisan livewire:publish --assets
+make sure in config/livewire.php 'asset_url' =>  'http://localhost/reference/laracommerce/public',
+Follow the configuration of Livewire Scripts in resource/views/layouts/app.blade.php like we've set in the file. 
+npm install && npm run dev
+For accessing the URL: Always http://localhost/reference/laracommerce/public/user/profile
+Create database and connect it via .env file, and then: 
+php artisan migrate
+Run seeders:
+It's involving database/seeds/DatabaseSeeder.php
+Also database/factories/UserFactory.php should be exist. 
+And then: 
+php artisan db:seed
+
+FOR CRUD: 
+v-model is used to fill data.
+npm install @aacassandra/vue3-progressbar
+main.js
+App.vue
+web-api.js
+categories.vue
+
+CRUD STAFF API
+C:\xampp\htdocs\my-project\laravue\app\Http\Controllers\StaffController.php
+C:\xampp\htdocs\my-project\laravue\routes\api\staff.php
+
+For testing:
+URL: http://localhost/my-project/laravue/api/staff/staff-management
+Method: GET
+input data location: Headers
+input data key: Accept, Authorization
+input data value: application/json, Bearer<space><token generated when login>
+
+URL: http://localhost/my-project/laravue/api/staff/staff-management
+Method: POST
+input data location: Headers
+input data key: Accept, Authorization
+input data value: application/json, Bearer<space><token generated when login>
+input data location: Body > x-www-form-urlencoded
+input data key: name, email, password
+input data value: <create new data following data above>
+
+URL: http://localhost/my-project/laravue/api/staff/staff-management/{id}
+Method: PUT or PATCH
+input data location: Headers
+input data key: Accept, Authorization
+input data value: application/json, Bearer<space><token generated when login>
+input data location: Body > x-www-form-urlencoded
+input data json: name, email, password
+input data value: <create new data following data above>
+
+URL: http://localhost/my-project/laravue/api/staff/{id}
+Method: DELETE
+input data location: Headers
+input data key: Accept, Authorization
+input data value: application/json, Bearer<space><token generated when login>
+
+CRUD STAFF WEB
+Make sure all the steps above has been done. 
+C:\xampp\htdocs\my-project\laravue\vue-passport\src\router\web-api.js
+npm install --save axios vue-axios
+npm install vform
+npm install v-pagination-3
+npm install sweetalert2
+npm install jquery --save-dev
+C:\xampp\htdocs\my-project\laravue\vue-passport\src\plugins\axios.js
+C:\xampp\htdocs\my-project\laravue\vue-passport\src\plugins\form.js
+C:\xampp\htdocs\my-project\laravue\vue-passport\src\plugins\swal.js
+C:\xampp\htdocs\my-project\laravue\vue-passport\src\main.js
+C:\xampp\htdocs\my-project\laravue\vue-passport\src\views\staff\staff-management.vue
+
+IMPORT GLOBALLY OR LOCALLY? 
+https://forum.vuejs.org/t/which-is-better-between-global-variable-and-local-import-for-performance-optimization/20510/3
+https://stackoverflow.com/questions/65006292/import-js-files-globally-to-vuejs-3
+
+GENERATE PDF FILES: (http://localhost:8080/staff/staff-management)
+composer require barryvdh/laravel-dompdf
+add the following code at config/app.php 
+'providers' => [
+    ....
+    Barryvdh\DomPDF\ServiceProvider::class,
+],
+'aliases' => [
+    ....
+    'PDF' => Barryvdh\DomPDF\Facade::class,
+],
+app/routes/api/staff.php
+resources/views/staffs/pdf.blade.php
+app/Http/Controllers/StaffController.php
+
+GENERATE XLS FILES: (http://localhost:8080/staff/staff-management)
+composer require maatwebsite/excel
+config/app.php
+php artisan vendor:publish --provider="Maatwebsite\Excel\ExcelServiceProvider"
+Perintah tadi akan generate config/excel.php
+php artisan make:export StaffExport --model=Staff
+Perintah tadi akan generate app/Exports/StaffExport.php
+app/routes/api/staff.php
+app/Http/Controllers/StaffController.php
+
+GENERATE DOC FILES: (http://localhost/akademik/users/)
+composer require phpoffice/phpword
+app/routes/api/staff.php
+app/Http/Controllers/StaffController.php
+resources/views/staffs/pdf.blade.php
+
+BRAND CRUD
+composer require intervention/image
+config/app.php
+php artisan vendor:publish --provider="Intervention\Image\ImageServiceProviderLaravelRecent"
+
+Update Data for Brand CRUD
+URL: http://localhost/my-project/laravue/api/staff/brand-management/<id of brand>
+Method: POST
+Input location: Body > form-data
+Input data key: brand_name, brand_image, _method
+input data value: <Following input data key> and in data key method, the value should put
+
+CATEGORIES, SUB & SUB SUB CATEGORIES CRUD
+run php artisan serve, and change vue-passport/assets/js/base-url.js to http://localhost:8000 to prevent CORS
+
+=====================================================================
+
+php artisan make:migration name_table table
+php artisan migrate --path=/database/migrations/2021_02_16_183944_create_sub_sub_categories_table.php
+
+
+php artisan cache:clear
+php artisan config:clear
+php artisan config:cache
+php artisan route:clear
+php artisan route:cache
+php artisan view:clear
+
+=======================================================================
+
+BAHAN INPUT: 
+sUBCAT:
+Aksesoris Kamera, Camcorder, Analog, Digital, Audio, Alat Pendingin Ruangan, Elektronik Kantor, Kamera Pengintai, Media Player, Printer, Suplemen Diet, Essential Oil, Obat-obatan, Masker, Paket Tour, Tiket Transportasi, Voucher Travel, Perumahan, Aksesoris Motor, Eksterior Mobil, Interior Mobil, Helm Motor, Aksesoris Olahraga, Beladiri, Boxing, Panahan, Tenis, Dekorasi, Kamar Mandi, Kebersihan, Taman, Tempat Penyimpanan, Grooming Hewan, Perawatan Burung, Perawatan Kucing, Perawatan Anjing,
+
+
+close-forEdit
+

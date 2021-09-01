@@ -146,18 +146,6 @@ const routes = [
         name: 'categories',
         component: () => import('@/views/staff/categories/categories.vue'),
         meta: {
-            progress: {
-                func: [
-                    { call: "color", modifier: "temp", argument: "#ffb000" },
-                    { call: "fail", modifier: "temp", argument: "red" },
-                    { call: "location", modifier: "temp", argument: "top" },
-                    {
-                        call: "transition",
-                        modifier: "temp",
-                        argument: { speed: "1.5s", opacity: "0.6s", termination: 600 },
-                    },
-                ],
-            },
             requiresAuth: true,
             breadcrumb: [
                 { name: 'Home', link: 'home', home: 'home' },
@@ -265,6 +253,25 @@ const routes = [
                 { name: 'trash', active: 'active' }
             ],
             pageTitle: "Sub Sub Categories"
+        },
+        beforeEnter: (to, from, next) => {
+            if (!localStorage.getItem('token-staff')) {
+                next('/staff/login');
+            }
+            next();
+        }
+    },
+    {
+        path: '/staff/products/create',
+        name: 'products',
+        component: () => import('@/views/staff/products/products.vue'),
+        meta: {
+            requiresAuth: true,
+            breadcrumb: [
+                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Products' },
+                { name: 'create', active: 'active' }
+            ],
         },
         beforeEnter: (to, from, next) => {
             if (!localStorage.getItem('token-staff')) {

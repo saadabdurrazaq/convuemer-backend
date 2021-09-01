@@ -162,11 +162,13 @@ class SubCategoryController extends Controller
 		$items = $this->request->items ?? 5;
 		$subCategory = SubCategory::onlyTrashed()->where('subcategory_name', 'LIKE', "%{$keyword}%")->paginate($items);
 		$trashedSubCategories = SubCategory::onlyTrashed()->count();
+		$nonTrashed = SubCategory::count();
 
 		return response()->json([
 			'sub_categories' => $subCategory,
 			'total_trashed_sub_categories' => $trashedSubCategories,
 			'items' => $items,
+			'non_trashed' => $nonTrashed,
 		], Response::HTTP_OK);
 	}
 

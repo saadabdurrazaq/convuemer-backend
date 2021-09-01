@@ -4,6 +4,8 @@
  * Copyright 2013-2014 Sliptree and other contributors; Licensed MIT
  */
 
+// enter button is killed when no current input data found. To activate again, search "kill enter button", uncomment the rest of code, and delete e.preventDefault()
+
 import jQuery from 'jquery';
 const $ = jQuery;
 window.$ = $;
@@ -492,9 +494,15 @@ window.$ = $;
           if (this.$input.hasClass('tt-input') && this.$wrapper.find('.tt-cursor').length) break
           if (this.$input.hasClass('tt-input') && this.$wrapper.find('.tt-hint').val().length) break
 
-          // Create token
+          // Create token if $input.val() is not empty
           if (this.$input.is(document.activeElement) && this.$input.val().length || this.$input.data('edit')) {
             return this.createTokensFromInput(e, this.$input.data('edit'));
+          }
+
+          // Create token if $input.val() is empty
+          if (this.$input.is(document.activeElement)) {
+            e.preventDefault(); // kill enter button
+            alert('What do you want? Please input your data!')
           }
 
           // Edit token

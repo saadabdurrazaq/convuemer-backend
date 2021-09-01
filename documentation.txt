@@ -215,7 +215,7 @@ run php artisan serve, and change vue-passport/assets/js/base-url.js to http://l
 =====================================================================
 
 php artisan make:migration name_table table
-php artisan migrate --path=/database/migrations/2021_02_16_183944_create_sub_sub_categories_table.php
+php artisan migrate --path=/database/migrations/2021_04_10_093648_womans_jobs.php
 
 
 php artisan cache:clear
@@ -227,10 +227,116 @@ php artisan view:clear
 
 =======================================================================
 
-BAHAN INPUT: 
-sUBCAT:
-Aksesoris Kamera, Camcorder, Analog, Digital, Audio, Alat Pendingin Ruangan, Elektronik Kantor, Kamera Pengintai, Media Player, Printer, Suplemen Diet, Essential Oil, Obat-obatan, Masker, Paket Tour, Tiket Transportasi, Voucher Travel, Perumahan, Aksesoris Motor, Eksterior Mobil, Interior Mobil, Helm Motor, Aksesoris Olahraga, Beladiri, Boxing, Panahan, Tenis, Dekorasi, Kamar Mandi, Kebersihan, Taman, Tempat Penyimpanan, Grooming Hewan, Perawatan Burung, Perawatan Kucing, Perawatan Anjing,
+Informasi Produk
+Kode Produk: 
+Nama Produk:
+Brand: 
+Kategori: 
+Sub Kategori: 
+Sub Sub Kategori: 
+Product Tags:
+
+Detail Produk
+Kondisi: 
+Short Deskripsi:
+Long Deskripsi: 
+
+Varian Produk (warna, ukuran, kemasan)
+Warna: 
+Ukuran (XS, S, M, L XL, XXL, All Size):
+Kemasan (pak, pcs, cover): 
+Stock:
+Harga Satuan: 
+Product Discount Price: 
+Pict:
+Minimum Pemesanan: 
+
+Product Price
+Minimum Order:
+Unit Price:
+Product Discount Price:
+
+Bentuk Produk
+Berat Produk (gram, kg): 
+Ukuran Produk (Panjang, lebar, tinggi):
+
+Foto Produk
+Thumbnail:
+Foto: 
+ 
+Pemasaran Produk
+Hot Deals:
+Featured: 
+Special Offer: 
+Special Deals:
 
 
-close-forEdit
+product_code: "",
+product_name: "",
+brand: "",
+category_id: 0,
+subcategory_id: 0,
+subsubcategory_id: 0,
+variant_type:
+variant_options: 
+
+================================================================
+
+Jenis: Biasa, Seblak Tulang, Seblak Bakso,
+Level: Biasa, Pedas, Super Pedas
+Ukuran: Biasa, L, Jumbo
+
+Biasa, Biasa, Biasa. 
+Biasa, Biasa, L
+Biasa, Biasa, Jumbo
+
+Biasa, Pedas, Biasa
+Biasa, Pedas, L
+Biasa, Pedas, Jumbo
+
+Variations table is like size, color, etc
+and variations_options table can be anything like medium, large, etc
+products_variations_options table: It's product for example has a color. 
+products_variations_options_value table: That's product has a green, blue, or red color. 
+
+
+products_variations_options
+id     optionName    
+1      Size
+2      Color
+
+products_variations_options_values
+id   products_var_id     valueName     
+1          1                  L
+2          1                  S
+3          1                  M
+4          2                  Red
+5          2                  Green
+
+products_combinations
+id     combination_string   unique_id   sku   price   image
+1      S-Red                edrs
+2      S-Green
+3      M-Red
+4      M-Green
+5      L-Red
+6      L-Green
+
+product_images
+is_featured is image that displayed in the first of images product. The image will be stored in preview_img field in products table.  
+
+image_galleries
+small is small version of image that displayed in product description. 
+
+
+The combination compare problem: 
+Selected combination from user can be: M-Red (if user select M first, then Red), Red-M, etc. 
+So, we are not able to compare what user select with products_combinations data. 
+
+To solve that problem, we need to control what user select by knowing the id of products_combinations table. 
+In order to know the id, we need to know what user select by creating unique_id. 
+
+Many way to create unique id, by sorting the alphabetical order. 
+for example:  S-Red can be: edrs
+
 

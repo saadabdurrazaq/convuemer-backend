@@ -103,6 +103,7 @@ class CategoryController extends Controller
 		$trashedCategories = Category::onlyTrashed()->count();
 		$totalCategories = Category::with('subCategory.subSubCategory')->where('category_name', 'LIKE', "%{$keyword}%")->get();
 
+		// If user search by category keyword, and data is found
 		if (count($totalCategories) > 0) {
 			$category = Category::with('subCategory.subSubCategory')->where('category_name', 'LIKE', "%{$keyword}%")->paginate($items);
 
@@ -112,7 +113,7 @@ class CategoryController extends Controller
 				'items' => $items,
 			], Response::HTTP_OK);
 		} else 
-		if (count($totalCategories) == 0) {
+		if (count($totalCategories) == 0) { // if data of category keyword is not found, then search by subcategory keyword
 			$subCat = Category::with('subCategory.subSubCategory')->OrWhereHas('subCategory', function ($q) use ($keyword) {
 				$q->where('subcategory_name', 'LIKE', "%{$keyword}%");
 			})->paginate($items);

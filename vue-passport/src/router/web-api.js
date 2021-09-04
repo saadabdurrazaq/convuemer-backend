@@ -262,16 +262,36 @@ const routes = [
         }
     },
     {
-        path: '/staff/products/create',
-        name: 'products',
-        component: () => import('@/views/staff/products/products.vue'),
+        path: '/staff/products/index',
+        name: 'products-index',
+        component: () => import('@/views/staff/products/index.vue'),
         meta: {
             requiresAuth: true,
             breadcrumb: [
                 { name: 'Home', link: 'home', home: 'home' },
-                { name: 'Products' },
+                { name: 'Products', link: 'index', home: 'index' },
+            ],
+            pageTitle: "Products"
+        },
+        beforeEnter: (to, from, next) => {
+            if (!localStorage.getItem('token-staff')) {
+                next('/staff/login');
+            }
+            next();
+        }
+    },
+    {
+        path: '/staff/products/create',
+        name: 'products-create',
+        component: () => import('@/views/staff/products/create.vue'),
+        meta: {
+            requiresAuth: true,
+            breadcrumb: [
+                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Products', link: 'index', home: 'index' },
                 { name: 'create', active: 'active' }
             ],
+            pageTitle: "Create Product"
         },
         beforeEnter: (to, from, next) => {
             if (!localStorage.getItem('token-staff')) {

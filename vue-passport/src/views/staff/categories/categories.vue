@@ -454,7 +454,7 @@
                                             <input
                                                 type="text"
                                                 placeholder="Category Name"
-                                                v-bind:name="form.category_name"
+                                                v-bind:name="form.category_name" 
                                                 id="category_name"
                                                 class="form-control"
                                                 :class="{
@@ -1099,7 +1099,7 @@ export default {
                 .post('api/staff/categories', formData)
                 .then((response) => {
                     var responseData = response.data;
-                    this.total_category_names = responseData.total_category_names;
+                    this.total_category_names = responseData.total_category_names; // kiriman dari controller (responseData)
                     this.total_category_icons = responseData.total_category_icons;
 
                     if (this.total_category_names !== this.total_category_icons) {

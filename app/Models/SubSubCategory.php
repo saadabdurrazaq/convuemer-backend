@@ -10,6 +10,12 @@ class SubSubCategory extends Model
 {
     use HasFactory, SoftDeletes;
 
+    public function product()
+    {
+        // one sub sub category has many products
+        return $this->hasMany(Product::class);
+    }
+
     public function category()
     {
         // one sub sub category only belongs to one category

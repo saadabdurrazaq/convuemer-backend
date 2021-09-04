@@ -215,7 +215,7 @@ run php artisan serve, and change vue-passport/assets/js/base-url.js to http://l
 =====================================================================
 
 php artisan make:migration name_table table
-php artisan migrate --path=/database/migrations/2021_04_10_093648_womans_jobs.php
+php artisan migrate --path=/database/migrations/2014_10_12_000000_create_total_stocks_variants_products.php
 
 
 php artisan cache:clear
@@ -270,29 +270,7 @@ Featured:
 Special Offer: 
 Special Deals:
 
-
-product_code: "",
-product_name: "",
-brand: "",
-category_id: 0,
-subcategory_id: 0,
-subsubcategory_id: 0,
-variant_type:
-variant_options: 
-
 ================================================================
-
-Jenis: Biasa, Seblak Tulang, Seblak Bakso,
-Level: Biasa, Pedas, Super Pedas
-Ukuran: Biasa, L, Jumbo
-
-Biasa, Biasa, Biasa. 
-Biasa, Biasa, L
-Biasa, Biasa, Jumbo
-
-Biasa, Pedas, Biasa
-Biasa, Pedas, L
-Biasa, Pedas, Jumbo
 
 Variations table is like size, color, etc
 and variations_options table can be anything like medium, large, etc
@@ -300,12 +278,12 @@ products_variations_options table: It's product for example has a color.
 products_variations_options_value table: That's product has a green, blue, or red color. 
 
 
-products_variations_options
-id     optionName    
-1      Size
-2      Color
+products_variations_types
+id  product_id   optionName    
+1       1           Size
+2       1           Color
 
-products_variations_options_values
+products_variations_options
 id   products_var_id     valueName     
 1          1                  L
 2          1                  S

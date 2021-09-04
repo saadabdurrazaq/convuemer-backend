@@ -24,12 +24,12 @@ export default {
 
     mounted() {
         //  [App.vue specific] When App.vue is finish loading finish the progress bar
-        //this.$Progress.finish();
+        this.$Progress.finish();
     },
 
     created() {
         //  [App.vue specific] When App.vue is first loaded start the progress bar
-        /*this.$Progress.start();
+        this.$Progress.start();
         //  hook the progress bar to start before we move router-view
         this.$router.beforeEach((to, from, next) => {
             //  does the page we want to go to have a meta.progress object
@@ -47,7 +47,7 @@ export default {
         this.$router.afterEach(() => {
             //  finish the progress bar
             this.$Progress.finish();
-        });*/
+        });
     },
 };
 </script>

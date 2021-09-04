@@ -5,6 +5,7 @@ import router from './router/web-api'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Pagination from 'v-pagination-3';
+import VueProgressBar from "@aacassandra/vue3-progressbar";
 
 // import adminlte
 import 'admin-lte/plugins/fontawesome-free/css/all.min.css'
@@ -34,9 +35,24 @@ import '@/assets/frontend/js/bootstrap-select.min.js';
 import '@/assets/frontend/js/wow.min.js';
 import '@/assets/frontend/js/scripts.js';*/
 
+const options = {
+    color: "#bffaf3",
+    failedColor: "red",
+    thickness: "5px",
+    transition: {
+        speed: "0.2s",
+        opacity: "0.6s",
+        termination: 300,
+    },
+    autoRevert: true,
+    location: "top",
+    inverse: false,
+};
+
 const app = createApp(App)
 app.use(vuetify)
 app.use(router)
+app.use(VueProgressBar, options)
 axios.defaults.baseURL = 'http://localhost/my-project/laravue';
 /*axios.interceptors.request.use(request => {
     console.log(request);

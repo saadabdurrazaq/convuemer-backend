@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 01, 2021 at 10:54 AM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.5
+-- Generation Time: Sep 04, 2021 at 11:04 AM
+-- Server version: 10.4.20-MariaDB
+-- PHP Version: 7.4.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -66,31 +66,20 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `category_name`, `category_slug`, `category_icon`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(29, 'Perawatan Hewan', 'perawatan-hewan', 'fas fa-star', NULL, '2021-08-01 00:05:29', NULL),
-(30, 'Rumah Tangga', 'rumah-tangga', 'fas fa-user', NULL, '2021-07-31 22:42:38', NULL),
-(32, 'Olahragax', 'olahragax', 'fa fa-check', NULL, '2021-07-31 23:31:25', NULL),
-(33, ' Otomotif', 'otomotif', ' fa fa-check', NULL, '2021-07-31 22:42:38', NULL),
-(35, 'Tour & Travel', 'tour-&-travel', 'fa fa-check', NULL, '2021-07-31 23:30:45', NULL),
-(36, ' Kamera', 'kamera', ' fa fa-check', NULL, '2021-07-31 22:42:38', NULL),
-(37, ' Elektronik', 'elektronik', ' fa fa-check', NULL, '2021-07-31 22:42:38', NULL),
-(38, ' Kesehatan', 'kesehatan', ' fa fa-check', NULL, '2021-07-31 22:42:38', NULL),
-(45, 'Properti', 'properti', 'fa fa-check', NULL, '2021-07-31 22:42:38', NULL),
-(46, 'Buku', 'buku', 'fa fa-check', NULL, '2021-07-31 22:42:38', NULL),
-(47, 'Office & Stationery', 'office-&-stationery', 'fa fa-check', NULL, '2021-07-31 22:42:38', NULL),
-(48, 'Perawatan Tubuh', 'perawatan-tubuh', 'fa fa-check', NULL, '2021-07-31 22:42:38', NULL),
-(49, 'Pertukangan', 'pertukangan', 'fa fa-check', NULL, '2021-08-01 00:55:20', NULL),
-(50, ' Wedding', 'wedding', ' fa fa-check', NULL, '2021-07-31 22:42:38', NULL),
-(51, ' Perlengkapan Pesta & Craft', 'perlengkapan-pesta-&-craft', ' fa fa-check', NULL, '2021-07-31 22:42:38', NULL),
-(52, ' Film & Musik', 'film-&-musik', ' fa fa-check', NULL, '2021-07-31 22:42:38', NULL),
-(53, 'Gamingc', 'gamingc', 'fa fa-check', NULL, '2021-08-01 01:02:53', NULL),
-(54, ' Handphone & Tablet', 'handphone-&-tablet', ' fa fa-check', NULL, '2021-07-31 22:42:38', NULL),
-(55, ' Ibu & Bayi', 'ibu-&-bayi', ' fa fa-check', NULL, '2021-07-31 22:42:38', NULL),
-(66, 'debdeb', 'debdeb', 'erw', NULL, '2021-07-31 23:59:41', NULL),
-(67, 'sfds', 'sfds', 'wetre', NULL, '2021-07-31 22:42:38', NULL),
-(68, 'wer', 'wer', 'ghf', NULL, '2021-07-31 22:42:38', NULL),
-(69, 'dfg', 'dfg', 'rtyrt', NULL, NULL, NULL),
-(70, 'dfhfdh', 'dfhfdh', 'retryr', NULL, NULL, NULL),
-(71, 'cvbcvb', 'cvbcvb', 'qweqw', NULL, NULL, NULL);
+(32, 'Olahraga', 'olahraga', 'fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
+(33, ' Otomotif', 'otomotif', ' fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
+(36, 'Kamera', 'kamera', 'fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
+(37, ' Elektronik', 'elektronik', ' fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
+(38, ' Kesehatan', 'kesehatan', ' fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
+(47, 'Office & Stationery', 'office-&-stationery', 'fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
+(48, 'Perawatan Tubuh', 'perawatan-tubuh', 'fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
+(49, 'Pertukangan', 'pertukangan', 'fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
+(50, 'Wedding', 'wedding', 'fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
+(51, 'Perlengkapan Pesta & Craft', 'perlengkapan-pesta-&-craft', 'fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
+(52, ' Film & Musik', 'film-&-musik', ' fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
+(54, ' Handphone & Tablet', 'handphone-&-tablet', ' fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
+(55, 'Ibu & Bayi', 'ibu-&-bayi', 'fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
+(154, 'Buku', 'buku', 'fa fa-book', NULL, '2021-08-24 23:12:01', NULL);
 
 -- --------------------------------------------------------
 
@@ -140,7 +129,12 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (33, '2021_02_09_054528_create_brands_table', 5),
 (34, '2021_02_09_111701_create_categories_table', 6),
 (35, '2021_02_09_121910_create_sub_categories_table', 7),
-(36, '2021_02_16_183944_create_sub_sub_categories_table', 8);
+(36, '2021_02_16_183944_create_sub_sub_categories_table', 8),
+(37, '2014_10_12_000000_create_products_table', 9),
+(38, '2014_10_12_000000_create_products_variants_options', 10),
+(39, '2014_10_12_000000_create_products_variants_options_value', 11),
+(40, '2014_10_12_000000_create_products_combinations', 12),
+(41, '2014_10_12_000000_create_total_stocks_variants_products', 13);
 
 -- --------------------------------------------------------
 
@@ -174,6 +168,7 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('33d94bdcb27379c5236f479e4b5f7cd4e863253797dfba83e2060afe6fa38fa5755c17d4eaeea3f8', 1, 3, 'MyApp', '[\"user\"]', 0, '2021-07-04 16:56:32', '2021-07-04 16:56:32', '2022-07-04 23:56:32'),
 ('37e57c955d308f839e0c72a593a38aa74af35a3c7262fc2a1d892fefadf3020c98607364a217a437', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 17:42:02', '2021-07-01 17:42:02', '2022-07-02 00:42:02'),
 ('3b6305336a7c0a4039ecb9581fc742c974acab8e17207ce1bd7e0360bba72610e922c83bf78ef6e5', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-02 15:20:05', '2021-07-02 15:20:05', '2022-07-02 22:20:05'),
+('3bc5d0e615c14ba29dda9e597c989febcff4d0dbe756a70dcb5c24fc500e2948603e6950b3a41a9a', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-08-24 00:49:31', '2021-08-24 00:49:31', '2022-08-24 07:49:31'),
 ('3f324b281a6519b240bd643ea3f40fccef47b557958d33dbdb1b457464730b74d44e60f1934f85f6', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 16:03:01', '2021-07-01 16:03:01', '2022-07-01 23:03:01'),
 ('4010d3fe68669832d17af2f24cba3b8c3377d8fd836669b4ad9c7f53a68ddb87c012ca6065aad261', 1, 3, 'MyApp', '[\"user\"]', 0, '2021-07-15 03:07:34', '2021-07-15 03:07:34', '2022-07-15 10:07:34'),
 ('47783b6b88d2d62f98e0579a76691f0775229bb45eee0609575abe0e670ce636ae0ce0d2b5ef174c', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-04 17:08:52', '2021-07-04 17:08:52', '2022-07-05 00:08:52'),
@@ -196,6 +191,7 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('ac3cfc5f545c8f620ed47555a1642f10fb322697208ccf4b8b1e44f825aa31da35acad43eee7759f', 1, 3, 'MyApp', '[\"user\"]', 0, '2021-07-02 22:36:22', '2021-07-02 22:36:22', '2022-07-03 05:36:22'),
 ('ac76161ff1e3cb6df46b727da7a6e8e369fff1cf3a6043f4f01095571c919d2ddd3bb710da062235', 1, 3, 'MyApp', '[\"user\"]', 1, '2021-07-04 16:58:28', '2021-07-04 16:58:28', '2022-07-04 23:58:28'),
 ('b4afbedcfc7b1e6a5b26cb413cd74d6efc24c9920eab99d186f83364f2edea0cf214040ef367b457', 1, 3, 'MyApp', '[\"user\"]', 1, '2021-07-04 21:42:45', '2021-07-04 21:42:45', '2022-07-05 04:42:45'),
+('b7cd20967e76a3bdbda1f00741cd07499079f04a7d27f3af37770d4483101eab5177bba9923e3aa1', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-08-01 19:58:38', '2021-08-01 19:58:38', '2022-08-02 02:58:38'),
 ('bec5a77a83b828ecdc90460c6972e47f91d8e30dad3be6a926d6bcf2538fbc9d21540218b18e8707', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 15:56:56', '2021-07-01 15:56:56', '2022-07-01 22:56:56'),
 ('c34f41ad46c58565a0be73b6b43f0b359ae201cb29502610ba8e57acc5e15be02ed67ce6055f5899', 1, 3, 'MyApp', '[\"user\"]', 0, '2021-07-04 21:06:02', '2021-07-04 21:06:02', '2022-07-05 04:06:02'),
 ('c90b1eaf6ffac269a2bd9abe8dbdaaf43a151783119d4f89449bd5bc9e9e9c26426c85030998efc2', 1, 3, 'MyApp', '[\"user\"]', 1, '2021-07-04 17:54:19', '2021-07-04 17:54:19', '2022-07-05 00:54:19'),
@@ -325,6 +321,91 @@ CREATE TABLE `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `products`
+--
+
+CREATE TABLE `products` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `brand_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `category_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `subcategory_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `subsubcategory_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `product_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `product_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `product_stock` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `product_tags` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `selling_price` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `discount_price` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `short_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `long_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `product_cond` enum('New','Second') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `min_order` int(11) DEFAULT NULL,
+  `product_weight` int(11) DEFAULT NULL,
+  `product_length` int(11) DEFAULT NULL,
+  `product_Width` int(11) DEFAULT NULL,
+  `product_Height` int(11) DEFAULT NULL,
+  `hot_deals` int(11) DEFAULT NULL,
+  `featured` int(11) DEFAULT NULL,
+  `special_offer` int(11) DEFAULT NULL,
+  `special_deals` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products_combinations`
+--
+
+CREATE TABLE `products_combinations` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `combination_string` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `unique_string_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `price` int(11) DEFAULT NULL,
+  `sku` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `available_stock` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products_variants_options`
+--
+
+CREATE TABLE `products_variants_options` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `product_variant_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `variant_value_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products_variants_types`
+--
+
+CREATE TABLE `products_variants_types` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `variant_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sessions`
 --
 
@@ -413,49 +494,49 @@ CREATE TABLE `sub_categories` (
 --
 
 INSERT INTO `sub_categories` (`id`, `category_id`, `subcategory_name`, `subcategory_slug`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(11, 46, 'Buku Masakan', 'buku-masakan', NULL, '2021-07-31 19:59:20', NULL),
-(12, 46, ' Buku Persiapan Ujian', 'buku-persiapan-ujian', NULL, '2021-07-31 19:59:20', NULL),
-(13, 46, ' Buku Remaja dan Anak', 'buku-remaja-dan-anak', NULL, '2021-07-31 19:59:20', NULL),
-(14, 46, 'Komik', 'komik', NULL, '2021-07-31 19:59:20', NULL),
-(15, 46, ' Majalah', 'majalah', NULL, '2021-07-31 19:59:20', NULL),
-(16, 30, ' Peralatan Masak', 'peralatan-masak', NULL, '2021-07-31 19:59:20', NULL),
-(17, 30, ' Peralatan Makan & Minum', 'peralatan-makan-&-minum', NULL, '2021-07-31 19:59:20', NULL),
-(18, 36, 'Aksesoris Kamera', 'aksesoris-kamera', NULL, '2021-07-31 19:59:20', NULL),
-(19, 36, ' Camcorder', 'camcorder', NULL, '2021-07-31 19:59:20', NULL),
-(20, 37, ' Analog', 'analog', NULL, '2021-07-31 19:59:20', NULL),
-(21, 37, ' Digital', 'digital', NULL, '2021-07-31 19:59:20', NULL),
-(22, 37, ' Audio', 'audio', NULL, '2021-07-31 19:59:20', NULL),
-(23, 37, ' Alat Pendingin Ruangan', 'alat-pendingin-ruangan', NULL, '2021-07-31 19:59:20', NULL),
-(24, 37, ' Elektronik Kantor', 'elektronik-kantor', NULL, '2021-07-31 19:59:20', NULL),
-(25, 36, ' Kamera Pengintai', 'kamera-pengintai', NULL, '2021-07-31 19:59:20', NULL),
-(26, 37, ' Media Player', 'media-player', NULL, '2021-07-31 19:59:20', NULL),
-(27, 37, ' Printer', 'printer', NULL, '2021-07-31 19:59:20', NULL),
-(28, 38, ' Suplemen Diet', 'suplemen-diet', NULL, '2021-07-31 19:59:20', NULL),
-(29, 38, ' Essential Oil', 'essential-oil', NULL, '2021-07-31 19:59:20', NULL),
-(30, 38, ' Obat-obatan', 'obat-obatan', NULL, '2021-07-31 19:59:20', NULL),
-(31, 38, ' Masker', 'masker', NULL, '2021-07-31 19:59:20', NULL),
-(32, 35, ' Paket Tour', 'paket-tour', NULL, '2021-07-31 19:59:20', NULL),
-(33, NULL, ' Tiket Transportasi', 'tiket-transportasi', NULL, '2021-07-31 19:59:20', NULL),
-(34, NULL, ' Voucher Travel', 'voucher-travel', NULL, '2021-07-31 20:04:45', NULL),
-(35, 45, ' Perumahan', 'perumahan', NULL, '2021-07-31 19:59:20', NULL),
-(36, 33, ' Aksesoris Motor', 'aksesoris-motor', NULL, '2021-07-31 19:59:20', NULL),
-(37, 33, ' Eksterior Mobil', 'eksterior-mobil', NULL, '2021-07-31 19:59:20', NULL),
-(38, 33, ' Interior Mobil', 'interior-mobil', NULL, '2021-07-31 19:59:20', NULL),
-(39, 33, ' Helm Motor', 'helm-motor', NULL, '2021-07-31 19:59:20', NULL),
+(11, 154, 'Buku Masakan', 'buku-masakan', NULL, '2021-08-24 23:12:31', NULL),
+(12, 154, ' Buku Persiapan Ujian', 'buku-persiapan-ujian', NULL, '2021-08-24 23:12:31', NULL),
+(13, 154, ' Buku Remaja dan Anak', 'buku-remaja-dan-anak', NULL, '2021-08-24 23:12:31', NULL),
+(14, 154, 'Komik', 'komik', NULL, '2021-08-24 23:12:31', NULL),
+(15, 154, ' Majalah', 'majalah', NULL, '2021-08-24 23:12:31', NULL),
+(16, NULL, ' Peralatan Masak', 'peralatan-masak', NULL, '2021-08-05 21:10:28', NULL),
+(17, NULL, ' Peralatan Makan & Minum', 'peralatan-makan-&-minum', NULL, '2021-08-05 21:10:28', NULL),
+(18, 36, 'Aksesoris Kamera', 'aksesoris-kamera', NULL, '2021-08-03 01:57:18', NULL),
+(19, 36, ' Camcorder', 'camcorder', NULL, '2021-08-03 01:57:18', NULL),
+(20, 37, ' Analog', 'analog', NULL, '2021-08-03 06:09:36', NULL),
+(21, 37, ' Digital', 'digital', NULL, '2021-08-03 06:09:36', NULL),
+(22, 37, ' Audio', 'audio', NULL, '2021-08-03 06:09:36', NULL),
+(23, 37, ' Alat Pendingin Ruangan', 'alat-pendingin-ruangan', NULL, '2021-08-03 06:09:36', NULL),
+(24, 37, ' Elektronik Kantor', 'elektronik-kantor', NULL, '2021-08-03 06:09:36', NULL),
+(25, 36, ' Kamera Pengintai', 'kamera-pengintai', NULL, '2021-08-03 01:57:18', NULL),
+(26, 37, ' Media Player', 'media-player', NULL, '2021-08-03 06:09:36', NULL),
+(27, NULL, ' Printer', 'printer', NULL, '2021-08-03 01:54:12', NULL),
+(28, 38, ' Suplemen Diet', 'suplemen-diet', NULL, '2021-08-03 02:13:21', NULL),
+(29, 38, ' Essential Oil', 'essential-oil', NULL, '2021-08-03 02:13:21', NULL),
+(30, 38, ' Obat-obatan', 'obat-obatan', NULL, '2021-08-03 02:13:21', NULL),
+(31, 38, ' Masker', 'masker', NULL, '2021-08-03 02:13:21', NULL),
+(32, NULL, ' Paket Tour', 'paket-tour', NULL, '2021-08-05 21:10:28', NULL),
+(33, NULL, ' Tiket Transportasi', 'tiket-transportasi', NULL, '2021-08-03 02:02:57', NULL),
+(34, NULL, ' Voucher Travel', 'voucher-travel', NULL, '2021-08-03 02:03:06', NULL),
+(35, NULL, ' Perumahan', 'perumahan', NULL, '2021-08-03 01:57:33', NULL),
+(36, 33, ' Aksesoris Motor', 'aksesoris-motor', NULL, '2021-08-03 06:08:29', NULL),
+(37, 33, ' Eksterior Mobil', 'eksterior-mobil', NULL, '2021-08-03 06:08:29', NULL),
+(38, 33, ' Interior Mobil', 'interior-mobil', NULL, '2021-08-03 06:08:29', NULL),
+(39, NULL, ' Helm Motor', 'helm-motor', NULL, '2021-08-03 06:08:29', NULL),
 (40, 32, ' Aksesoris Olahraga', 'aksesoris-olahraga', NULL, '2021-07-31 19:59:20', NULL),
 (41, 32, ' Beladiri', 'beladiri', NULL, '2021-07-31 19:59:20', NULL),
 (42, 32, 'Boxing', 'boxing', NULL, '2021-07-31 19:59:20', NULL),
 (43, 32, ' Panahan', 'panahan', NULL, '2021-07-31 19:59:20', NULL),
 (44, 32, ' Tenis', 'tenis', NULL, '2021-07-31 19:59:20', NULL),
-(45, 30, ' Dekorasi', 'dekorasi', NULL, '2021-07-31 19:59:20', NULL),
-(46, 30, ' Kamar Mandi', 'kamar-mandi', NULL, '2021-07-31 19:59:20', NULL),
-(47, 30, ' Kebersihan', 'kebersihan', NULL, '2021-07-31 19:59:20', NULL),
-(48, NULL, ' Taman', 'taman', NULL, '2021-07-31 19:59:20', NULL),
-(49, 30, ' Tempat Penyimpanan', 'tempat-penyimpanan', NULL, '2021-07-31 19:59:20', NULL),
-(50, 29, ' Grooming Hewan', 'grooming-hewan', NULL, '2021-07-31 19:59:20', NULL),
-(51, 29, ' Perawatan Burung', 'perawatan-burung', NULL, '2021-07-31 19:59:20', NULL),
-(52, 29, ' Perawatan Kucing', 'perawatan-kucing', NULL, '2021-07-31 19:59:20', NULL),
-(53, 29, ' Perawatan Anjing', 'perawatan-anjing', NULL, '2021-07-31 07:03:43', NULL);
+(45, NULL, ' Dekorasi', 'dekorasi', NULL, '2021-08-05 21:10:28', NULL),
+(46, NULL, ' Kamar Mandi', 'kamar-mandi', NULL, '2021-08-05 21:10:28', NULL),
+(47, NULL, ' Kebersihan', 'kebersihan', NULL, '2021-08-05 21:10:28', NULL),
+(48, NULL, ' Taman', 'taman', NULL, '2021-08-05 21:10:28', NULL),
+(49, NULL, ' Tempat Penyimpanan', 'tempat-penyimpanan', NULL, '2021-08-05 21:10:28', NULL),
+(50, NULL, ' Grooming Hewan', 'grooming-hewan', NULL, '2021-08-05 21:10:28', NULL),
+(51, NULL, ' Perawatan Burung', 'perawatan-burung', NULL, '2021-08-05 21:10:28', NULL),
+(52, NULL, ' Perawatan Kucing', 'perawatan-kucing', NULL, '2021-08-05 21:10:28', NULL),
+(53, NULL, ' Perawatan Anjing', 'perawatan-anjing', NULL, '2021-08-05 21:10:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -479,16 +560,30 @@ CREATE TABLE `sub_sub_categories` (
 --
 
 INSERT INTO `sub_sub_categories` (`id`, `category_id`, `subcategory_id`, `subsubcategory_name`, `subsubcategory_slug`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, 46, 11, 'Resep Kue', 'resep-kue', NULL, '2021-07-30 23:26:18', NULL),
-(2, NULL, NULL, 'Bass Akustik', 'bass-akustik', NULL, '2021-07-30 15:45:54', NULL),
-(3, 35, 32, ' Bass Elektrik', 'bass-elektrik', NULL, '2021-07-31 04:26:29', NULL),
-(4, 45, 35, ' Mainan Mandi Bayi', 'mainan-mandi-bayi', NULL, '2021-07-31 04:27:41', NULL),
-(5, NULL, NULL, ' Pagar Pengaman Bayi', 'pagar-pengaman-bayi', NULL, '2021-07-31 04:50:54', NULL),
-(6, 46, 15, 'Majalah Anak', 'majalah-anak', NULL, '2021-07-31 21:00:22', NULL),
-(7, 46, 15, ' Majalah Desain', 'majalah-desain', NULL, '2021-07-31 21:00:22', NULL),
-(8, 46, 15, 'Majalah Fashion', 'majalah-fashion', NULL, '2021-07-31 21:00:22', NULL),
-(9, 46, 15, ' Majalah Musik', 'majalah-musik', NULL, '2021-07-31 21:00:22', NULL),
-(10, 46, 13, 'Katalog', 'katalog', NULL, '2021-07-30 23:26:09', NULL);
+(1, 154, 11, 'Resep Kue', 'resep-kue', NULL, '2021-08-24 23:13:28', NULL),
+(2, NULL, NULL, 'Bass Akustik', 'bass-akustik', NULL, '2021-08-03 06:31:47', NULL),
+(3, NULL, NULL, ' Bass Elektrik', 'bass-elektrik', NULL, '2021-08-05 21:10:28', NULL),
+(4, NULL, NULL, ' Mainan Mandi Bayi', 'mainan-mandi-bayi', NULL, '2021-08-02 01:12:36', NULL),
+(5, NULL, NULL, ' Pagar Pengaman Bayi', 'pagar-pengaman-bayi', NULL, '2021-08-05 21:09:03', NULL),
+(6, 154, 15, 'Majalah Anak', 'majalah-anak', NULL, '2021-08-24 23:13:07', NULL),
+(7, 154, 15, ' Majalah Desain', 'majalah-desain', NULL, '2021-08-24 23:13:07', NULL),
+(8, 154, 15, 'Majalah Fashion', 'majalah-fashion', NULL, '2021-08-24 23:13:07', NULL),
+(9, 154, 15, ' Majalah Musik', 'majalah-musik', NULL, '2021-08-24 23:13:07', NULL),
+(10, 154, 14, 'Katalog', 'katalog', NULL, '2021-08-24 23:19:08', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `total_stocks_variants_products`
+--
+
+CREATE TABLE `total_stocks_variants_products` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `product_combination_id` bigint(20) UNSIGNED NOT NULL,
+  `total_stock` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -597,6 +692,37 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `products_brand_id_index` (`brand_id`),
+  ADD KEY `products_category_id_index` (`category_id`),
+  ADD KEY `products_subcategory_id_index` (`subcategory_id`),
+  ADD KEY `products_subsubcategory_id_index` (`subsubcategory_id`);
+
+--
+-- Indexes for table `products_combinations`
+--
+ALTER TABLE `products_combinations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `products_combinations_product_id_index` (`product_id`);
+
+--
+-- Indexes for table `products_variants_options`
+--
+ALTER TABLE `products_variants_options`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `products_variants_options_value_product_variant_id_index` (`product_variant_id`);
+
+--
+-- Indexes for table `products_variants_types`
+--
+ALTER TABLE `products_variants_types`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `products_variants_options_product_id_index` (`product_id`);
+
+--
 -- Indexes for table `sessions`
 --
 ALTER TABLE `sessions`
@@ -627,6 +753,13 @@ ALTER TABLE `sub_sub_categories`
   ADD KEY `sub_sub_categories_subcategory_id_index` (`subcategory_id`);
 
 --
+-- Indexes for table `total_stocks_variants_products`
+--
+ALTER TABLE `total_stocks_variants_products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `total_stocks_variants_products_product_combination_id_index` (`product_combination_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -647,7 +780,7 @@ ALTER TABLE `brands`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -659,7 +792,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
@@ -680,6 +813,30 @@ ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `products_combinations`
+--
+ALTER TABLE `products_combinations`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT for table `products_variants_options`
+--
+ALTER TABLE `products_variants_options`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT for table `products_variants_types`
+--
+ALTER TABLE `products_variants_types`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+
+--
 -- AUTO_INCREMENT for table `staffs`
 --
 ALTER TABLE `staffs`
@@ -698,6 +855,12 @@ ALTER TABLE `sub_sub_categories`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
+-- AUTO_INCREMENT for table `total_stocks_variants_products`
+--
+ALTER TABLE `total_stocks_variants_products`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -706,6 +869,33 @@ ALTER TABLE `users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `products`
+--
+ALTER TABLE `products`
+  ADD CONSTRAINT `products_brand_id_foreign` FOREIGN KEY (`brand_id`) REFERENCES `brands` (`id`),
+  ADD CONSTRAINT `products_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
+  ADD CONSTRAINT `products_subcategory_id_foreign` FOREIGN KEY (`subcategory_id`) REFERENCES `sub_categories` (`id`),
+  ADD CONSTRAINT `products_subsubcategory_id_foreign` FOREIGN KEY (`subsubcategory_id`) REFERENCES `sub_sub_categories` (`id`);
+
+--
+-- Constraints for table `products_combinations`
+--
+ALTER TABLE `products_combinations`
+  ADD CONSTRAINT `products_combinations_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
+-- Constraints for table `products_variants_options`
+--
+ALTER TABLE `products_variants_options`
+  ADD CONSTRAINT `products_variants_options_value_product_variant_id_foreign` FOREIGN KEY (`product_variant_id`) REFERENCES `products_variants_types` (`id`);
+
+--
+-- Constraints for table `products_variants_types`
+--
+ALTER TABLE `products_variants_types`
+  ADD CONSTRAINT `products_variants_options_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
 --
 -- Constraints for table `sub_categories`
@@ -719,6 +909,12 @@ ALTER TABLE `sub_categories`
 ALTER TABLE `sub_sub_categories`
   ADD CONSTRAINT `sub_sub_categories_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
   ADD CONSTRAINT `sub_sub_categories_subcategory_id_foreign` FOREIGN KEY (`subcategory_id`) REFERENCES `sub_categories` (`id`);
+
+--
+-- Constraints for table `total_stocks_variants_products`
+--
+ALTER TABLE `total_stocks_variants_products`
+  ADD CONSTRAINT `total_stocks_variants_products_product_combination_id_foreign` FOREIGN KEY (`product_combination_id`) REFERENCES `products_combinations` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

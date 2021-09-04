@@ -8,6 +8,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SubSubCategoryController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,6 +109,9 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     Route::delete('sub-sub-categories/force-delete/{id}', [SubSubCategoryController::class, 'forceDelete']);
     Route::get('sub-sub-categories/force-delete-multiple/ids={ids}', [SubSubCategoryController::class, 'forceDeleteMultiple']);
     Route::get('sub-sub-categories/trash/search/{keyword}', [SubSubCategoryController::class, 'searchTrashSubSubCat']);
+
+    // CRUD products
+    Route::post('products/store', [ProductController::class, 'store']);
 });
 
 Route::middleware(['auth:staff-api', 'scopes:staff'])->get('/staff', function (Request $request) {

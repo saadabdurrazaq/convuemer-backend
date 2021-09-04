@@ -7,9 +7,7 @@
             <div class="content">
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header">Create New Product</div>
-
+                        <div class="card card-outline card-info">
                             <div class="card-body">
                                 <form @submit.prevent="store()" novalidate>
                                     <div class="col-md-12">
@@ -17,30 +15,6 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <p class="lead section-title">Info Product:</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label for="product_code">Product Code</label>
-                                                    <input
-                                                        v-model="form.product_code"
-                                                        id="product_code"
-                                                        type="text"
-                                                        class="form-control"
-                                                        :class="{
-                                                            'is-invalid':
-                                                                form.errors.has('product_code'),
-                                                        }"
-                                                        name="product_code"
-                                                        required
-                                                        autocomplete="product_code"
-                                                        autofocus
-                                                    />
-                                                    <div
-                                                        style="color: red"
-                                                        v-if="form.errors.has('product_code')"
-                                                        v-html="form.errors.get('product_code')"
-                                                    />
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
@@ -178,24 +152,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
-                                                <label for="weight">Product Tags</label>
-                                                <div class="input-group mb-3">
-                                                    <input
-                                                        id="height"
-                                                        type="text"
-                                                        class="form-control"
-                                                        name="height"
-                                                        value=""
-                                                        required
-                                                        autocomplete="weight"
-                                                        autofocus
-                                                    />
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">Cm</span>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                         <br />
                                         <div class="row">
@@ -296,12 +252,13 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="form-group">
-                                                        <button
+                                                        <a
                                                             class="btn btn-success"
+                                                            style="color: white"
                                                             @click="addVariant"
                                                         >
                                                             Add Variant
-                                                        </button>
+                                                        </a>
                                                         <div
                                                             style="display: none"
                                                             id="errMsg"
@@ -362,6 +319,11 @@
                                                                             type="text"
                                                                             id="variant_type"
                                                                             class="form-control"
+                                                                            :class="
+                                                                                'variant_type_' +
+                                                                                variant.id
+                                                                            "
+                                                                            :name="variant_type"
                                                                             v-model="
                                                                                 variant.variant_type
                                                                             "
@@ -371,9 +333,21 @@
                                                                             @change="tokenField()"
                                                                             onkeydown="if (event.keyCode == 13) event.preventDefault()"
                                                                             placeholder="Input variant type. E.g: Color"
-                                                                            name="name"
                                                                             required
                                                                             autofocus
+                                                                        />
+                                                                        <div
+                                                                            style="color: red"
+                                                                            v-if="
+                                                                                form.errors.has(
+                                                                                    'variant_type'
+                                                                                )
+                                                                            "
+                                                                            v-html="
+                                                                                form.errors.get(
+                                                                                    'variant_type'
+                                                                                )
+                                                                            "
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -420,8 +394,13 @@
                                         <!-- row product varian -->
                                         <div class="row">
                                             <div
-                                                v-if="variantsVal.length > 0"
-                                                class="col-md-12 panel-body table-responsive"
+                                                v-if="form.variantsProd.length > 0"
+                                                class="
+                                                    col-md-12
+                                                    panel-body
+                                                    table-responsive
+                                                    product_variants
+                                                "
                                                 style="overflow: hidden"
                                             >
                                                 <table
@@ -441,16 +420,40 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr
-                                                            v-for="(
-                                                                variantVal, index
-                                                            ) in variantsVal"
-                                                            :key="index"
+                                                            v-for="variantVal in form.variantsProd"
+                                                            :key="variantVal.id"
                                                         >
-                                                            <td>
+                                                            <td style="display: none">
+                                                                <input
+                                                                    v-model="variantVal.id"
+                                                                    :class="
+                                                                        'variant_product_' +
+                                                                        variantVal.id
+                                                                    "
+                                                                    class="form-control"
+                                                                    type="hidden"
+                                                                    name="variant_product"
+                                                                />
+                                                            </td>
+                                                            <td
+                                                                :class="
+                                                                    'variant_product_' +
+                                                                    variantVal.id
+                                                                "
+                                                            >
                                                                 {{
-                                                                    Object.values(variantVal).join(
-                                                                        '-'
-                                                                    )
+                                                                    Object.entries(variantVal)
+                                                                        .filter(
+                                                                            ([key]) =>
+                                                                                key !== 'id' &&
+                                                                                key !==
+                                                                                    'product_variant' &&
+                                                                                key !== 'price' &&
+                                                                                key !== 'stock' &&
+                                                                                key !== 'sku'
+                                                                        )
+                                                                        .map(([, v]) => v)
+                                                                        .join('-')
                                                                 }}
                                                             </td>
                                                             <td>
@@ -465,12 +468,24 @@
                                                                     </div>
                                                                     <input
                                                                         id="variant_price"
+                                                                        @mouseover="
+                                                                            validatePrice(
+                                                                                variantVal.id
+                                                                            )
+                                                                        "
+                                                                        :class="
+                                                                            'variant_price_' +
+                                                                            variantVal.id
+                                                                        "
+                                                                        v-bind:name="
+                                                                            variantVal.price
+                                                                        "
                                                                         type="text"
-                                                                        class="form-control"
-                                                                        name="variant_price"
-                                                                        value=""
+                                                                        class="
+                                                                            form-control
+                                                                            variant_price
+                                                                        "
                                                                         required
-                                                                        autocomplete="variant_price"
                                                                         autofocus
                                                                     />
                                                                 </div>
@@ -479,9 +494,13 @@
                                                                 <input
                                                                     id="variant_stock"
                                                                     type="text"
+                                                                    :class="
+                                                                        'variant_stock_' +
+                                                                        variantVal.id
+                                                                    "
+                                                                    v-model="variantVal.stock"
                                                                     class="form-control"
                                                                     name="variant_stock"
-                                                                    value=""
                                                                     required
                                                                     autocomplete="variant_stock"
                                                                     autofocus
@@ -491,9 +510,13 @@
                                                                 <input
                                                                     id="variant_sku"
                                                                     type="text"
+                                                                    :class="
+                                                                        'variant_sku_' +
+                                                                        variantVal.id
+                                                                    "
+                                                                    v-model="variantVal.sku"
                                                                     class="form-control"
                                                                     name="variant_sku"
-                                                                    value=""
                                                                     required
                                                                     autocomplete="variant_sku"
                                                                     autofocus
@@ -556,12 +579,12 @@
                                                         <span class="input-group-text">Rp</span>
                                                     </div>
                                                     <input
-                                                        id="salary"
+                                                        id="discount_price"
                                                         type="text"
-                                                        class="form-control salary"
-                                                        name="salary"
+                                                        class="form-control discount_price"
+                                                        name="discount_price"
                                                         required
-                                                        autocomplete="salary"
+                                                        autocomplete="discount_price"
                                                         autofocus
                                                         aria-label="Amount (to the nearest dollar)"
                                                     />
@@ -602,6 +625,8 @@
                                                 v-on:click="getDataBeforeStore()"
                                                 class="btn btn-primary btn-md"
                                                 id="loadingButton"
+                                                @mouseover="addProp()"
+                                                v-on:keydown.enter="addProp()"
                                             >
                                                 Save
                                             </button>
@@ -634,11 +659,11 @@ import 'jquery-ui-dist/jquery-ui.css';
 import 'jquery/dist/jquery.js';
 // end datepicker
 import { Form } from 'vform';
-import '@/assets/css/app.css';
+//import '@/assets/css/app.css';
 import '@/assets/js/select2.min.js';
 import '@/assets/js/bootstrap-tokenfield.js'; // another related file found index.html
 //import { BASE_URL } from '@/assets/js/base-url.js';
-//import swal from 'sweetalert2';
+import swal from 'sweetalert2';
 
 export default {
     name: 'HelloWorld',
@@ -651,34 +676,36 @@ export default {
     data() {
         return {
             nextId: 1,
-            variantsVal: [],
+            variantProductId: 0,
             form: new Form({
-                product_code: '',
                 product_name: '',
                 brand: '',
                 category_id: 0,
                 subcategory_id: 0,
                 subsubcategory_id: 0,
+                isVariantExists: 0,
                 variants: [
                     {
                         id: 1,
                         variant_type: '',
-                        variant_options: '',
+                        variant_options: [],
                     },
                 ],
+                variantsProd: [],
             }),
             error: '',
             attributes: [],
+            title: '',
         };
     },
     methods: {
-        getVariantOptions() {
-            console.log('work');
+        getVariantProducts() {
             let variants = this.form.variants;
             var variantsValue = [];
 
             variants.forEach((data) => {
                 let dataObj = Object.values(data);
+
                 var variantOpt = $('.variant_options_' + dataObj[0]).tokenfield('getTokens');
                 var varianOptVal = [];
 
@@ -688,7 +715,7 @@ export default {
 
                 // Arrays has not been merged, and still has it's properties.
                 variantsValue.push({
-                    // variant_id: dataObj[0],
+                    variant_id: dataObj[0],
                     variant_type: dataObj[1],
                     variant_options: varianOptVal,
                 });
@@ -724,7 +751,29 @@ export default {
             // ...d, ...e (Mapping an array from the top (d) input to bottom (e))
             attrs = attrs.reduce((a, b) => a.flatMap((d) => b.map((e) => ({ ...d, ...e }))));
 
-            this.variantsVal = attrs;
+            // Add id to each row.
+            attrs.forEach((item, i) => {
+                item.id = i + 1;
+                item.product_variant = $('.variant_product_' + item.id).text();
+                item.price = $('.variant_price_' + item.id).val();
+                item.stock = $('.variant_stock_' + item.id).val();
+                item.sku = $('.variant_sku_' + item.id).val();
+            });
+
+            this.form.variantsProd = attrs;
+        },
+        addProp() {
+            this.form.variantsProd.forEach((item) => {
+                item.price = $('.variant_price_' + item.id).val();
+                const isEmpty = (str) => !str.trim().length;
+                if (item.price === undefined || isEmpty(item.product_variant)) {
+                    var last = this.form.variantsProd[this.form.variantsProd.length - 1];
+                    item.product_variant = $('.variant_product_' + last.id).text();
+                    item.price = $('.variant_price_' + last.id).val();
+                    item.stock = $('.variant_stock_' + last.id).val();
+                    item.sku = $('.variant_sku_' + last.id).val();
+                }
+            });
         },
         tokenField() {
             // enter button is killed no current input data found. To activate again, open the bootstrap-tokenfield.js, and search "kill enter button", uncomment the rest of code, and delete e.preventDefault()
@@ -753,10 +802,25 @@ export default {
                     });
                 })
                 .on('tokenfield:createdtoken', function () {
-                    self.getVariantOptions();
+                    self.getVariantProducts();
+                    // fill the value of variant_options
+                    self.form.variants.forEach((data) => {
+                        let dataObj = Object.values(data);
+                        data.variant_options = $('.variant_options_' + dataObj[0]).tokenfield(
+                            'getTokens'
+                        );
+                    });
                 })
                 .on('tokenfield:removedtoken', function () {
-                    self.getVariantOptions();
+                    self.getVariantProducts();
+                    $('.product_variants').find(':input').val(''); // clear price, sku, stock input field
+                    // update the value of variant_options
+                    self.form.variants.forEach((data) => {
+                        let dataObj = Object.values(data);
+                        data.variant_options = $('.variant_options_' + dataObj[0]).tokenfield(
+                            'getTokens'
+                        );
+                    });
                 });
         },
         addVariant() {
@@ -776,7 +840,7 @@ export default {
                     if (existingTokens.length === 0) {
                         alert('Please fill the existing varian fields first!');
                     } else {
-                        this.variantsVal.splice(0, this.variantsVal.length);
+                        this.form.variantsProd.splice(0, this.form.variantsProd.length);
                         this.form.variants.push({
                             id: this.nextId++,
                             variant_type: '',
@@ -793,15 +857,200 @@ export default {
             $('#errMsg').hide();
             this.form.variants.splice(index, 1);
             if (this.form.variants.length === 0) {
-                this.variantsVal.splice(0, this.variantsVal.length);
+                this.form.variantsProd.splice(0, this.form.variantsProd.length);
             }
-            this.getVariantOptions();
+            this.getVariantProducts();
+        },
+        showSuccessMsg(response) {
+            var responseData = response.data;
+            this.msg = responseData.message;
+
+            console.log(this.msg);
+            const Toast = swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', swal.stopTimer);
+                    toast.addEventListener('mouseleave', swal.resumeTimer);
+                },
+            });
+
+            Toast.fire({
+                icon: 'success',
+                title: this.msg,
+            });
+        },
+        showErrMsg(response) {
+            var responseData = response.data;
+            this.msg = responseData.message;
+
+            swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: this.msg,
+                footer: '<a href>Why do I have this issue?</a>',
+            });
+        },
+        validatePrice(id) {
+            $('.variant_price_' + id).on('contextmenu', function () {
+                return false;
+            });
+
+            function addDot(x) {
+                return x.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
+
+            $('.variant_price_' + id).on('keyup', this, function (event) {
+                // skip for arrow left (37) and arrow down (40)
+                if (event.which >= 37 && event.which <= 40) return;
+
+                // Limit number
+                var txtVal = $(this).val();
+                if (txtVal.length > 11) {
+                    $(this).val(txtVal.substring(0, 11));
+                    return false;
+                }
+
+                // add dot in numbers and only number is allowed (replace(/\D/g, '')).
+                $(this).val(function (index, value) {
+                    return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                });
+            });
+
+            $('.variant_price_' + id).on('paste', function (event) {
+                // This will allow only number with dot (/^[0-9]*\.?[0-9]*$/).
+                // But if we want only number without dot, we can use ( /[^\d]/ )
+                var rgx = /^[0-9]*\.?[0-9]*$[^\d]/;
+
+                if (event.originalEvent.clipboardData.getData('text').match(rgx)) {
+                    event.preventDefault();
+                } else {
+                    var dataText = event.originalEvent.clipboardData.getData('text');
+
+                    // Limit number
+                    if (dataText.length > 11) {
+                        var subsData = dataText.substring(0, 11);
+                        var res = addDot(subsData);
+
+                        $(this).val(subsData);
+                        $('.variant_price_' + id).val(res); // Assume, we paste 200000, without if else below, it will result 200.000200000
+
+                        return false;
+                    } else {
+                        var res2 = addDot(dataText);
+                        $('.variant_price_' + id).val(res2); // Assume, we paste 200000, without if else below, it will result 200.000200000
+                    }
+
+                    // if 200000 is exsist, remove 200000
+                    if (dataText || subsData) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            });
+        },
+        store() {
+            $('#loadingButton').html(
+                `<div class="proc-regis"><i class='fa fa-circle-o-notch fa-spin'></i> Storing data</div>`
+            );
+            $('#loadingButton').attr('disabled', true);
+
+            this.form.isVariantExists = $('#variant_type').length;
+
+            this.form
+                .post('api/staff/products/store')
+                .then((response) => {
+                    let variants = this.form.variants;
+
+                    if (this.form.isVariantExists > 0) {
+                        variants.forEach((data) => {
+                            let dataObjVal = Object.values(data);
+
+                            $('.variant_type_' + dataObjVal[0]).removeClass('is-invalid');
+                            var existingTokens = $('.variant_options_' + dataObjVal[0]).tokenfield(
+                                'getTokens'
+                            );
+                            let variant_type = $('.variant_type_' + dataObjVal[0]).val();
+
+                            if (variant_type == '') {
+                                $('.variant_type_' + dataObjVal[0]).addClass('is-invalid');
+                                this.showErrMsg(response);
+                            }
+                            if (existingTokens.length > 0) {
+                                $('.variant_options_' + dataObjVal[0])
+                                    .parent()
+                                    .removeClass('is-invalid');
+                            }
+                            if (existingTokens.length === 0) {
+                                $('.variant_options_' + dataObjVal[0])
+                                    .parent()
+                                    .addClass('is-invalid');
+                                this.showErrMsg(response);
+                            }
+                        });
+
+                        this.form.variantsProd.forEach((data) => {
+                            let inputPrice = $('.variant_price_' + data.id).val();
+                            let inputStock = $('.variant_stock_' + data.id).val();
+                            let inputSku = $('.variant_sku_' + data.id).val();
+
+                            $('.variant_price_' + data.id).removeClass('is-invalid');
+                            $('.variant_stock_' + data.id).removeClass('is-invalid');
+                            $('.variant_sku_' + data.id).removeClass('is-invalid');
+
+                            if (inputPrice == '') {
+                                $('.variant_price_' + data.id).addClass('is-invalid');
+                                this.showErrMsg(response);
+                            }
+
+                            if (inputStock == '') {
+                                $('.variant_stock_' + data.id).addClass('is-invalid');
+                                this.showErrMsg(response);
+                            }
+
+                            if (inputSku == '') {
+                                $('.variant_sku_' + data.id).addClass('is-invalid');
+                                this.showErrMsg(response);
+                            }
+
+                            if (inputPrice !== '' && inputStock !== '' && inputSku !== '') {
+                                this.$router.push({ name: 'products-index' });
+                                this.showSuccessMsg(response);
+                            }
+                        });
+                    } else {
+                        this.$router.push({ name: 'products-index' });
+                        this.showSuccessMsg(response);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong! Make sure you input the valid data!',
+                        footer: '<a href>Why do I have this issue?</a>',
+                    });
+                })
+                .finally(() => {
+                    $('#loadingButton').attr('disabled', false);
+                    $('.proc-regis').remove();
+                    $('#loadingButton').html(`Save`);
+                });
         },
     }, // methods:
     created() {},
     mounted() {
         this.tokenField();
         this.form.variants.splice(0, this.form.variants.length); // empty an array of dynamic variants field
+        // prevent sweetalert error if user change the route when swal is still visible.
+        if (swal.isVisible()) {
+            document.querySelector('body').setAttribute('class', 'swal2-toast-shown swal2-shown');
+        }
     },
 };
 </script>

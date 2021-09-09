@@ -71,6 +71,17 @@ const routes = [
         }
     },
     {
+        path: '/staff/address',
+        name: 'staff-address',
+        component: () => import( /* webpackChunkName: "dashboard" */ '@/views/staff/address.vue'),
+        beforeEnter: (to, from, next) => {
+            if (!localStorage.getItem('token-staff')) {
+                next('/staff/login');
+            }
+            next();
+        }
+    },
+    {
         path: '/staff/profile',
         name: 'staff-profile',
         component: () => import( /* webpackChunkName: "dashboard" */ '@/views/staff/profile.vue'),

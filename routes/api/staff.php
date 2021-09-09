@@ -9,6 +9,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SubSubCategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AddressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,11 @@ use App\Http\Controllers\ProductController;
 */
 
 Route::post('staff/login', [LoginController::class, 'staffLogin'])->name('staffLogin');
+
+Route::get('json-provinces', [AddressController::class, 'provinces']); // api/json-provinces
+Route::get('json-regencies/{id}', [AddressController::class, 'regencies']);
+Route::get('json-districts/{id}', [AddressController::class, 'districts']);
+Route::get('json-village/{id}', [AddressController::class, 'villages']);
 
 // To see the route url, use php artisan r:l
 Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:staff']], function () {
@@ -112,6 +118,7 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
 
     // CRUD products
     Route::post('products/store', [ProductController::class, 'store']);
+    Route::get('get-brands', [ProductController::class, 'getBrands']);
 });
 
 Route::middleware(['auth:staff-api', 'scopes:staff'])->get('/staff', function (Request $request) {

@@ -42,7 +42,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
-                                                <div class="form-group">
+                                                <div class="form-group get-brands">
                                                     <label for="nickname">Brand</label>
                                                     <select
                                                         v-bind:name="form.brand"
@@ -53,19 +53,19 @@
                                                             Select Brand
                                                         </option>
                                                     </select>
+                                                    <div
+                                                        style="color: red"
+                                                        class="errorIcon"
+                                                        v-if="form.errors.has('brand')"
+                                                        v-html="form.errors.get('brand')"
+                                                    />
                                                 </div>
-                                                <div
-                                                    style="color: red"
-                                                    class="errorIcon"
-                                                    v-if="form.errors.has('brand')"
-                                                    v-html="form.errors.get('brand')"
-                                                />
                                             </div>
                                             <div class="col-md-3">
-                                                <div class="form-group">
+                                                <div class="form-group get-categories">
                                                     <label for="nik">Category</label>
                                                     <select
-                                                        v-bind:name="form.category_id"
+                                                        v-model="form.category_id"
                                                         id="category_id"
                                                         class="form-control"
                                                     >
@@ -82,10 +82,10 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
-                                                <div class="form-group">
+                                                <div class="form-group get-sub-categories">
                                                     <label for="nik">Sub Category</label>
                                                     <select
-                                                        v-bind:name="form.subcategory_id"
+                                                        v-model="form.subcategory_id"
                                                         id="subcategory_id"
                                                         class="form-control"
                                                     >
@@ -106,12 +106,12 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-3">
-                                                <div class="form-group">
+                                                <div class="form-group get-sub-sub-categories">
                                                     <label for="citizenship"
                                                         >Sub-sub Category</label
                                                     >
                                                     <select
-                                                        v-bind:name="form.subsubcategory_id"
+                                                        v-model="form.subsubcategory_id"
                                                         id="subsubcategory_id"
                                                         class="form-control"
                                                     >
@@ -662,7 +662,7 @@ import { Form } from 'vform';
 //import '@/assets/css/app.css';
 import '@/assets/js/select2.min.js';
 import '@/assets/js/bootstrap-tokenfield.js'; // another related file found index.html
-//import { BASE_URL } from '@/assets/js/base-url.js';
+import { BASE_URL } from '@/assets/js/base-url.js';
 import swal from 'sweetalert2';
 
 export default {
@@ -675,6 +675,7 @@ export default {
     },
     data() {
         return {
+            BASE_URL: BASE_URL,
             nextId: 1,
             variantProductId: 0,
             form: new Form({
@@ -953,6 +954,164 @@ export default {
                 }
             });
         },
+        clearAllSubCatSelectOption() {
+            $('#subcategory_id')
+                .find('option')
+                .remove()
+                .end()
+                .append('<option value="default">Select Sub Category</option>')
+                .val('default');
+        },
+        clearAllSubSubCatSelectOption() {
+            $('#subsubcategory_id')
+                .find('option')
+                .remove()
+                .end()
+                .append('<option value="default">Select Sub Sub Category</option>')
+                .val('default');
+        },
+        loadCatSelectOption() {
+            // Fill category input
+            const token = localStorage.getItem('token-staff');
+            this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+            this.axios
+                .get('api/staff/get-categories', {})
+                .then((response) => {
+                    var responseData = response.data;
+                    let categories = responseData.categories;
+
+                    categories.forEach(function (category) {
+                        var option = new Option(category.category_name, category.id, true, true);
+                        // Bulk assign form
+                        $('#category_id').append(option);
+                        $('div.get-categories select').val('default').change();
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        loadSubCatSelectOption() {
+            var self = this;
+            const token = localStorage.getItem('token-staff');
+
+            // fill sub category input
+            $('#category_id').on('change', function () {
+                self.clearAllSubCatSelectOption();
+                self.clearAllSubSubCatSelectOption();
+
+                var category_id = $(this).val();
+
+                if (category_id === 'default') {
+                    $('div.get-sub-categories select')
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append('<option value="default">Select Sub Category</option>')
+                        .val('default');
+                }
+
+                $.ajax({
+                    url: `${BASE_URL}/api/staff/sub-sub-categories/get-sub-category/` + category_id,
+                    type: 'GET',
+                    dataType: 'json',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+                    },
+                    success: function (data) {
+                        let subCategories = data.sub_categories;
+
+                        if (subCategories) {
+                            subCategories.forEach(function (category) {
+                                var option = new Option(
+                                    category.subcategory_name,
+                                    category.id,
+                                    true,
+                                    true
+                                );
+                                // Bulk assign form
+                                $('#subcategory_id').append(option);
+                                $('div.get-sub-categories select').val('default').change();
+                            });
+                        }
+
+                        if (subCategories.length === 0) {
+                            $('div.get-sub-categories select').val('default').change();
+                        }
+                    },
+                });
+            });
+        },
+        loadSubSubCatSelectOption() {
+            var self = this;
+            const token = localStorage.getItem('token-staff');
+
+            // fill sub category input
+            $('#subcategory_id').on('change', function () {
+                self.clearAllSubSubCatSelectOption();
+
+                var subcategory_id = $(this).val();
+
+                if (subcategory_id === 'default') {
+                    $('#subsubcategory_id')
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append('<option value="default">Select Sub Sub Category</option>')
+                        .val('default');
+                }
+
+                $.ajax({
+                    url:
+                        `${BASE_URL}/api/staff/sub-sub-categories/get-sub-sub-categories/` +
+                        subcategory_id,
+                    type: 'GET',
+                    dataType: 'json',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+                    },
+                    success: function (data) {
+                        let subSubCategories = data.sub_sub_categories;
+
+                        if (subSubCategories.length === 0) {
+                            $('div.get-sub-sub-categories select').val('default').change();
+                        }
+
+                        subSubCategories.forEach(function (subSubCategory) {
+                            var option = new Option(
+                                subSubCategory.subsubcategory_name,
+                                subSubCategory.id,
+                                true,
+                                true
+                            );
+                            // Bulk assign form
+                            $('#subsubcategory_id').append(option);
+                            $('div.get-sub-sub-categories select').val('default').change();
+                        });
+                    },
+                });
+            });
+        },
+        loadBrands() {
+            // Fill category input
+            const token = localStorage.getItem('token-staff');
+            this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+            this.axios
+                .get('api/staff/get-brands', {})
+                .then((response) => {
+                    var responseData = response.data;
+                    let brands = responseData.brands;
+
+                    brands.forEach(function (brand) {
+                        var option = new Option(brand.brand_name, brand.id, true, true);
+                        $('#brand').append(option);
+                        $('div.get-brands select').val('default').change();
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
         store() {
             $('#loadingButton').html(
                 `<div class="proc-regis"><i class='fa fa-circle-o-notch fa-spin'></i> Storing data</div>`
@@ -960,6 +1119,7 @@ export default {
             $('#loadingButton').attr('disabled', true);
 
             this.form.isVariantExists = $('#variant_type').length;
+            console.log(this.form.subcategory_id);
 
             this.form
                 .post('api/staff/products/store')
@@ -1051,6 +1211,10 @@ export default {
         if (swal.isVisible()) {
             document.querySelector('body').setAttribute('class', 'swal2-toast-shown swal2-shown');
         }
+        this.loadBrands();
+        this.loadCatSelectOption();
+        this.loadSubCatSelectOption();
+        this.loadSubSubCatSelectOption();
     },
 };
 </script>

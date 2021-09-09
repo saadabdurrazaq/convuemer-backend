@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\VariantType;
 use App\Models\VariantOption;
 use App\Models\ProductCombination;
+use App\Models\Brand;
 use Illuminate\Support\Str;
 use DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,15 @@ class ProductController extends Controller
     public function __construct(Request $request)
     {
         $this->request = $request;
+    }
+
+    public function getBrands()
+    {
+        $brands = Brand::orderBy('id', 'desc')->get();
+
+        return response()->json([
+            'brands' => $brands,
+        ], 200);
     }
 
     public function storeProduct()

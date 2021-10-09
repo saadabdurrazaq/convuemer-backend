@@ -29,6 +29,11 @@ Route::get('json-regencies/{id}', [AddressController::class, 'regencies']);
 Route::get('json-districts/{id}', [AddressController::class, 'districts']);
 Route::get('json-village/{id}', [AddressController::class, 'villages']);
 
+Route::post('products/store-images/{id}', [ProductController::class, 'storeImages']);
+Route::post('products/delete-images/{id}', [ProductController::class, 'deleteImages']);
+Route::post('products/store-picts-single-product', [ProductController::class, 'storePictsSingleProd']);
+Route::post('products/delete-picts-single-product/{id}', [ProductController::class, 'deletePictsSingleProd']);
+
 // To see the route url, use php artisan r:l
 Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:staff']], function () {
     // authenticated staff routes here 

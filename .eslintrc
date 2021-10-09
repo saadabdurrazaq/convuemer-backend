@@ -3,5 +3,8 @@
       "browser": true,
       "node": true,
       "jquery": true
+    },
+    "rules": {
+      "no-unused-vars": "off" 
     }
   }

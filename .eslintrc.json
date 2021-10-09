@@ -2,6 +2,10 @@
     "extends": ["airbnb", "prettier", "eslint:recommended", "plugin:vue/recommended", "plugin:vue/vue3-strongly-recommended"],
     "plugins": ["prettier"],
     "rules": {
-      "prettier/prettier": ["error"]
-    }
+      "prettier/prettier": ["error"],
+      "no-unused-vars": "off" 
+    },
+    "env": {
+      "amd": true
+  }
 }

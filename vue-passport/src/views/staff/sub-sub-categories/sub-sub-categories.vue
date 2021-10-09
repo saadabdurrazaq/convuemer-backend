@@ -1354,6 +1354,7 @@ export default {
                 })
                 .catch((error) => {
                     console.log(error);
+                    console.log('sdfdsg');
                 })
                 .finally(() => {
                     this.loadingForm = false;

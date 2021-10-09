@@ -59,7 +59,6 @@
                                             class="btn btn-success"
                                             data-toggle="modal"
                                             style="margin-top: 25px; margin-right: 7px"
-                                            data-target="#exampleModal"
                                         >
                                             <i class="fas fa-plus"></i> Add New Product
                                         </router-link>

@@ -108,10 +108,10 @@ php artisan db:seed
 FOR CRUD: 
 v-model is used to fill data.
 npm install @aacassandra/vue3-progressbar
+npm install --save @ckeditor/ckeditor5-vue @ckeditor/ckeditor5-build-classic
 main.js
 App.vue
 web-api.js
-categories.vue
 
 CRUD STAFF API
 C:\xampp\htdocs\my-project\laravue\app\Http\Controllers\StaffController.php
@@ -215,7 +215,7 @@ run php artisan serve, and change vue-passport/assets/js/base-url.js to http://l
 =====================================================================
 
 php artisan make:migration name_table table
-php artisan migrate --path=/database/migrations/2014_10_12_000000_create_total_stocks_variants_products.php
+php artisan migrate --path=/database/migrations/2014_10_12_000000_create_image_galleries_products_combinations_table.php
 
 
 php artisan cache:clear
@@ -292,13 +292,24 @@ id   products_var_id     valueName
 5          2                  Green
 
 products_combinations
-id     combination_string   unique_id   sku   price   image
+id     combination_string   unique_id   sku   price  
 1      S-Red                edrs
-2      S-Green
-3      M-Red
+2      M-Red
+3      S-Green 
 4      M-Green
 5      L-Red
 6      L-Green
+
+image_galleries
+id  small  medium  large
+1   sv1A    mv1A    lv1A
+2   sv1B    mv1B    lv1B
+3   s1A     m1A     l1A
+4   s1B     m1B     l1B
+
+variant_product_images
+id  image_gallery_id   product_varitions_options_id   is_featured
+1   1                  
 
 product_images
 is_featured is image that displayed in the first of images product. The image will be stored in preview_img field in products table.  

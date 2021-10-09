@@ -6,6 +6,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Pagination from 'v-pagination-3';
 import VueProgressBar from "@aacassandra/vue3-progressbar";
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 // import adminlte
 import 'admin-lte/plugins/fontawesome-free/css/all.min.css'
@@ -53,6 +54,7 @@ const app = createApp(App)
 app.use(vuetify)
 app.use(router)
 app.use(VueProgressBar, options)
+app.use(CKEditor).mount( /* DOM element */);
 axios.defaults.baseURL = 'http://localhost/my-project/laravue';
 /*axios.interceptors.request.use(request => {
     console.log(request);

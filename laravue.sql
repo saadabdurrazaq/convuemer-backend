@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 09, 2021 at 05:49 AM
+-- Generation Time: Oct 09, 2021 at 03:44 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 7.4.21
 
@@ -42,8 +42,10 @@ CREATE TABLE `brands` (
 --
 
 INSERT INTO `brands` (`id`, `brand_name`, `brand_slug`, `brand_image`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(13, 'Apple', 'apple', '1705794152842774.png', '2021-07-20 02:07:52', '2021-07-20 02:07:52', NULL),
-(14, 'Vivo', 'vivo', '1705949926990229.png', '2021-07-20 06:05:45', '2021-07-21 19:29:50', NULL);
+(14, 'Vivo', 'vivo', '1705949926990229.png', '2021-07-20 06:05:45', '2021-07-21 19:29:50', NULL),
+(15, 'Huawei', 'huawei', '1711426498349692.png', '2021-09-20 06:11:36', '2021-09-20 06:11:36', NULL),
+(16, 'Apple', 'apple', '1711691309699218.png', '2021-09-23 04:20:39', '2021-09-23 04:20:39', NULL),
+(17, 'HTC', 'htc', '1711692239522017.jpg', '2021-09-23 04:35:26', '2021-09-23 04:35:26', NULL);
 
 -- --------------------------------------------------------
 
@@ -7337,6 +7339,36 @@ CREATE TABLE `failed_jobs` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `image_galleries`
+--
+
+CREATE TABLE `image_galleries` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `image_galleries_products_combinations`
+--
+
+CREATE TABLE `image_galleries_products_combinations` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `image_gallery_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `prod_comb_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `isFeatured` tinyint(1) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `migrations`
 --
 
@@ -7371,7 +7403,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (38, '2014_10_12_000000_create_products_variants_options', 10),
 (39, '2014_10_12_000000_create_products_variants_options_value', 11),
 (40, '2014_10_12_000000_create_products_combinations', 12),
-(41, '2014_10_12_000000_create_total_stocks_variants_products', 13);
+(41, '2014_10_12_000000_create_total_stocks_variants_products', 13),
+(42, '2014_10_12_000000_create_image_galleries_table', 14),
+(43, '2014_10_12_000000_create_image_galleries_products_combinations_table', 15);
 
 -- --------------------------------------------------------
 
@@ -7397,6 +7431,7 @@ CREATE TABLE `oauth_access_tokens` (
 
 INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes`, `revoked`, `created_at`, `updated_at`, `expires_at`) VALUES
 ('010b4252b0b8eb10ea251920b08110f332071bb54848d69ffa69d29dac80d837571c204cfebc87e8', 1, 3, 'MyApp', '[\"user\"]', 1, '2021-07-04 21:32:32', '2021-07-04 21:32:32', '2022-07-05 04:32:32'),
+('0d2b8404f11bcd7419376d093cd728781e3097d64d5493ca35659030a8f48cf9c17f257ca5473bfb', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-09-29 23:44:46', '2021-09-29 23:44:46', '2022-09-30 06:44:46'),
 ('0e43d357b287f0ae48bc197f08455cd359c0fee530db8b82de92cfb1c0536f25786fd893e5eda4ad', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-08-01 01:21:33', '2021-08-01 01:21:33', '2022-08-01 08:21:33'),
 ('18f29b50b645f1fe2dc3967d67a567293f95a2fa89ec7e27bcddedf338a72abb407bda1e6420b4b2', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-06-28 15:16:38', '2021-06-28 15:16:38', '2022-06-28 22:16:38'),
 ('1e67cd1eefb9e6e3cc8bb9e76c08c4da26cc25611e98a3412758acab254fff8edc30fc17703bad3b', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 00:22:37', '2021-07-01 00:22:37', '2022-07-01 07:22:37'),
@@ -7443,6 +7478,7 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('de3259092845076f3021704746f7395086eb7da37dc5b60ae8b851ea24176dbae28dadf7877a88e7', 1, 3, 'MyApp', '[\"user\"]', 0, '2021-06-29 06:11:22', '2021-06-29 06:11:22', '2022-06-29 13:11:22'),
 ('e202eb7d5295aa6fe06cff880485f79f47f326cd9638b56036c2a97947c2e61eeed8897c314374b8', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-22 17:01:30', '2021-07-22 17:01:30', '2022-07-23 00:01:30'),
 ('e4724961552e42e082b85d52a6a7b0d645d670f6208c4782a9b5fd539db3e968edfe8dfc67b4b714', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 17:07:07', '2021-07-01 17:07:07', '2022-07-02 00:07:07'),
+('ea25b5972ea77935f845a67e821d1b86114b25c51d5bdd41878dd114a4a17717eec27f51090c5467', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-09-13 00:11:38', '2021-09-13 00:11:38', '2022-09-13 07:11:38'),
 ('ef35ec7fb0b483b894b5d19024d0727c1a88b765dbfe16fea986b81fa0f1c3005e6726561d014247', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 22:41:07', '2021-07-01 22:41:07', '2022-07-02 05:41:07'),
 ('f06cef4a293600abdc9d90fa773d02339015cb47948aab18216d68c8904693f4def38c71812aedce', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-15 03:19:19', '2021-07-15 03:19:19', '2022-07-15 10:19:19'),
 ('fb051491f0b287e7123d16e026380702aae5125c3e717c09b43188803a2b4267d37fe5182d823e8e', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-07-15 23:32:54', '2021-07-15 23:32:54', '2022-07-16 06:32:54');
@@ -7585,16 +7621,19 @@ CREATE TABLE `products` (
   `short_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `long_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `product_cond` enum('New','Second') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sku` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `min_order` int(11) DEFAULT NULL,
   `product_weight` int(11) DEFAULT NULL,
+  `metric_mass` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `product_length` int(11) DEFAULT NULL,
-  `product_Width` int(11) DEFAULT NULL,
-  `product_Height` int(11) DEFAULT NULL,
-  `hot_deals` int(11) DEFAULT NULL,
-  `featured` int(11) DEFAULT NULL,
-  `special_offer` int(11) DEFAULT NULL,
-  `special_deals` int(11) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL,
+  `product_width` int(11) DEFAULT NULL,
+  `product_height` int(11) DEFAULT NULL,
+  `hot_deals` enum('Yes','No') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `featured` enum('Yes','No') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `special_offer` enum('Yes','No') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `special_deals` enum('Yes','No') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` enum('Active','Inactive') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `images` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -7614,6 +7653,9 @@ CREATE TABLE `products_combinations` (
   `price` int(11) DEFAULT NULL,
   `sku` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `available_stock` int(11) DEFAULT NULL,
+  `condition` enum('New','Second') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` enum('Active','Inactive') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `images` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
@@ -8252,14 +8294,26 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
+('0y76UDeqpeb0rvke6aKZNR3b1mHq588tqfM7PJDU', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoidVUwY1Vma0tMVGVKV3JLVkYxWmlCZjRvQ1dqQmhPRGNaNWg5WDR4NiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631519114),
+('45LV2qvf3wTTZhu9uY4xv6OGR6Y7rTaYzl6c0oUA', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiUmp5dUJVUDJNWk04TnhvSjJNMnNiVHBVZDRrY3JxMWxFd2hmU0w5SSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631518866),
 ('6anWG3NQJUaTxgix16rYq2L84JXWwK54L1i9bqy3', NULL, '::1', 'PostmanRuntime/7.28.1', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiRFRsaDFzUmdmSkJSRldXdTUxUEZ3d2U0Q29BdWJrTkVpTG5QdWs2WCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1625460282),
 ('7TpDyxZRd2ToPHgZhvKTJ4lxKh5kvWaJ0duZb93A', 1, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiR2NheWxnME9mUlkwajN6cDJQamh3VUl4eE5SVUxYckt0S2FRc3N0UiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTtzOjE3OiJwYXNzd29yZF9oYXNoX3dlYiI7czo2MDoiJDJ5JDEwJDkySVhVTnBrak8wck9RNWJ5TWkuWWU0b0tvRWEzUm85bGxDLy5vZy9hdDIudWhlV0cvaWdpIjtzOjM6InVybCI7YToxOntzOjg6ImludGVuZGVkIjtzOjcxOiJodHRwOi8vbG9jYWxob3N0L215LXByb2plY3QvbGFyYXZ1ZS9zdGFmZi9zdGFmZi1tYW5hZ2VtZW50L2Rvd25sb2FkLXBkZiI7fX0=', 1624748333),
 ('96URUwkbINBT1tDQZdsb0LZXEi1FwRqsNEInIlMk', NULL, '::1', 'PostmanRuntime/7.28.1', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiYjUyQ3VNWDRNeVFyaHFhNjFEMjZRMXJUY1RJTjBzT2h0UkRGdXJiTCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1624790598),
+('aRoA0JMhAkP7fhUxiIfonfQj67DBNG6riEr8I6uh', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoib2x3NjNmejBtT25PQWJxc003VDNySlRvd2ZSbnVETXM1clJZc3I3RyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631520099),
 ('C3wKYgohyMQTSkqhRf1A5XiqT0x6mJL7Ujr5IrDG', NULL, '::1', 'PostmanRuntime/7.28.2', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiN3NvdkZFMDZjdllJQ0hiWE5UUlpZZ3R3S2RXZG11S0t1dElOMlZVeiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1627280813),
 ('EQj7HCfhvXtuuicuwW4DQNq8gsQG0eau94ShNzfZ', NULL, '::1', 'PostmanRuntime/7.28.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibGJwQzFXUzZOMDE3NXJtMFBoMGxOUFhRVVdBdXlaeDhLNVByUVlZUiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1624774344),
+('EZC65WdAP34IlYfXpbST58SvDs7xWeYGxzxArcDL', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiOUFaWWFSWmc1TlhhOGZXQUxnT2Z5ZkgySTN1RmlNU21GM2FoQnlwUiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631520093),
 ('G0wkGDlUia92eGt5Qy1Au2dZxobZ9mJCkNI4iNOh', NULL, '::1', 'PostmanRuntime/7.28.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoicFJiSWJIVE5IVUNob3Nvdlg0cWhrUFRoUzJrRTE3NThSc2tnN3Z5YiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1624752452),
+('g9SpRFKVsFJsB41TpLorchbFbnFOv51eU4A7wkAd', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiRVJOZ3A5bjhFZW1aSFR3VTNWV3dYYTd0WnZpaTQ2ZUtCSVplaDNZTiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631519084),
+('I0Zka1MnHJvCjvO0wPZ42blwpAxsHq3Tg06alPwF', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNEF5TzN3aVNtTnhvamJ3VzgzTzZKd29QSDMwVU1LeVdkN0ZWemdvcCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631519027),
+('KayPLP8d44PfLfXmnJMTp8wfmbuWKCjjN7E0PpMr', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiZDJIM3p5SklkUHVCVFd1WFFCdU5VSnBCSWhVVE1tRGlSVktHbVZFSSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631520239),
 ('LqEpEWR8DLl7eACj4Qb6ZRLr208qW9wn8w55WxKC', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiVnF5aFBFNHY5RDJ0QlVzZ20waldHeUU5Uk9acHFQTTRwZW1iYUFybCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1626919708),
 ('NpUwoJhYrMNJjF6SOlRBJndjrfbCcfq3pbITEJFL', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiSUp0eFlPMlJha0dPaVJ2NFBaUFM5VDlXS2JNaXltWlhFRHl6R2tUQyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1624774400),
+('OOP36KILz8uMD9sC5aGkCOMIlo0jdtA51Y0flHoC', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiWUozTFB3c2pFVjJMN1UwRHhHbnFiMHUxOEFBMlV5UkNPOXpXdWtTSyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631520085),
+('pioLPvjrbufLSUcKLrP7CNENZbnmsvOrPkufjulv', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiODJMZUhYN0oybncwZmlIS1pwZ20yQnVrSVI1Y0lydENya0R1V3dkeCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631518751),
+('rXrzLl7CvoW1wuHs5UwRAe2qjjLhQ0kBKqj045sS', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiMDdYWFlBZlZYdnNQbk5udm5Qam1JUFdQOXNiRm51d2xzVllJSXM0QyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631519182),
+('swElmOhhzxDPFStMAz9hMQAujtH40c5OVcwnRj7C', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNlZrdHR2NzJlQWVhWTFkRU96djFKQmtERHJ0eTZ3c04wN01ESjVhMyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631518780),
+('xazG6mkygBzZf6uFnKdRd1QvKPJwF6j7jUDjyvE7', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibXZOMHJPRTY3MGY2ZFdDVkw3M1U2ellBOGlua2NHeUlpTGVxckswWiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631520073),
 ('xrnGmHD7ybKjKKgYizeYH4j2VF3MrT2eTWUQ0735', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibXBDWnJHWDJNeUppa3JWYjBKUHB6WTVVamxMNG9GdkthVENzZGFESSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1626928104),
 ('zUIipbIbpPAiQXt1SSxLq7HBiHIIhQSqJjfFntwu', NULL, '::1', 'PostmanRuntime/7.28.2', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiQjdjbDZZYWNzUzBuQW51WVRNd1QzUmI2WFo0a0U2ekRXQjNieFZ6aSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1626344838);
 
@@ -39691,6 +39745,20 @@ ALTER TABLE `failed_jobs`
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
 
 --
+-- Indexes for table `image_galleries`
+--
+ALTER TABLE `image_galleries`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `image_galleries_products_combinations`
+--
+ALTER TABLE `image_galleries_products_combinations`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `image_galleries_products_combinations_image_gallery_id_index` (`image_gallery_id`),
+  ADD KEY `image_galleries_products_combinations_prod_comb_id_index` (`prod_comb_id`);
+
+--
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
@@ -39847,7 +39915,7 @@ ALTER TABLE `villages`
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -39862,10 +39930,22 @@ ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `image_galleries`
+--
+ALTER TABLE `image_galleries`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `image_galleries_products_combinations`
+--
+ALTER TABLE `image_galleries_products_combinations`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
@@ -39889,25 +39969,25 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `products_combinations`
 --
 ALTER TABLE `products_combinations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `products_variants_options`
 --
 ALTER TABLE `products_variants_options`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `products_variants_types`
 --
 ALTER TABLE `products_variants_types`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `staffs`
@@ -39948,6 +40028,13 @@ ALTER TABLE `users`
 --
 ALTER TABLE `districts`
   ADD CONSTRAINT `districts_ibfk_1` FOREIGN KEY (`regency_id`) REFERENCES `regencies` (`id`);
+
+--
+-- Constraints for table `image_galleries_products_combinations`
+--
+ALTER TABLE `image_galleries_products_combinations`
+  ADD CONSTRAINT `image_galleries_products_combinations_image_gallery_id_foreign` FOREIGN KEY (`image_gallery_id`) REFERENCES `image_galleries` (`id`),
+  ADD CONSTRAINT `image_galleries_products_combinations_prod_comb_id_foreign` FOREIGN KEY (`prod_comb_id`) REFERENCES `products_combinations` (`id`);
 
 --
 -- Constraints for table `products`

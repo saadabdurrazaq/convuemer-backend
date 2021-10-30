@@ -162,7 +162,11 @@
                                                     />
                                                 </th>
                                                 <th>No</th>
-                                                <th>Sub Categories Name</th>
+                                                <th>Image</th>
+                                                <th>Product Name</th>
+                                                <th>Price</th>
+                                                <th>Stock</th>
+                                                <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -179,43 +183,102 @@
                                             </div>
                                             <!-- Loop through each user record and display user details -->
                                             <tr
-                                                :class="'data-' + sub_category.id"
-                                                v-for="sub_category in sub_categories"
-                                                :key="sub_category.id"
+                                                :class="'data-' + product.id"
+                                                v-for="product in products"
+                                                :key="product.id"
                                             >
                                                 <td style="text-align: center">
                                                     <input
                                                         type="checkbox"
                                                         id="select"
                                                         class="sub_chk"
-                                                        :data-id="sub_category.id"
-                                                        :value="sub_category.id"
+                                                        :data-id="product.id"
+                                                        :value="product.id"
                                                         name="selected_values[]"
                                                     />
                                                 </td>
                                                 <td class="align-middle">
                                                     {{
-                                                        sub_categories.indexOf(sub_category) +
+                                                        products.indexOf(product) +
                                                         1 +
                                                         (currentPage - 1) * perPage
                                                     }}
                                                 </td>
+                                                <td
+                                                    v-if="product.images !== 'null'"
+                                                    class="align-middle"
+                                                >
+                                                    <img
+                                                        :src="`${BASE_URL}/storage/app/public/products/${
+                                                            Object.values(
+                                                                JSON.parse(product.images)[0]
+                                                            )[1]
+                                                        }`"
+                                                        style="width: 56px; height: 56px"
+                                                    />
+                                                </td>
+                                                <td v-else>No images</td>
                                                 <td class="align-middle">
-                                                    {{ sub_category.subcategory_name }}
+                                                    {{ product.product_name }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    Rp.
+                                                    {{ formatNumber(product.selling_price) }}
+                                                </td>
+                                                <td class="align-middle">
+                                                    {{ formatNumber(product.product_stock) }}
+                                                </td>
+                                                <td
+                                                    v-if="product.status === 'Active'"
+                                                    class="align-middle"
+                                                >
+                                                    <div class="form-group">
+                                                        <input
+                                                            type="checkbox"
+                                                            name="permission[]"
+                                                            data-bootstrap-switch
+                                                            data-off-color="danger"
+                                                            data-on-text=""
+                                                            data-off-text=""
+                                                            data-size="small"
+                                                            class="status"
+                                                            :value="product.id"
+                                                            checked
+                                                        />
+                                                    </div>
+                                                </td>
+                                                <td
+                                                    v-if="product.status === 'Inactive'"
+                                                    class="align-middle"
+                                                >
+                                                    <div class="form-group">
+                                                        <input
+                                                            type="checkbox"
+                                                            name="permission[]"
+                                                            data-bootstrap-switch
+                                                            data-off-color="danger"
+                                                            data-on-text=""
+                                                            data-off-text=""
+                                                            data-size="small"
+                                                            class="status"
+                                                            :value="product.id"
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td style="text-align: center; width: 30%">
-                                                    <a
+                                                    <router-link
+                                                        :to="{
+                                                            name: 'products-edit',
+                                                            params: { id: product.id },
+                                                        }"
                                                         class="btn btn-info"
                                                         style="margin-right: 7px"
-                                                        href=""
-                                                        @click.prevent="showModalEdit(sub_category)"
-                                                    >
-                                                        <i class="fa fa-edit"></i> Edit
-                                                    </a>
+                                                        ><i class="fa fa-edit"></i> Edit
+                                                    </router-link>
                                                     <a
                                                         class="btn btn-warning"
                                                         href=""
-                                                        @click.prevent="softDelete(sub_category.id)"
+                                                        @click.prevent="softDelete(product.id)"
                                                     >
                                                         <i class="fa fa-trash"></i> Trash
                                                     </a>
@@ -223,7 +286,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div v-if="isSubCatPagination">
+                                    <div v-if="isDataIndexPagination">
                                         <nav style="margin-top: 5px" class="float-left">
                                             <p>
                                                 Showing {{ from }} to {{ to }} of
@@ -287,154 +350,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Modal containing dynamic form for adding/updating user details. -->
-                    <div
-                        class="modal fade"
-                        id="exampleModal"
-                        tabindex="-1"
-                        role="dialog"
-                        aria-labelledby="exampleModalLabel"
-                        aria-hidden="true"
-                    >
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <!-- Show/hide headings dynamically based on /isFormCreateSubCategoryMode value (true/false) -->
-                                    <h5
-                                        v-show="isFormCreateSubCategoryMode"
-                                        class="modal-title"
-                                        id="exampleModalLabel"
-                                    >
-                                        Add new sub category
-                                    </h5>
-                                    <h5
-                                        v-show="!isFormCreateSubCategoryMode"
-                                        class="modal-title"
-                                        id="exampleModalLabel"
-                                    >
-                                        Update category
-                                    </h5>
-                                    <button
-                                        type="button"
-                                        class="close"
-                                        data-dismiss="modal"
-                                        aria-label="Close"
-                                    >
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                </div>
-
-                                <!-- Form for adding/updating user details. When submitted call /createSubCategories() function if /isFormCreateSubCategoryMode value is true. Otherwise call /updateSubCategory() function. -->
-                                <form
-                                    @submit.prevent="
-                                        isFormCreateSubCategoryMode
-                                            ? createSubCategories()
-                                            : updateSubCategory()
-                                    "
-                                >
-                                    <div class="modal-body">
-                                        <div
-                                            class="alert alert-danger alert-dismissible fade show"
-                                            role="alert"
-                                            style="display: none"
-                                        >
-                                            <button
-                                                type="button"
-                                                @click.prevent="closeMsg"
-                                                class="close"
-                                                data-dismiss="alert"
-                                                aria-label="Close"
-                                            >
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div
-                                            v-if="loadingForm"
-                                            style="position: absolute; top: 20%; left: 40%"
-                                        >
-                                            <div class="lds-facebook">
-                                                <div></div>
-                                                <div></div>
-                                                <div></div>
-                                            </div>
-                                        </div>
-                                        <div
-                                            v-show="isFormCreateSubCategoryMode"
-                                            class="form-group"
-                                        >
-                                            <input
-                                                type="text"
-                                                placeholder="Sub Category Name"
-                                                v-bind:name="form.subcategory_name"
-                                                id="subcategory_name"
-                                                class="form-control"
-                                                :class="{
-                                                    'is-invalid':
-                                                        form.errors.has('subcategory_name'),
-                                                }"
-                                            />
-                                            <small class="text-muted"
-                                                >End with a comma for single or multiple inputs.
-                                                E.g: data1, data2,</small
-                                            >
-                                            <div
-                                                style="color: red"
-                                                v-if="form.errors.has('subcategory_name')"
-                                                v-html="form.errors.get('subcategory_name')"
-                                            />
-                                        </div>
-                                        <div
-                                            v-show="!isFormCreateSubCategoryMode"
-                                            class="form-group"
-                                        >
-                                            <input
-                                                v-model="form.subcategory_name"
-                                                type="text"
-                                                name="name"
-                                                placeholder="Sub Category Name"
-                                                class="form-control"
-                                                :class="{
-                                                    'is-invalid':
-                                                        form.errors.has('subcategory_name'),
-                                                }"
-                                            />
-                                            <div
-                                                style="color: red"
-                                                v-if="form.errors.has('subcategory_name')"
-                                                v-html="form.errors.get('subcategory_name')"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button
-                                            type="button"
-                                            class="btn btn-secondary"
-                                            data-dismiss="modal"
-                                        >
-                                            Close
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            v-on:click="getSubCategoriesInput()"
-                                            class="btn btn-primary"
-                                            v-show="isFormCreateSubCategoryMode"
-                                        >
-                                            Save changes
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            class="btn btn-primary"
-                                            v-show="!isFormCreateSubCategoryMode"
-                                        >
-                                            Update
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end modal -->
                 </div>
                 <!-- end the element -->
             </div>
@@ -444,6 +359,11 @@
 </template>
 
 <script>
+import jQuery from 'jquery';
+const $ = jQuery;
+window.$ = $;
+import { Form } from 'vform';
+import { BASE_URL } from '@/assets/js/base-url.js';
 import 'admin-lte/dist/css/adminlte.min.css'; // conflict with frontend theme
 import _ from 'lodash';
 import '@/assets/css/custom.css';
@@ -452,15 +372,9 @@ import Nav from '../partials/Nav.vue';
 import Breadcrumbs from '../partials/Breadcrumbs.vue';
 import Sidebar from '../partials/Sidebar.vue';
 import Footer from '../partials/Footer.vue';
-import { Form } from 'vform';
-import jQuery from 'jquery';
-const $ = jQuery;
-window.$ = $;
-import { BASE_URL } from '@/assets/js/base-url.js';
-import '@/assets/js/bootstrap-tokenfield.js'; // another related file found index.html
 
 export default {
-    name: 'sub-categories',
+    name: 'products-index',
 
     beforeCreate: function () {
         document.body.className = 'home-staff';
@@ -485,10 +399,10 @@ export default {
             currentPage: 0,
             search: '',
             trashed: 0,
-            sub_categories: {},
+            products: {},
             form: new Form({
                 id: '',
-                subcategory_name: '',
+                status: '',
             }),
             imagePreview: null,
             showPreview: false,
@@ -496,10 +410,10 @@ export default {
             isInAllData: true,
             loading: false,
             loadingForm: false,
-            defaultSubCatPagination: false,
+            defaultDataIndexPagination: false,
             defaultShowEntriesPagination: false,
             defaultSearchPagination: false,
-            isSubCatPagination: false,
+            isDataIndexPagination: false,
             isShowEntriesPagination: false,
             isSearchPagination: false,
             detectUpdate: false,
@@ -513,8 +427,36 @@ export default {
     },
 
     methods: {
-        getSubCategoriesInput() {
-            this.form.subcategory_name = $('#subcategory_name').val();
+        updateStatus() {
+            var self = this;
+            $('.status').bootstrapSwitch();
+            $('.status').on('switchChange.bootstrapSwitch', function (e) {
+                var id = e.target.value;
+
+                if ($(this).is(':checked') === false) {
+                    self.form.status = 'Inactive';
+                } else {
+                    self.form.status = 'Active';
+                }
+
+                let formData = new FormData();
+                formData.append('status', self.form.status);
+                formData.append('_method', 'PUT');
+
+                self.form
+                    .put('api/staff/products/update-status/' + id, {
+                        data: formData,
+                    })
+                    .then((response) => {
+                        console.log(response);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+                    .finally(() => {
+                        console.log('Work');
+                    });
+            });
         },
 
         showSuccessMsg(response) {
@@ -544,21 +486,28 @@ export default {
             $('#errMsg').hide('slow');
         },
 
+        formatNumber(numb) {
+            return numb
+                .toString()
+                .replace(/\D/g, '')
+                .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        },
+
         loadData(response) {
             var responseData = response.data;
-            this.sub_categories = responseData.sub_categories.data;
-            this.totalRecords = responseData.sub_categories.total;
-            this.from = responseData.sub_categories.from;
-            this.to = responseData.sub_categories.to;
-            this.currentPage = responseData.sub_categories.current_page;
-            this.trashed = responseData.total_trashed_sub_categories;
+            this.products = responseData.products.data;
+            this.totalRecords = responseData.products.total;
+            this.from = responseData.products.from;
+            this.to = responseData.products.to;
+            this.currentPage = responseData.products.current_page;
+            this.trashed = responseData.total_trashed_products;
             this.perPage = responseData.items;
         },
 
         loadSpecificPage() {
-            if (this.defaultSubCatPagination === true) {
-                this.isSubCatPagination = true;
-                this.GetSubCategories(this.page);
+            if (this.defaultDataIndexPagination === true) {
+                this.isDataIndexPagination = true;
+                this.showAllDataIndex(this.page);
                 console.log(`I am in getCat`);
             } else if (this.defaultShowEntriesPagination === true) {
                 this.isShowEntriesPagination = true;
@@ -569,7 +518,7 @@ export default {
                 console.log(`I am in search page`);
             } else {
                 this.page = 1;
-                this.GetSubCategories(this.page);
+                this.showAllDataIndex(this.page);
                 console.log(`No matching option. So, I am in getCat`);
             }
         },
@@ -579,7 +528,7 @@ export default {
             if (_.isEmpty(this.search) === false) {
                 this.defaultSearchPagination = true;
                 this.isSearchPagination = true;
-                this.defaultSubCatPagination = false;
+                this.defaultDataIndexPagination = false;
                 this.defaultShowEntriesPagination = false;
             }
         },
@@ -625,11 +574,11 @@ export default {
             this.detectMultipleTrash = false;
         },
 
-        // /GetSubCategories() function. Function we use to get user list by calling api/categories method GET.
-        GetSubCategories(page) {
+        // /showAllDataIndex() function. Function we use to get user list by calling api/categories method GET.
+        showAllDataIndex(page) {
             this.loading = true;
-            this.isSubCatPagination = true;
-            this.defaultSubCatPagination = true;
+            this.isDataIndexPagination = true;
+            this.defaultDataIndexPagination = true;
             this.defaultShowEntriesPagination = false;
             this.defaultSearchPagination = false;
             this.isShowEntriesPagination = false;
@@ -643,7 +592,7 @@ export default {
 
             this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             this.axios
-                .get('api/staff/sub-categories', {
+                .get('api/staff/products/index', {
                     params: {
                         page: page,
                     },
@@ -657,6 +606,7 @@ export default {
                 .finally(() => {
                     this.loading = false;
                     this.highlightNewRecords();
+                    this.updateStatus();
                 });
         },
 
@@ -664,9 +614,9 @@ export default {
             this.loading = true;
             this.isShowEntriesPagination = true;
             this.defaultShowEntriesPagination = true;
-            this.defaultSubCatPagination = false;
+            this.defaultDataIndexPagination = false;
             this.defaultSearchPagination = false;
-            this.isSubCatPagination = false;
+            this.isDataIndexPagination = false;
             this.isSearchPagination = false;
 
             var val = $('select[name=showEntries] option').filter(':selected').val();
@@ -684,6 +634,7 @@ export default {
                 .then((response) => {
                     this.search = '';
                     this.loadData(response);
+                    this.bootstrapSwitch();
                 })
                 .catch((error) => {
                     console.log(error.response.data);
@@ -708,8 +659,8 @@ export default {
             } else {
                 this.loading = true;
 
-                if (this.defaultSubCatPagination === true) {
-                    this.isSubCatPagination = false;
+                if (this.defaultDataIndexPagination === true) {
+                    this.isDataIndexPagination = false;
                 } else if (this.defaultShowEntriesPagination === true) {
                     this.isShowEntriesPagination = false;
                 }
@@ -734,84 +685,6 @@ export default {
                     });
             }
         }),
-
-        // /showModalCreate() function. Function we use to 1. Set /isFormCreateSubCategoryMode to 'true', 2. Reset form data, 3. Show modal containing dynamic form for adding/updating user details.
-        showModalCreate() {
-            this.isFormCreateSubCategoryMode = true;
-            this.form.reset(); // v form reset
-            $('#exampleModal').modal('show'); // show modal
-        },
-
-        // /createSubCategories() function. Function we use to store user details by calling api/categories method POST (carrying form input data).
-        createSubCategories() {
-            this.loadingForm = true;
-
-            $('#subcategory_name').tokenfield('setTokens', []);
-
-            let formData = new FormData();
-            formData.append('subcategory_name', this.form.subcategory_name);
-
-            // request post
-            this.form
-                .post('api/staff/sub-categories', formData)
-                .then((response) => {
-                    var responseData = response.data;
-                    this.total_sub_cat = responseData.total_sub_cat;
-
-                    $('#exampleModal').modal('hide'); // hide modal
-
-                    this.page = 1;
-                    this.determineDefaultPage();
-                    this.loadSpecificPage();
-                    this.title = 'Sub category/ies created successfully!';
-                    this.showSuccessMsg(response);
-                })
-                .catch((error) => {
-                    // sweet alert fail
-                    console.log(error);
-                })
-                .finally(() => {
-                    this.loadingForm = false;
-                });
-        },
-
-        // /editUser() function. Function we use to 1. Set /isFormCreateSubCategoryMode to 'false', 2. Reset and clear form data, 3. Show modal containing dynamic form for adding/updating user details, 4. Fill form with user details.
-        showModalEdit(sub_category) {
-            this.isFormCreateSubCategoryMode = false;
-            this.form.reset(); // v form reset inputs
-            this.form.clear(); // v form clear errors
-            $('#exampleModal').modal('show'); // show modal
-            this.form.fill(sub_category);
-        },
-
-        // /updateSubCategory() function. Function we use to update user details by calling api/categories/{id} method PUT (carrying form input data).
-        updateSubCategory() {
-            this.loadingForm = true;
-            // request put
-            this.form
-                .put('api/staff/sub-categories/update/' + this.form.id, {})
-                .then((response) => {
-                    $('#exampleModal').modal('hide'); // hide modal
-                    this.detectUpdate = true;
-                    this.highlightChangedRecord();
-                    this.determineDefaultPage();
-                    this.loadSpecificPage();
-                    this.title = 'Sub category updated successfully!';
-                    this.showSuccessMsg(response);
-                })
-                .catch(() => {
-                    // sweet alert fail
-                    swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Something went wrong!',
-                        footer: '<a href>Why do I have this issue?</a>',
-                    });
-                })
-                .finally(() => {
-                    this.loadingForm = false;
-                });
-        },
 
         // /softDelete() function. Function we use to delete user record by calling api/categories/{id} method DELETE.
         softDelete(id) {
@@ -860,64 +733,11 @@ export default {
                 $('.sub_chk').prop('checked', false);
             }
         },
-
-        bulkActions() {
-            if ($('.trash_multiple').val() == 'trashMultiple') {
-                var allVals = [];
-                $('.sub_chk:checked').each(function () {
-                    allVals.push($(this).attr('data-id'));
-                });
-
-                this.selectedValues = allVals;
-
-                if (allVals.length <= 0) {
-                    alert('Please select row.');
-                } else {
-                    swal.fire({
-                        title: 'Are you sure?',
-                        text: 'You still can revert this!',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, trash it!',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            var join_selected_values = allVals.join(',');
-                            this.axios
-                                .get(
-                                    'api/staff/sub-categories/soft-delete-multiple/ids=' +
-                                        join_selected_values
-                                )
-                                .then((response) => {
-                                    this.detectMultipleTrash = true;
-                                    this.highlightChangedRecord();
-                                    this.determineDefaultPage();
-                                    this.loadSpecificPage();
-                                    this.title = 'Sub category/ies has been trashed successfully!';
-                                    this.showSuccessMsg(response);
-                                })
-                                .catch((error) => {
-                                    console.log(error.response.data);
-                                    swal.fire({
-                                        icon: 'error',
-                                        title: 'Oops...',
-                                        text: 'Something went wrong!',
-                                        footer: '<a href>Why do I have this issue?</a>',
-                                    });
-                                });
-                        } else {
-                            swal.fire('Cancelled', 'Your data is safe :)', 'error');
-                        }
-                    });
-                }
-            }
-        },
     },
 
     created() {
-        // Call /GetSubCategories() function initially.
-        this.GetSubCategories();
+        // Call /showAllDataIndex() function initially.
+        this.showAllDataIndex();
     },
 
     mounted() {
@@ -927,10 +747,6 @@ export default {
         if (swal.isVisible()) {
             document.querySelector('body').setAttribute('class', 'swal2-toast-shown swal2-shown');
         }
-
-        $('#subcategory_name').tokenfield({
-            showAutocompleteOnFocus: false,
-        });
     },
 };
 </script>
@@ -945,5 +761,32 @@ export default {
 }
 .pagination {
     margin: auto !important;
+}
+.bootstrap-switch-small,
+.bootstrap-switch,
+.bootstrap-switch-wrapper,
+.bootstrap-switch-focused,
+.bootstrap-switch-animate,
+.bootstrap-switch-off {
+    width: 60.4063px;
+}
+
+.bootstrap-switch-container {
+    width: 85.2032px;
+    margin-left: -26.7969px;
+}
+
+.bootstrap-switch-handle-on,
+.bootstrap-switch-primary {
+    width: 42.8px;
+}
+
+.bootstrap-switch-label {
+    width: 46.6094px;
+}
+
+.bootstrap-switch-handle-off,
+.bootstrap-switch-danger {
+    width: 42.8px;
 }
 </style>

@@ -817,76 +817,6 @@ export default {
             this.clearAllSubCatSelectOption();
         },
 
-        // This method is used in single assign modal form
-        fillCatAndSubSelectOption() {
-            this.loadingForm = true;
-
-            // Fill category input
-            const token = localStorage.getItem('token-staff');
-            this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-            this.axios
-                .get('api/staff/sub-sub-categories/get-cat-sub-cat/' + this.form.id, {})
-                .then((response) => {
-                    var responseData = response.data;
-                    let allCategories = responseData.all_categories;
-                    let allRelatedSubCategories = responseData.all_related_sub_categories;
-                    let subCategory = responseData.sub_category;
-                    let category = responseData.category;
-
-                    allCategories.forEach(function (category) {
-                        var option = new Option(category.category_name, category.id, true, true);
-                        // Dump all categories data
-                        $('#category_id2').append(option);
-                    });
-
-                    if (allRelatedSubCategories !== undefined) {
-                        allRelatedSubCategories.forEach(function (subCategory) {
-                            var option = new Option(
-                                subCategory.subcategory_name,
-                                subCategory.id,
-                                true,
-                                true
-                            );
-                            // Dump all sub categories data
-                            $('#subcategory_id2').append(option);
-                        });
-                    }
-
-                    if (category !== null && subCategory !== null) {
-                        category.forEach(function (category) {
-                            var option = new Option(
-                                category.category_name,
-                                category.id,
-                                true,
-                                true
-                            );
-                            // show selected category data in the first time
-                            $('div.get-categories2 select').append(option);
-                        });
-
-                        subCategory.forEach(function (subCategory) {
-                            var option = new Option(
-                                subCategory.subcategory_name,
-                                subCategory.id,
-                                true,
-                                true
-                            );
-                            // show selected sub category data in the first time
-                            $('div.get-sub-categories2 select').append(option);
-                        });
-                    } else {
-                        $('div.get-categories2 select').val('default').change();
-                        $('div.get-sub-categories2 select').val('default').change();
-                    }
-
-                    this.loadingForm = false;
-                })
-                .catch((error) => {
-                    console.log(error);
-                    this.loadingForm = false;
-                });
-        },
-
         // This method is used in bulk assign modal form
         loadCatSelectOption() {
             this.loadingForm = true;
@@ -1444,6 +1374,76 @@ export default {
                     console.log(error);
                 })
                 .finally(() => {
+                    this.loadingForm = false;
+                });
+        },
+
+        // This method is used in single assign modal form
+        fillCatAndSubSelectOption() {
+            this.loadingForm = true;
+
+            // Fill category input
+            const token = localStorage.getItem('token-staff');
+            this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+            this.axios
+                .get('api/staff/sub-sub-categories/get-cat-sub-cat/' + this.form.id, {})
+                .then((response) => {
+                    var responseData = response.data;
+                    let allCategories = responseData.all_categories;
+                    let allRelatedSubCategories = responseData.all_related_sub_categories;
+                    let subCategory = responseData.sub_category;
+                    let category = responseData.category;
+
+                    allCategories.forEach(function (category) {
+                        var option = new Option(category.category_name, category.id, true, true);
+                        // Dump all categories data
+                        $('#category_id2').append(option);
+                    });
+
+                    if (allRelatedSubCategories !== undefined) {
+                        allRelatedSubCategories.forEach(function (subCategory) {
+                            var option = new Option(
+                                subCategory.subcategory_name,
+                                subCategory.id,
+                                true,
+                                true
+                            );
+                            // Dump all sub categories data
+                            $('#subcategory_id2').append(option);
+                        });
+                    }
+
+                    if (category !== null && subCategory !== null) {
+                        category.forEach(function (category) {
+                            var option = new Option(
+                                category.category_name,
+                                category.id,
+                                true,
+                                true
+                            );
+                            // show selected category data in the first time
+                            $('div.get-categories2 select').append(option);
+                        });
+
+                        subCategory.forEach(function (subCategory) {
+                            var option = new Option(
+                                subCategory.subcategory_name,
+                                subCategory.id,
+                                true,
+                                true
+                            );
+                            // show selected sub category data in the first time
+                            $('div.get-sub-categories2 select').append(option);
+                        });
+                    } else {
+                        $('div.get-categories2 select').val('default').change();
+                        $('div.get-sub-categories2 select').val('default').change();
+                    }
+
+                    this.loadingForm = false;
+                })
+                .catch((error) => {
+                    console.log(error);
                     this.loadingForm = false;
                 });
         },

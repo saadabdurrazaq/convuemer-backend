@@ -1,6 +1,6 @@
 <template>
     <div class="wrapper">
-        <Nav /> 
+        <Nav />
         <Sidebar />
         <div class="content-wrapper">
             <!-- Title and breadacrumbs -->
@@ -454,7 +454,7 @@
                                             <input
                                                 type="text"
                                                 placeholder="Category Name"
-                                                v-bind:name="form.category_name" 
+                                                v-bind:name="form.category_name"
                                                 id="category_name"
                                                 class="form-control"
                                                 :class="{
@@ -715,7 +715,7 @@
                                             v-show="isFormAssignSubSubCat"
                                         >
                                             Save
-                                        </button> 
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -738,7 +738,7 @@ import swal from 'sweetalert2';
 import Nav from '../partials/Nav.vue';
 import Breadcrumbs from '../partials/Breadcrumbs.vue';
 import Sidebar from '../partials/Sidebar.vue';
-import Footer from '../partials/Footer.vue'; 
+import Footer from '../partials/Footer.vue';
 import { Form } from 'vform';
 import jQuery from 'jquery';
 const $ = jQuery;

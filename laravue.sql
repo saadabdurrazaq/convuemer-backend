@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 09, 2021 at 03:44 AM
+-- Generation Time: Oct 30, 2021 at 07:05 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 7.4.21
 
@@ -45,7 +45,8 @@ INSERT INTO `brands` (`id`, `brand_name`, `brand_slug`, `brand_image`, `created_
 (14, 'Vivo', 'vivo', '1705949926990229.png', '2021-07-20 06:05:45', '2021-07-21 19:29:50', NULL),
 (15, 'Huawei', 'huawei', '1711426498349692.png', '2021-09-20 06:11:36', '2021-09-20 06:11:36', NULL),
 (16, 'Apple', 'apple', '1711691309699218.png', '2021-09-23 04:20:39', '2021-09-23 04:20:39', NULL),
-(17, 'HTC', 'htc', '1711692239522017.jpg', '2021-09-23 04:35:26', '2021-09-23 04:35:26', NULL);
+(17, 'HTC', 'htc', '1711692239522017.jpg', '2021-09-23 04:35:26', '2021-09-23 04:35:26', NULL),
+(18, 'Innisfree', 'innisfree', '1713240135173994.jpg', '2021-10-10 06:38:35', '2021-10-10 06:38:35', NULL);
 
 -- --------------------------------------------------------
 
@@ -79,9 +80,10 @@ INSERT INTO `categories` (`id`, `category_name`, `category_slug`, `category_icon
 (50, 'Wedding', 'wedding', 'fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
 (51, 'Perlengkapan Pesta & Craft', 'perlengkapan-pesta-&-craft', 'fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
 (52, ' Film & Musik', 'film-&-musik', ' fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
-(54, ' Handphone & Tablet', 'handphone-&-tablet', ' fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
 (55, 'Ibu & Bayi', 'ibu-&-bayi', 'fa fa-check', NULL, '2021-08-24 02:09:23', NULL),
-(154, 'Buku', 'buku', 'fa fa-book', NULL, '2021-08-24 23:12:01', NULL);
+(154, 'Buku', 'buku', 'fa fa-book', NULL, '2021-08-24 23:12:01', NULL),
+(156, 'Handphone & Tablet', 'handphone-&-tablet', 'fa fa-mobile', NULL, '2021-10-09 07:00:58', NULL),
+(157, 'Skincare', 'skincare', 'fa fa-arrow-right', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -7614,20 +7616,20 @@ CREATE TABLE `products` (
   `subsubcategory_id` bigint(20) UNSIGNED DEFAULT NULL,
   `product_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `product_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `product_stock` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `product_stock` bigint(20) DEFAULT NULL,
   `product_tags` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `selling_price` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `selling_price` bigint(20) DEFAULT NULL,
   `discount_price` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `short_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `long_desc` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `short_desc` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `long_desc` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `product_cond` enum('New','Second') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `sku` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `min_order` int(11) DEFAULT NULL,
-  `product_weight` int(11) DEFAULT NULL,
+  `min_order` bigint(20) DEFAULT NULL,
+  `product_weight` bigint(20) DEFAULT NULL,
   `metric_mass` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `product_length` int(11) DEFAULT NULL,
-  `product_width` int(11) DEFAULT NULL,
-  `product_height` int(11) DEFAULT NULL,
+  `product_length` bigint(20) DEFAULT NULL,
+  `product_width` bigint(20) DEFAULT NULL,
+  `product_height` bigint(20) DEFAULT NULL,
   `hot_deals` enum('Yes','No') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `featured` enum('Yes','No') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `special_offer` enum('Yes','No') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -7639,6 +7641,14 @@ CREATE TABLE `products` (
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `brand_id`, `category_id`, `subcategory_id`, `subsubcategory_id`, `product_code`, `product_name`, `product_stock`, `product_tags`, `selling_price`, `discount_price`, `short_desc`, `long_desc`, `product_cond`, `sku`, `min_order`, `product_weight`, `metric_mass`, `product_length`, `product_width`, `product_height`, `hot_deals`, `featured`, `special_offer`, `special_deals`, `status`, `images`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(72, 18, 157, 56, 16, NULL, 'INNISFREEo Super volcanic pore clay mask 2x', 200, NULL, 1900000, NULL, '010 in 1 Clay Mask yang mengandung Jeju Volcanic Cluster Sphere™ yang memiliki daya serap sebum 2 kali lebih kuat sehingga merawat pori-pori kulit secara intensif [mengencangkan pori-pori + kontrol sebum + membersihkan keratin + membersihkan debu halus + menghilangkan komedo + deep cleansing + cooling effect + melembutkan tekstur kulit + mencerahkan kulit + meningkatkan elastisitas].', '<p>010 in 1 Clay Mask yang mengandung Jeju Volcanic Cluster Sphere™ yang memiliki daya serap sebum 2 kali lebih kuat sehingga merawat pori-pori kulit secara intensif [mengencangkan pori-pori + kontrol sebum + membersihkan keratin + membersihkan debu halus + menghilangkan komedo + deep cleansing + cooling effect + melembutkan tekstur kulit + mencerahkan kulit + meningkatkan elastisitas]. Perkenalan Produk : 1. Solusi total untuk merawat pori-pori dengan berbagai masalah. Dapat berfungsi untuk “mengencangkan pori-pori + kontrol sebum + membersihkan keratin + membersihkan debu halus + menghilangkan komedo + deep cleansing + cooling effect + menghaluskan tekstur kulit + mencerahkan kulit + meningkatkan elastisitas” secara keseluruhan. 2. Membersihkan keratin dengan cara 3 kali dengan kapsul Jeju Volcanic Cluster + bubuk dari kulit buah kenari + unsur AHA. Dengan efek Deep cleansing membersihkan keratin dan debu halus yang tersembunyi dalam pori-pori sehingga menetralkan masalah kulit dan membuat kulit menjadi lebih halus. 3. Tekstur lembut dan terasa segar setelah menggunakannya. Tekstur krim dapat diaplikasikan pada kulit secara halus, dan setelah digunakan akan terasa segar dengan cooling effect.</p>', 'Second', 'inssvpx0', 10, 5000, 'Gram (g)', 50, 50, 50, 'Yes', 'Yes', 'Yes', 'Yes', 'Active', '[{\"key\":\"1713957309119448.png0\",\"caption\":\"1713957309119448.png\",\"size\":689256,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1713957309119448.png\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-picts-single-product\\/1713957309119448.png\",\"type\":\"image\"}]', NULL, '2021-10-22 01:42:43', NULL),
+(82, 16, 156, 55, 15, NULL, 'iPhone 12 Pro', 60, NULL, 18499000, NULL, 'iPhone 12 Pro. Layar Super Retina XDR 6,1 inci yang begitu cerah.1 Ceramic Shield dengan ketahanan jatuh empat kali lebih baik.2 Fotografi pencahayaan rendah yang menakjubkan dengan sistem kamera Pro baru, dan rentang zoom optik 4x. Mampu merekam, mengedit, dan memutar video sekelas sinema dengan Dolby Vision. Potret mode Malam dan pengalaman AR di level berikutnya dengan LiDAR Scanner. Chip A14 Bionic yang andal. Dan aksesori MagSafe baru untuk kemudahan pemasangan dan pengisian daya nirkabel yang lebih cepat.3 Untuk berjuta kemungkinan spektakuler.\n\nIsi Kotak :\n• iPhone dengan iOS 14.\n• Kabel USB-C ke Lightning.\n• Buku Manual dan dokumentasi lain.', '<p>iPhone 12 Pro. Layar Super Retina XDR 6,1 inci yang begitu cerah.1 Ceramic Shield dengan ketahanan jatuh empat kali lebih baik.2 Fotografi pencahayaan rendah yang menakjubkan dengan sistem kamera Pro baru, dan rentang zoom optik 4x. Mampu merekam, mengedit, dan memutar video sekelas sinema dengan Dolby Vision. Potret mode Malam dan pengalaman AR di level berikutnya dengan LiDAR Scanner. Chip A14 Bionic yang andal. Dan aksesori MagSafe baru untuk kemudahan pemasangan dan pengisian daya nirkabel yang lebih cepat.3 Untuk berjuta kemungkinan spektakuler.</p><p><strong>Poin-poin fitur</strong><br>• Layar Super Retina XDR 6,1 inci1<br>• Ceramic Shield, lebih tangguh dari kaca ponsel pintar mana pun<br>• Chip A14 Bionic, chip paling cepat yang pernah ada di ponsel pintar.<br>• Sistem kamera Pro dengan kamera Ultra Wide, Wide, dan Telefoto 12 MP; rentang zoom optik 4x; mode Malam, Deep Fusion, Smart HDR 3, Apple ProRAW4, perekaman HDR 4K Dolby Vision<br>• LiDAR Scanner untuk pengalaman AR dan potret mode Malam yang disempurnakan<br>• Kamera depan TrueDepth 12 MP dengan mode Malam, perekaman HDR 4K Dolby Vision<br>• Level ketahanan air IP68 terdepan di industri5<br>• Mendukung aksesori MagSafe untuk kemudahan pemasangan dan pengisian daya nirkabel yang lebih cepat3<br>• iOS 14 dengan widget yang didesain ulang di Layar Home, Perpustakaan App yang sepenuhnya baru, Cuplikan App, dan banyak lagi</p><p><strong>Legal</strong><br>1. Layar memiliki sudut melengkung. Jika diukur sebagai persegi, layarnya memiliki ukuran diagonal 6,06 inci.<br>Area bidang layar berukuran lebih kecil.<br>2. Klaim berdasarkan bagian depan Ceramic Shield iPhone 12 Pro dibandingkan dengan iPhone generasi sebelumnya.<br>3. Aksesori dijual terpisah.<br>4. Apple ProRAW segera hadir.<br>5. iPhone 12 Pro Max tahan cipratan, air, dan debu dan diuji dalam kondisi laboratorium terkontrol dengan level IP68 menurut standar IEC 60529 (kedalaman maksimum 6 meter hingga selama 30 menit). Ketahanan terhadap cipratan, air, dan debu tidak berlaku secara permanen. Daya tahan mungkin berkurang akibat penggunaan sehari-hari. Jangan coba mengisi daya iPhone yang basah; lihat panduan pengguna untuk instruksi pembersihan dan pengeringan. Kerusakan akibat cairan tidak ditanggung dalam garansi.</p><p><strong>Spesifikasi teknis</strong><br>Kunjungi apple.com/iphone/compare untuk informasi selengkapnya.</p>', 'New', 'ip12p', 1, 187, 'Gram (g)', 7, 7, 14, 'Yes', 'Yes', 'Yes', 'Yes', 'Active', '[{\"key\":\"1714640974759304.jpg0\",\"caption\":\"1714640974759304.jpg\",\"size\":47910,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714640974759304.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-picts-single-product\\/1714640974759304.jpg\",\"type\":\"image\"},{\"key\":\"1714640974762304.jpg1\",\"caption\":\"1714640974762304.jpg\",\"size\":53402,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714640974762304.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-picts-single-product\\/1714640974762304.jpg\",\"type\":\"image\"},{\"key\":\"1714640974765304.jpg2\",\"caption\":\"1714640974765304.jpg\",\"size\":47283,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714640974765304.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-picts-single-product\\/1714640974765304.jpg\",\"type\":\"image\"},{\"key\":\"1714640974767304.jpg3\",\"caption\":\"1714640974767304.jpg\",\"size\":31173,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714640974767304.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-picts-single-product\\/1714640974767304.jpg\",\"type\":\"image\"}]', NULL, NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -7648,11 +7658,11 @@ CREATE TABLE `products` (
 CREATE TABLE `products_combinations` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `product_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `combination_string` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `product_variant` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `unique_string_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `price` int(11) DEFAULT NULL,
+  `price` bigint(20) DEFAULT NULL,
   `sku` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `available_stock` int(11) DEFAULT NULL,
+  `available_stock` bigint(20) DEFAULT NULL,
   `condition` enum('New','Second') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` enum('Active','Inactive') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `images` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -7660,6 +7670,24 @@ CREATE TABLE `products_combinations` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `products_combinations`
+--
+
+INSERT INTO `products_combinations` (`id`, `product_id`, `product_variant`, `unique_string_id`, `price`, `sku`, `available_stock`, `condition`, `status`, `images`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(62, 82, 'Gold-128 GB', ' -128bggdlo', 15999000, 'go128', 5, 'New', 'Active', '[{\"id\":\"62\",\"key\":\"1714734565672789.jpg0\",\"caption\":\"1714734565672789.jpg\",\"size\":42381,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714734565672789.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714734565672789.jpg\",\"type\":\"image\"},{\"id\":\"62\",\"key\":\"1714734565675789.jpg1\",\"caption\":\"1714734565675789.jpg\",\"size\":53402,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714734565675789.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714734565675789.jpg\",\"type\":\"image\"},{\"id\":\"62\",\"key\":\"1714734565678790.jpg2\",\"caption\":\"1714734565678790.jpg\",\"size\":66070,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714734565678790.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714734565678790.jpg\",\"type\":\"image\"},{\"id\":\"62\",\"key\":\"1714734565681790.jpg3\",\"caption\":\"1714734565681790.jpg\",\"size\":40558,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714734565681790.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714734565681790.jpg\",\"type\":\"image\"}]', NULL, '2021-10-26 18:31:56', NULL),
+(63, 82, 'Gold-256 GB', ' -256bggdlo', 18499000, 'go256', 5, 'New', 'Active', '[{\"id\":\"2\",\"key\":\"1714641318563985.jpg0\",\"caption\":\"1714641318563985.jpg\",\"size\":42381,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641318563985.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641318563985.jpg\",\"type\":\"image\"},{\"id\":\"2\",\"key\":\"1714641318568985.jpg1\",\"caption\":\"1714641318568985.jpg\",\"size\":53402,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641318568985.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641318568985.jpg\",\"type\":\"image\"},{\"id\":\"2\",\"key\":\"1714641318575986.jpg2\",\"caption\":\"1714641318575986.jpg\",\"size\":66070,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641318575986.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641318575986.jpg\",\"type\":\"image\"},{\"id\":\"2\",\"key\":\"1714641318579986.jpg3\",\"caption\":\"1714641318579986.jpg\",\"size\":40558,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641318579986.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641318579986.jpg\",\"type\":\"image\"}]', NULL, NULL, NULL),
+(64, 82, 'Gold-512 GB', ' -125bggdlo', 22499000, 'go512', 5, 'New', 'Active', '[{\"id\":\"64\",\"key\":\"1715010484149305.jpg0\",\"caption\":\"1715010484149305.jpg\",\"size\":42381,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010484149305.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010484149305.jpg\",\"type\":\"image\"},{\"id\":\"64\",\"key\":\"1715010484153305.jpg1\",\"caption\":\"1715010484153305.jpg\",\"size\":53402,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010484153305.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010484153305.jpg\",\"type\":\"image\"},{\"id\":\"64\",\"key\":\"1715010484156305.jpg2\",\"caption\":\"1715010484156305.jpg\",\"size\":66070,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010484156305.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010484156305.jpg\",\"type\":\"image\"},{\"id\":\"64\",\"key\":\"1715010484159305.jpg3\",\"caption\":\"1715010484159305.jpg\",\"size\":40558,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010484159305.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010484159305.jpg\",\"type\":\"image\"}]', NULL, '2021-10-29 19:37:32', NULL),
+(65, 82, 'Graphite-128 GB', ' -128bggaehiprt', 15999000, 'gr128', 5, 'New', 'Active', '[{\"id\":\"4\",\"key\":\"1714641364229246.jpg0\",\"caption\":\"1714641364229246.jpg\",\"size\":40386,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641364229246.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641364229246.jpg\",\"type\":\"image\"},{\"id\":\"4\",\"key\":\"1714641364238246.jpg1\",\"caption\":\"1714641364238246.jpg\",\"size\":37098,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641364238246.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641364238246.jpg\",\"type\":\"image\"},{\"id\":\"4\",\"key\":\"1714641364241246.jpg2\",\"caption\":\"1714641364241246.jpg\",\"size\":62294,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641364241246.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641364241246.jpg\",\"type\":\"image\"},{\"id\":\"4\",\"key\":\"1714641364244247.jpg3\",\"caption\":\"1714641364244247.jpg\",\"size\":47283,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641364244247.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641364244247.jpg\",\"type\":\"image\"}]', NULL, NULL, NULL),
+(66, 82, 'Graphite-256 GB', ' -256bggaehiprt', 18499000, 'gr256', 5, 'New', 'Active', '[{\"id\":\"5\",\"key\":\"1714641374153545.jpg0\",\"caption\":\"1714641374153545.jpg\",\"size\":40386,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641374153545.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641374153545.jpg\",\"type\":\"image\"},{\"id\":\"5\",\"key\":\"1714641374157546.jpg1\",\"caption\":\"1714641374157546.jpg\",\"size\":37098,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641374157546.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641374157546.jpg\",\"type\":\"image\"},{\"id\":\"5\",\"key\":\"1714641374159546.jpg2\",\"caption\":\"1714641374159546.jpg\",\"size\":62294,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641374159546.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641374159546.jpg\",\"type\":\"image\"},{\"id\":\"5\",\"key\":\"1714641374163546.jpg3\",\"caption\":\"1714641374163546.jpg\",\"size\":47283,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641374163546.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641374163546.jpg\",\"type\":\"image\"}]', NULL, NULL, NULL),
+(67, 82, 'Graphite-512 GB', ' -125bggaehiprt', 22499000, 'gr512', 5, 'New', 'Active', '[{\"id\":\"67\",\"key\":\"1715010460800785.jpg0\",\"caption\":\"1715010460800785.jpg\",\"size\":40386,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010460800785.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010460800785.jpg\",\"type\":\"image\"},{\"id\":\"67\",\"key\":\"1715010460804785.jpg1\",\"caption\":\"1715010460804785.jpg\",\"size\":37098,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010460804785.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010460804785.jpg\",\"type\":\"image\"},{\"id\":\"67\",\"key\":\"1715010460808786.jpg2\",\"caption\":\"1715010460808786.jpg\",\"size\":62294,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010460808786.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010460808786.jpg\",\"type\":\"image\"},{\"id\":\"67\",\"key\":\"1715010460812786.jpg3\",\"caption\":\"1715010460812786.jpg\",\"size\":47283,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010460812786.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010460812786.jpg\",\"type\":\"image\"}]', NULL, '2021-10-29 19:37:09', NULL),
+(68, 82, 'Pacific Blue-128 GB', '  -128bbgpaccefiilu', 15999000, 'pb128', 5, 'New', 'Active', '[{\"id\":\"7\",\"key\":\"1714641402126622.jpg0\",\"caption\":\"1714641402126622.jpg\",\"size\":43573,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641402126622.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641402126622.jpg\",\"type\":\"image\"},{\"id\":\"7\",\"key\":\"1714641402129623.jpg1\",\"caption\":\"1714641402129623.jpg\",\"size\":45464,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641402129623.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641402129623.jpg\",\"type\":\"image\"},{\"id\":\"7\",\"key\":\"1714641402134623.jpg2\",\"caption\":\"1714641402134623.jpg\",\"size\":68797,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641402134623.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641402134623.jpg\",\"type\":\"image\"},{\"id\":\"7\",\"key\":\"1714641402137623.jpg3\",\"caption\":\"1714641402137623.jpg\",\"size\":31173,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641402137623.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641402137623.jpg\",\"type\":\"image\"}]', NULL, NULL, NULL),
+(69, 82, 'Pacific Blue-256 GB', '  -256bbgpaccefiilu', 18499000, 'pb256', 5, 'New', 'Active', '[{\"id\":\"8\",\"key\":\"1714641409996085.jpg0\",\"caption\":\"1714641409996085.jpg\",\"size\":43573,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641409996085.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641409996085.jpg\",\"type\":\"image\"},{\"id\":\"8\",\"key\":\"1714641409999085.jpg1\",\"caption\":\"1714641409999085.jpg\",\"size\":45464,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641409999085.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641409999085.jpg\",\"type\":\"image\"},{\"id\":\"8\",\"key\":\"1714641410003086.jpg2\",\"caption\":\"1714641410003086.jpg\",\"size\":68797,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641410003086.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641410003086.jpg\",\"type\":\"image\"},{\"id\":\"8\",\"key\":\"1714641410006086.jpg3\",\"caption\":\"1714641410006086.jpg\",\"size\":31173,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641410006086.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641410006086.jpg\",\"type\":\"image\"}]', NULL, NULL, NULL),
+(70, 82, 'Pacific Blue-512 GB', '  -125bbgpaccefiilu', 22499000, 'pb512', 5, 'New', 'Active', '[{\"id\":\"70\",\"key\":\"1715010437972442.jpg0\",\"caption\":\"1715010437972442.jpg\",\"size\":43573,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010437972442.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010437972442.jpg\",\"type\":\"image\"},{\"id\":\"70\",\"key\":\"1715010437975442.jpg1\",\"caption\":\"1715010437975442.jpg\",\"size\":45464,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010437975442.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010437975442.jpg\",\"type\":\"image\"},{\"id\":\"70\",\"key\":\"1715010437981442.jpg2\",\"caption\":\"1715010437981442.jpg\",\"size\":68797,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010437981442.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010437981442.jpg\",\"type\":\"image\"},{\"id\":\"70\",\"key\":\"1715010437986443.jpg3\",\"caption\":\"1715010437986443.jpg\",\"size\":31173,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010437986443.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010437986443.jpg\",\"type\":\"image\"}]', NULL, '2021-10-29 19:36:48', NULL),
+(71, 82, 'Silver-128 GB', ' -128bgseilrv', 15999000, 's128', 5, 'New', 'Active', '[{\"id\":\"10\",\"key\":\"1714641433758628.jpg0\",\"caption\":\"1714641433758628.jpg\",\"size\":38121,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641433758628.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641433758628.jpg\",\"type\":\"image\"},{\"id\":\"10\",\"key\":\"1714641433763629.jpg1\",\"caption\":\"1714641433763629.jpg\",\"size\":47910,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641433763629.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641433763629.jpg\",\"type\":\"image\"},{\"id\":\"10\",\"key\":\"1714641433766629.jpg2\",\"caption\":\"1714641433766629.jpg\",\"size\":40474,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641433766629.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641433766629.jpg\",\"type\":\"image\"},{\"id\":\"10\",\"key\":\"1714641433769629.jpg3\",\"caption\":\"1714641433769629.jpg\",\"size\":55575,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641433769629.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641433769629.jpg\",\"type\":\"image\"}]', NULL, NULL, NULL),
+(72, 82, 'Silver-256 GB', ' -256bgseilrv', 18499000, 's256', 5, 'New', 'Active', '[{\"id\":\"11\",\"key\":\"1714641442523715.jpg0\",\"caption\":\"1714641442523715.jpg\",\"size\":38121,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641442523715.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641442523715.jpg\",\"type\":\"image\"},{\"id\":\"11\",\"key\":\"1714641442527716.jpg1\",\"caption\":\"1714641442527716.jpg\",\"size\":47910,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641442527716.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641442527716.jpg\",\"type\":\"image\"},{\"id\":\"11\",\"key\":\"1714641442529716.jpg2\",\"caption\":\"1714641442529716.jpg\",\"size\":40474,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641442529716.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641442529716.jpg\",\"type\":\"image\"},{\"id\":\"11\",\"key\":\"1714641442532716.jpg3\",\"caption\":\"1714641442532716.jpg\",\"size\":55575,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1714641442532716.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1714641442532716.jpg\",\"type\":\"image\"}]', NULL, NULL, NULL),
+(73, 82, 'Silver-512 GB', ' -125bgseilrv', 22499000, 's512', 5, 'New', 'Active', '[{\"id\":\"73\",\"key\":\"1715010417456804.jpg0\",\"caption\":\"1715010417456804.jpg\",\"size\":38121,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010417456804.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010417456804.jpg\",\"type\":\"image\"},{\"id\":\"73\",\"key\":\"1715010417461804.jpg1\",\"caption\":\"1715010417461804.jpg\",\"size\":47910,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010417461804.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010417461804.jpg\",\"type\":\"image\"},{\"id\":\"73\",\"key\":\"1715010417465805.jpg2\",\"caption\":\"1715010417465805.jpg\",\"size\":40474,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010417465805.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010417465805.jpg\",\"type\":\"image\"},{\"id\":\"73\",\"key\":\"1715010417468805.jpg3\",\"caption\":\"1715010417468805.jpg\",\"size\":55575,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715010417468805.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715010417468805.jpg\",\"type\":\"image\"}]', NULL, '2021-10-29 19:36:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -7669,12 +7697,28 @@ CREATE TABLE `products_combinations` (
 
 CREATE TABLE `products_variants_options` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED DEFAULT NULL,
   `product_variant_id` bigint(20) UNSIGNED DEFAULT NULL,
   `variant_value_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `value` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `label` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `products_variants_options`
+--
+
+INSERT INTO `products_variants_options` (`id`, `product_id`, `product_variant_id`, `variant_value_name`, `value`, `label`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(55, 82, 69, 'Gold', 'Gold', NULL, NULL, NULL, NULL),
+(56, 82, 69, 'Graphite', 'Graphite', NULL, NULL, NULL, NULL),
+(57, 82, 69, 'Pacific Blue', 'Pacific Blue', NULL, NULL, NULL, NULL),
+(58, 82, 69, 'Silver', 'Silver', NULL, NULL, NULL, NULL),
+(59, 82, 70, '128 GB', '128 GB', NULL, NULL, NULL, NULL),
+(60, 82, 70, '256 GB', '256 GB', NULL, NULL, NULL, NULL),
+(61, 82, 70, '512 GB', '512 GB', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -7686,10 +7730,19 @@ CREATE TABLE `products_variants_types` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `product_id` bigint(20) UNSIGNED DEFAULT NULL,
   `variant_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `variant_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `products_variants_types`
+--
+
+INSERT INTO `products_variants_types` (`id`, `product_id`, `variant_name`, `variant_type`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(69, 82, 'Color', 'Color', NULL, NULL, NULL),
+(70, 82, 'Capacity', 'Capacity', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -8419,7 +8472,9 @@ INSERT INTO `sub_categories` (`id`, `category_id`, `subcategory_name`, `subcateg
 (50, NULL, ' Grooming Hewan', 'grooming-hewan', NULL, '2021-08-05 21:10:28', NULL),
 (51, NULL, ' Perawatan Burung', 'perawatan-burung', NULL, '2021-08-05 21:10:28', NULL),
 (52, NULL, ' Perawatan Kucing', 'perawatan-kucing', NULL, '2021-08-05 21:10:28', NULL),
-(53, NULL, ' Perawatan Anjing', 'perawatan-anjing', NULL, '2021-08-05 21:10:28', NULL);
+(53, NULL, ' Perawatan Anjing', 'perawatan-anjing', NULL, '2021-08-05 21:10:28', NULL),
+(55, 156, 'Handphone', 'handphone', NULL, '2021-10-09 01:07:31', NULL),
+(56, 157, 'Mask', 'mask', NULL, '2021-10-10 06:34:42', NULL);
 
 -- --------------------------------------------------------
 
@@ -8452,7 +8507,9 @@ INSERT INTO `sub_sub_categories` (`id`, `category_id`, `subcategory_id`, `subsub
 (7, 154, 15, ' Majalah Desain', 'majalah-desain', NULL, '2021-08-24 23:13:07', NULL),
 (8, 154, 15, 'Majalah Fashion', 'majalah-fashion', NULL, '2021-08-24 23:13:07', NULL),
 (9, 154, 15, ' Majalah Musik', 'majalah-musik', NULL, '2021-08-24 23:13:07', NULL),
-(10, 154, 14, 'Katalog', 'katalog', NULL, '2021-08-24 23:19:08', NULL);
+(10, 154, 14, 'Katalog', 'katalog', NULL, '2021-08-24 23:19:08', NULL),
+(15, 156, 55, 'iOS', 'ios', NULL, '2021-10-09 01:07:43', NULL),
+(16, 157, 56, 'Clay Mask', 'clay-mask', NULL, '2021-10-10 06:34:52', NULL);
 
 -- --------------------------------------------------------
 
@@ -39834,7 +39891,8 @@ ALTER TABLE `products_combinations`
 --
 ALTER TABLE `products_variants_options`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `products_variants_options_value_product_variant_id_index` (`product_variant_id`);
+  ADD KEY `products_variants_options_value_product_variant_id_index` (`product_variant_id`),
+  ADD KEY `products_variants_options_value_product_id_foreign` (`product_id`);
 
 --
 -- Indexes for table `products_variants_types`
@@ -39915,13 +39973,13 @@ ALTER TABLE `villages`
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=156;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=158;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -39969,25 +40027,25 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT for table `products_combinations`
 --
 ALTER TABLE `products_combinations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `products_variants_options`
 --
 ALTER TABLE `products_variants_options`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `products_variants_types`
 --
 ALTER TABLE `products_variants_types`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `staffs`
@@ -39999,13 +40057,13 @@ ALTER TABLE `staffs`
 -- AUTO_INCREMENT for table `sub_categories`
 --
 ALTER TABLE `sub_categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `sub_sub_categories`
 --
 ALTER TABLE `sub_sub_categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `total_stocks_variants_products`
@@ -40055,6 +40113,7 @@ ALTER TABLE `products_combinations`
 -- Constraints for table `products_variants_options`
 --
 ALTER TABLE `products_variants_options`
+  ADD CONSTRAINT `products_variants_options_value_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
   ADD CONSTRAINT `products_variants_options_value_product_variant_id_foreign` FOREIGN KEY (`product_variant_id`) REFERENCES `products_variants_types` (`id`);
 
 --

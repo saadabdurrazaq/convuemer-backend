@@ -9,7 +9,7 @@
                     <div class="col-md-12">
                         <div class="card card-outline card-info">
                             <div class="card-body">
-                                <form @submit.prevent="store()" novalidate>
+                                <form @submit.prevent="update()" novalidate>
                                     <div class="col-md-12">
                                         <div class="row">
                                             <div class="col-md-12">
@@ -17,7 +17,7 @@
                                                     <p class="lead section-title">Info Product:</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label for="product_name">Product Name</label>
                                                     <input
@@ -48,6 +48,7 @@
                                                     <label for="nickname">Brand</label>
                                                     <select
                                                         v-bind:name="form.brand_id"
+                                                        v-model="form.brand_id"
                                                         id="brand_id"
                                                         class="form-control"
                                                         :class="{
@@ -61,7 +62,7 @@
                                                     </select>
                                                     <span
                                                         class="text-danger"
-                                                        id="brand_id_error"
+                                                        id="brand_error"
                                                     ></span>
                                                     <div
                                                         style="color: red"
@@ -228,6 +229,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <!-- product variant here -->
                                         <!-- End row 1 -->
                                         <br />
                                         <div class="row">
@@ -283,7 +285,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-10 variants">
-                                                <div class="form-group">
+                                                <div v-if="pageIsLoaded" class="form-group">
                                                     <div
                                                         class="card"
                                                         v-for="(variant, index) in form.variants"
@@ -374,6 +376,7 @@
                                                     </div>
                                                     <!-- v-for -->
                                                 </div>
+                                                <div v-else></div>
                                             </div>
                                             <!-- col 10 -->
                                         </div>
@@ -414,7 +417,11 @@
                                                                 name="variant_product"
                                                             />
                                                         </td>
+                                                        <td v-if="variantVal.product_variant">
+                                                            {{ variantVal.product_variant }}
+                                                        </td>
                                                         <td
+                                                            v-else
                                                             :class="
                                                                 'variant_product_' + variantVal.id
                                                             "
@@ -459,7 +466,6 @@
                                                                         'variant_price_' +
                                                                         variantVal.id
                                                                     "
-                                                                    v-bind:name="variantVal.price"
                                                                     v-model="variantVal.price"
                                                                     type="text"
                                                                     class="
@@ -484,7 +490,10 @@
                                                                             variantVal.id
                                                                     )
                                                                 "
-                                                                v-bind:name="variantVal.stock"
+                                                                v-bind:name="
+                                                                    variantVal.available_stock
+                                                                "
+                                                                v-model="variantVal.available_stock"
                                                                 class="form-control"
                                                                 required
                                                                 autocomplete="variant_stock"
@@ -523,7 +532,24 @@
                                                                 autofocus
                                                             />
                                                         </td>
-                                                        <td>
+                                                        <td v-if="variantVal.status === 'Active'">
+                                                            <input
+                                                                type="checkbox"
+                                                                class="switch"
+                                                                name="permission[]"
+                                                                data-bootstrap-switch
+                                                                data-off-color="danger"
+                                                                data-on-text=""
+                                                                data-off-text=""
+                                                                data-size="small"
+                                                                value="testing"
+                                                                :class="'status_' + variantVal.id"
+                                                                checked
+                                                            />
+                                                            <br />
+                                                            {{ variantVal.status }}
+                                                        </td>
+                                                        <td v-else>
                                                             <input
                                                                 type="checkbox"
                                                                 class="switch"
@@ -558,7 +584,7 @@
                                             </table>
                                         </div>
                                         <br />
-                                        <!-- end row product varian -->
+                                        <!-- end product variant -->
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
@@ -571,8 +597,8 @@
                                                     <input
                                                         type="text"
                                                         id="min_order"
-                                                        v-bind:name="form.min_order"
                                                         v-model="form.min_order"
+                                                        v-bind:name="form.min_order"
                                                         :class="{
                                                             'is-invalid':
                                                                 form.errors.has('min_order'),
@@ -581,7 +607,6 @@
                                                         required
                                                         autocomplete="min_order"
                                                         autofocus
-                                                        placeholder="Minimum Order"
                                                     />
                                                     <span
                                                         class="text-danger"
@@ -603,8 +628,8 @@
                                                     <input
                                                         id="selling_price"
                                                         type="text"
-                                                        v-bind:name="form.selling_price"
                                                         v-model="form.selling_price"
+                                                        v-bind:name="form.selling_price"
                                                         :class="{
                                                             'is-invalid':
                                                                 form.errors.has('selling_price'),
@@ -614,7 +639,6 @@
                                                         autocomplete="selling_price"
                                                         autofocus
                                                         aria-label="Amount (to the nearest dollar)"
-                                                        placeholder="Price"
                                                     />
                                                 </div>
                                                 <span
@@ -653,7 +677,6 @@
                                                         required
                                                         autocomplete="product_stock"
                                                         autofocus
-                                                        placeholder="Stock"
                                                     />
                                                     <span
                                                         class="text-danger"
@@ -666,7 +689,10 @@
                                                     />
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div
+                                                v-if="form.product_cond === 'New'"
+                                                class="col-md-3"
+                                            >
                                                 <div class="form-group" style="margin-left: 50px">
                                                     <label for="product_cond"
                                                         >Product Condition</label
@@ -689,7 +715,33 @@
                                                     <label for="second">Second</label>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div
+                                                v-if="form.product_cond === 'Second'"
+                                                class="col-md-3"
+                                            >
+                                                <div class="form-group" style="margin-left: 50px">
+                                                    <label for="product_cond"
+                                                        >Product Condition</label
+                                                    >
+                                                    <br />
+                                                    <input
+                                                        value="New"
+                                                        type="radio"
+                                                        id="new"
+                                                        name="product_cond"
+                                                    />
+                                                    <label for="new">New</label> &nbsp; &nbsp;
+                                                    <input
+                                                        value="Second"
+                                                        type="radio"
+                                                        id="second"
+                                                        name="product_cond"
+                                                        checked
+                                                    />
+                                                    <label for="second">Second</label>
+                                                </div>
+                                            </div>
+                                            <div v-if="form.status === 'Active'" class="col-md-3">
                                                 <div class="form-group" style="margin-left: 50px">
                                                     <label for="status">Status</label>
                                                     <br />
@@ -701,7 +753,23 @@
                                                         data-on-text=""
                                                         data-off-text=""
                                                         data-size="small"
-                                                        value="testing"
+                                                        class="status"
+                                                        checked
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div v-else class="col-md-3">
+                                                <div class="form-group" style="margin-left: 50px">
+                                                    <label for="status">Status</label>
+                                                    <br />
+                                                    <input
+                                                        type="checkbox"
+                                                        name="permission[]"
+                                                        data-bootstrap-switch
+                                                        data-off-color="danger"
+                                                        data-on-text=""
+                                                        data-off-text=""
+                                                        data-size="small"
                                                         class="status"
                                                     />
                                                 </div>
@@ -721,7 +789,6 @@
                                                         required
                                                         autocomplete="sku"
                                                         autofocus
-                                                        placeholder="SKU"
                                                     />
                                                     <span class="text-danger" id="sku_error"></span>
                                                     <div
@@ -740,7 +807,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
-                                                <label for="sku">Product Weight</label>
+                                                <label for="product_weight">Product Weight</label>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
@@ -770,7 +837,10 @@
                                                     />
                                                 </div>
                                             </div>
-                                            <div class="col-md-7">
+                                            <div
+                                                v-if="form.metric_mass === 'Gram (g)'"
+                                                class="col-md-7"
+                                            >
                                                 <div class="form-group">
                                                     <select
                                                         v-bind:name="form.metric_mass"
@@ -782,7 +852,7 @@
                                                         class="form-control metric_mass"
                                                         style="width: 120px"
                                                     >
-                                                        <option value="Gram (g)" selected="true">
+                                                        <option selected value="Gram (g)">
                                                             Gram (g)
                                                         </option>
                                                         <option value="Kilogram (kg)">
@@ -791,8 +861,27 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div v-else class="col-md-7">
+                                                <div class="form-group">
+                                                    <select
+                                                        v-bind:name="form.metric_mass"
+                                                        id="metric_mass"
+                                                        :class="{
+                                                            'is-invalid':
+                                                                form.errors.has('metric_mass'),
+                                                        }"
+                                                        class="form-control metric_mass"
+                                                        style="width: 120px"
+                                                    >
+                                                        <option value="Gram (g)">Gram (g)</option>
+                                                        <option selected value="Kilogram (kg)">
+                                                            Kilogram (kg)
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <div class="col-md-2">
-                                                <label for="sku">Dimension</label>
+                                                <label for="dimension">Dimension</label>
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
@@ -843,7 +932,7 @@
                                                                     ),
                                                             }"
                                                             class="form-control product_width"
-                                                            placeholder="Product Width"
+                                                            placeholder="product_width"
                                                         />
                                                         <div class="input-group-append">
                                                             <span class="input-group-text">cm</span>
@@ -877,7 +966,7 @@
                                                                     ),
                                                             }"
                                                             class="form-control product_height"
-                                                            placeholder="Product Height"
+                                                            placeholder="product_height"
                                                         />
                                                         <div class="input-group-append">
                                                             <span class="input-group-text">cm</span>
@@ -906,7 +995,7 @@
                                                     </p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div v-if="form.hot_deals === 'Yes'" class="col-md-3">
                                                 <div class="form-group">
                                                     <input
                                                         type="checkbox"
@@ -916,13 +1005,31 @@
                                                         data-on-text=""
                                                         data-off-text=""
                                                         data-size="small"
-                                                        value="testing"
+                                                        class="hot_deals"
+                                                        checked
+                                                    />
+                                                    &nbsp; Hot Deals
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3" v-if="form.hot_deals === 'No'">
+                                                <div class="form-group">
+                                                    <input
+                                                        type="checkbox"
+                                                        name="permission[]"
+                                                        data-bootstrap-switch
+                                                        data-off-color="danger"
+                                                        data-on-text=""
+                                                        data-off-text=""
+                                                        data-size="small"
                                                         class="hot_deals"
                                                     />
                                                     &nbsp; Hot Deals
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div
+                                                v-if="form.special_offer === 'Yes'"
+                                                class="col-md-3"
+                                            >
                                                 <div class="form-group">
                                                     <input
                                                         type="checkbox"
@@ -932,13 +1039,31 @@
                                                         data-on-text=""
                                                         data-off-text=""
                                                         data-size="small"
-                                                        value="testing"
+                                                        class="special_offer"
+                                                        checked
+                                                    />
+                                                    &nbsp; Special Offer
+                                                </div>
+                                            </div>
+                                            <div
+                                                v-if="form.special_offer === 'No'"
+                                                class="col-md-3"
+                                            >
+                                                <div class="form-group">
+                                                    <input
+                                                        type="checkbox"
+                                                        name="permission[]"
+                                                        data-bootstrap-switch
+                                                        data-off-color="danger"
+                                                        data-on-text=""
+                                                        data-off-text=""
+                                                        data-size="small"
                                                         class="special_offer"
                                                     />
                                                     &nbsp; Special Offer
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div v-if="form.featured === 'Yes'" class="col-md-3">
                                                 <div class="form-group">
                                                     <input
                                                         type="checkbox"
@@ -948,13 +1073,31 @@
                                                         data-on-text=""
                                                         data-off-text=""
                                                         data-size="small"
-                                                        value="testing"
+                                                        class="featured"
+                                                        checked
+                                                    />
+                                                    &nbsp; Featured
+                                                </div>
+                                            </div>
+                                            <div v-if="form.featured === 'No'" class="col-md-3">
+                                                <div class="form-group">
+                                                    <input
+                                                        type="checkbox"
+                                                        name="permission[]"
+                                                        data-bootstrap-switch
+                                                        data-off-color="danger"
+                                                        data-on-text=""
+                                                        data-off-text=""
+                                                        data-size="small"
                                                         class="featured"
                                                     />
                                                     &nbsp; Featured
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div
+                                                v-if="form.special_deals === 'Yes'"
+                                                class="col-md-3"
+                                            >
                                                 <div class="form-group">
                                                     <input
                                                         type="checkbox"
@@ -964,7 +1107,25 @@
                                                         data-on-text=""
                                                         data-off-text=""
                                                         data-size="small"
-                                                        value="testing"
+                                                        class="special_deals"
+                                                        checked
+                                                    />
+                                                    &nbsp; Special Deals
+                                                </div>
+                                            </div>
+                                            <div
+                                                v-if="form.special_deals === 'No'"
+                                                class="col-md-3"
+                                            >
+                                                <div class="form-group">
+                                                    <input
+                                                        type="checkbox"
+                                                        name="permission[]"
+                                                        data-bootstrap-switch
+                                                        data-off-color="danger"
+                                                        data-on-text=""
+                                                        data-off-text=""
+                                                        data-size="small"
                                                         class="special_deals"
                                                     />
                                                     &nbsp; Special Deals
@@ -998,8 +1159,6 @@
                                                 type="submit"
                                                 class="btn btn-primary btn-md"
                                                 id="loadingButton"
-                                                @mouseover="collectData()"
-                                                v-on:keydown.enter="collectData()"
                                             >
                                                 Save
                                             </button>
@@ -1042,6 +1201,9 @@ import 'bootstrap-fileinput/css/fileinput.css';
 // npm install --save @ckeditor/ckeditor5-vue @ckeditor/ckeditor5-build-classic
 // more configuration found in main.js
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// npm install jquery-confirm
+import 'jquery-confirm/js/jquery-confirm.js';
+import 'jquery-confirm/css/jquery-confirm.css';
 
 export default {
     name: 'HelloWorld',
@@ -1061,6 +1223,7 @@ export default {
             nextId: 1,
             variantProductId: 0,
             form: new Form({
+                id: '',
                 product_name: '',
                 brand_id: '',
                 category_id: '',
@@ -1094,45 +1257,45 @@ export default {
                     },
                 ],
                 variants_prod: [],
+                imagesUpdated: [],
+                variantIsDeleted: '',
+                deletedVarProdsImages: [],
             }),
             error: '',
             attributes: [],
             title: '',
             dataFiles: [],
+            pageIsLoaded: false,
+            variantType: [],
+            deletedVarProdsImages: [],
         };
     },
     methods: {
-        removeDuplicatesFileInfo(arr) {
-            let s = new Set(arr);
-            let it = s.values();
-            return Array.from(it);
-        },
-        getVariantProducts() {
+        generateVariantProducts() {
             let variants = this.form.variants;
             var variantsValue = [];
 
             variants.forEach((data) => {
                 let dataObj = Object.values(data);
+                var variantOpt = data.variant_options;
 
-                var variantOpt = $('.variant_options_' + dataObj[0]).tokenfield('getTokens');
-                var varianOptVal = [];
-
+                var variantOptVal = [];
                 variantOpt.forEach((data) => {
-                    varianOptVal.push(data.value);
+                    variantOptVal.push(data.value);
                 });
 
                 // Arrays has not been merged, and still has it's properties.
                 variantsValue.push({
                     variant_id: dataObj[0],
                     variant_type: dataObj[1],
-                    variant_options: varianOptVal,
+                    variant_options: variantOptVal,
                 });
             });
 
             // Arrays is now merged, but the properties (acc) is more dynamic.
             /*{Color: Array(2), Size: Array(3)}
-              Color: (2) ["Blue", "Brown"]
-              Size: (3) ["S", "M", "L"]*/
+                Color: (2) ["Blue", "Brown"]
+                Size: (3) ["S", "M", "L"]*/
             const reduceTheRes = (data) =>
                 data.reduce((acc, item) => {
                     acc[item.variant_type] = item.variant_options;
@@ -1160,82 +1323,35 @@ export default {
             attrs = attrs.reduce((a, b) => a.flatMap((d) => b.map((e) => ({ ...d, ...e }))));
 
             // Add id to each row.
+            var last = this.form.variants_prod[this.form.variants_prod.length - 1];
             attrs.forEach((item, i) => {
-                item.id = i + 1;
-                item.product_variant = $('.variant_product_' + item.id).text();
-                item.price = $('.variant_price_' + item.id).val();
-                item.available_stock = $('.variant_stock_' + item.id).val();
-                item.sku = $('.variant_sku_' + item.id).val();
+                if (last) {
+                    item.id = i + 1 + last.id;
+                } else {
+                    item.id = i + 1;
+                }
+                setTimeout(function () {
+                    item.product_variant = $('.variant_product_' + item.id).text();
+                }, 100);
+                item.price = '';
+                item.available_stock = '';
+                item.sku = '';
+                item.condition = '';
+                item.images = [];
+                item.status = '';
+                item.total_images = item.images.length;
             });
 
-            this.form.variants_prod = attrs;
-        },
-        collectData() {
-            this.form.variants_prod.forEach((item) => {
-                var last = this.form.variants_prod[this.form.variants_prod.length - 1];
-                const isEmpty = (str) => !str.trim().length;
+            let arr2 = this.form.variants_prod.concat(attrs);
+            this.form.variants_prod = arr2;
 
-                if (this.dataFiles.length > 0) {
-                    let dataFileInfo = this.removeDuplicatesFileInfo(this.dataFiles);
-                    var fileInfo = dataFileInfo.filter(function (x) {
-                        return x.id == item.id;
-                    });
-
-                    if (fileInfo.length > 0) {
-                        var totalImages = fileInfo.length;
-                    } else {
-                        totalImages = 0;
-                    }
-                } else {
-                    fileInfo = [];
-                    totalImages = 0;
-                }
-
-                if ($('.status_' + item.id).is(':checked') === false) {
-                    item.status = 'Inactive';
-                } else {
-                    item.status = 'Active';
-                }
-
-                item.product_variant = $('.variant_product_' + item.id).text();
-                item.price = $('.variant_price_' + item.id).val();
-                item.images = fileInfo;
-                item.total_images = totalImages;
-                item.condition = document.querySelector(
-                    'input[name="condition_' + item.id + '"]:checked'
-                ).value;
-                item.available_stock = $('.variant_stock_' + item.id).val();
-                item.sku = $('.variant_sku_' + item.id).val();
-
-                if (item.price === undefined || isEmpty(item.product_variant)) {
-                    item.product_variant = $('.variant_product_' + last.id).text();
-                    item.price = $('.variant_price_' + last.id).val();
-                    item.available_stock = $('.variant_stock_' + last.id).val();
-                    item.sku = $('.variant_sku_' + last.id).val();
-                }
+            this.form.variants.forEach((data) => {
+                let dataObj = Object.values(data);
+                data.variant_options = $('.variant_options_' + dataObj[0]).tokenfield('getTokens');
             });
-
-            this.getSwitchValue();
-            this.form.brand_id = $('#brand_id').val();
-            this.form.category_id = $('#category_id').val();
-            this.form.subcategory_id = $('#subcategory_id').val();
-            this.form.subsubcategory_id = $('#subsubcategory_id').val();
-            this.form.metric_mass = $('#metric_mass').val();
-            this.form.min_order = $('.min_order').val();
-            this.form.selling_price = $('.selling_price').val();
-            this.form.product_stock = $('.product_stock').val();
-            this.form.product_weight = $('.product_weight').val();
-            this.form.product_length = $('.product_length').val();
-            this.form.product_width = $('.product_width').val();
-            this.form.product_height = $('.product_height').val();
-            this.form.product_cond = document.querySelector(
-                'input[name="product_cond"]:checked'
-            ).value;
-
-            //console.log(JSON.stringify(this.form.variants));
-            console.log(this.form.variants_prod);
         },
         addVariant() {
+            var self = this;
             if (this.form.variants.length === 0) {
                 this.form.variants.push({
                     id: this.nextId++,
@@ -1243,221 +1359,57 @@ export default {
                     variant_options: '',
                 });
             } else if (this.form.variants.length === 1) {
-                if (this.dataFiles.length > 0) {
-                    alert('Please delete all the inputted images variant products first!');
-                } else {
-                    let existingTokens = $('.variant_options').tokenfield('getTokens');
-                    const isEmpty = (str) => !str.trim().length;
-                    this.dataFiles = [];
+                this.form.variantIsDeleted = 'Yes';
+                let existingTokens = $('.variant_options').tokenfield('getTokens');
+                const isEmpty = (str) => !str.trim().length;
 
-                    if (isEmpty($('#variant_type').val())) {
+                if (isEmpty($('#variant_type').val())) {
+                    alert('Please fill the existing varian fields first!');
+                } else if ($('#variant_type').val()) {
+                    if (existingTokens.length === 0) {
                         alert('Please fill the existing varian fields first!');
-                    } else if ($('#variant_type').val()) {
-                        if (existingTokens.length === 0) {
-                            alert('Please fill the existing varian fields first!');
-                        } else {
-                            this.form.variants_prod.splice(0, this.form.variants_prod.length);
-                            this.form.variants.push({
-                                id: this.nextId++,
-                                variant_type: '',
-                                variant_options: '',
-                            });
-                        }
+                    } else {
+                        this.form.variants_prod.splice(0, this.form.variants_prod.length);
+                        this.form.variants.push({
+                            id: this.nextId++,
+                            variant_type: '',
+                            variant_options: '',
+                        });
                     }
                 }
             } else {
                 this.error = 'You can only add 2 type of varians';
                 $('#errMsg').show();
             }
+
+            this.form.variants.forEach((data) => {
+                setTimeout(function () {
+                    self.tokenField(data.id);
+                }, 100);
+            });
         },
         deleteVariant(index) {
-            if (this.dataFiles.length > 0) {
-                alert('Please delete all the inputted images variant products first!');
-            } else {
-                $('#errMsg').hide();
-                this.form.variants.splice(index, 1);
-                if (this.form.variants.length === 0) {
-                    this.form.variants_prod.splice(0, this.form.variants_prod.length);
-                }
-                $('.product_variants').find(':input').val('');
-                this.getVariantProducts();
-            }
-        },
-        tokenField() {
-            // enter button is killed no current input data found. To activate again, open the bootstrap-tokenfield.js, and search "kill enter button", uncomment the rest of code, and delete e.preventDefault()
             var self = this;
-            $('.variant_options').tokenfield({
-                showAutocompleteOnFocus: true,
+            $('#errMsg').hide();
+            this.form.variants.splice(index, 1);
+            if (this.form.variants.length === 0) {
+                this.form.variants_prod.splice(0, this.form.variants_prod.length);
+            }
+            $('.product_variants').find(':input').val('');
+            this.form.variants_prod = [];
+            this.generateVariantProducts();
+            this.form.variants_prod.forEach((data) => {
+                // execute this.fileInputVariants(data.id) after 100 milisecond
+                setTimeout(function () {
+                    self.fileInputVariants(data.id);
+                }, 100);
             });
-
-            $('.variant_options')
-                .on('tokenfield:createtoken', function (event) {
-                    var existingTokens = $(this).tokenfield('getTokens');
-                    const isEmpty = (str) => !str.trim().length;
-
-                    if (isEmpty($('#variant_type').val())) {
-                        event.preventDefault();
-                        self.error = 'Please fill the variant type first';
-                        $('#errMsg').show().delay(1000).fadeOut(300);
-                    }
-
-                    $.each(existingTokens, function (index, token) {
-                        if (token.value === event.attrs.value) {
-                            event.preventDefault();
-                            self.error = 'Duplicate value is not allowed!';
-                            $('#errMsg').show().delay(1000).fadeOut(300);
-                        }
-                    });
-                })
-                .on('tokenfield:createdtoken', function () {
-                    self.getVariantProducts();
-                    // fill the value of variant_options
-                    self.form.variants.forEach((data) => {
-                        let dataObj = Object.values(data);
-                        data.variant_options = $('.variant_options_' + dataObj[0]).tokenfield(
-                            'getTokens'
-                        );
-                    });
-
-                    self.form.variants_prod.forEach((data) => {
-                        // execute self.fileInputVariants(data.id) after 100 milisecond
-                        setTimeout(function () {
-                            self.fileInputVariants(data.id);
-                        }, 100);
-                    });
-                })
-                .on('tokenfield:removetoken', function (event) {
-                    if (self.dataFiles.length > 0) {
-                        alert('Please delete all the inputted images variant products first!');
-                        event.preventDefault();
-                    }
-                })
-                .on('tokenfield:removedtoken', function () {
-                    self.getVariantProducts();
-                    $('.product_variants').find(':input').val(''); // clear price, sku, stock input field
-                    // update the value of variant_options
-                    self.form.variants.forEach((data) => {
-                        let dataObj = Object.values(data);
-                        data.variant_options = $('.variant_options_' + dataObj[0]).tokenfield(
-                            'getTokens'
-                        );
-                    });
-                });
+            this.form.variantIsDeleted = 'Yes';
         },
-        fileInputVariants(id) {
-            var self = this;
-
-            $('.status_' + id).bootstrapSwitch('state', $('.status_' + id).prop('checked'));
-
-            $('.images' + id)
-                .fileinput({
-                    theme: 'fas',
-                    uploadUrl: `${BASE_URL}/api/products/store-images/` + id,
-                    dropZoneEnabled: false,
-                    browseOnZoneClick: false,
-                    showUpload: false, // mass upload
-                    showRemove: false, // mass remove
-                    required: true,
-                    fileActionSettings: {
-                        showUpload: false, // single upload
-                    },
-                    previewSettings: {
-                        image: {
-                            width: 'auto',
-                            height: 'auto',
-                            'max-width': '100%',
-                            'max-height': '100%',
-                        },
-                    },
-                    uploadExtraData: function () {
-                        return {
-                            _token: $("input[name='_token']").val(),
-                        };
-                    },
-                    allowedFileTypes: ['image'],
-                    allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
-                    overwriteInitial: false,
-                    maxFileSize: 2000,
-                    maxFileCount: 5,
-                    validateInitialCount: true,
-                    uploadAsync: false,
-                    initialPreviewConfig: self.removeDuplicatesFileInfo(self.dataFiles),
-                    slugCallback: function (filename) {
-                        return filename.replace('(', '_').replace(']', '_');
-                    },
-                })
-                .on('filebatchselected', function () {
-                    // event, files
-                    $('.images' + id).fileinput('upload');
-                })
-                .on('filebatchuploadsuccess', function (event, data) {
-                    self.dataFiles.push(...data.response.initialPreviewConfig);
-                })
-                .on('filebeforedelete', function () {
-                    //
-                })
-                .on('filedeleted', function (event, key) {
-                    let getDataFileInfo = self.removeDuplicatesFileInfo(self.dataFiles);
-
-                    var singleRemoveFileInfo = getDataFileInfo.filter(function (x) {
-                        return x.key == key;
-                    });
-
-                    var filteredRes = getDataFileInfo.filter(
-                        (item) => !singleRemoveFileInfo.includes(item)
-                    );
-
-                    self.dataFiles = filteredRes;
-                })
-                .on('fileclear', function () {
-                    // before bulk remove
-                    self.collectData();
-                })
-                .on('filecleared', function () {
-                    // after bulk remove
-                    let dataFileInfo = self.removeDuplicatesFileInfo(self.dataFiles);
-
-                    var bulkRemoveFileInfo = dataFileInfo.filter(function (x) {
-                        return x.id == id;
-                    });
-
-                    var filteredArray = dataFileInfo.filter(
-                        (item) => !bulkRemoveFileInfo.includes(item)
-                    );
-
-                    self.dataFiles = filteredArray;
-                });
-        },
-        getSwitchValue() {
-            if ($('.status').is(':checked') === false) {
-                this.form.status = 'Inactive';
-            } else {
-                this.form.status = 'Active';
-            }
-
-            if ($('.hot_deals').is(':checked') === false) {
-                this.form.hot_deals = 'No';
-            } else {
-                this.form.hot_deals = 'Yes';
-            }
-
-            if ($('.special_offer').is(':checked') === false) {
-                this.form.special_offer = 'No';
-            } else {
-                this.form.special_offer = 'Yes';
-            }
-
-            if ($('.featured').is(':checked') === false) {
-                this.form.featured = 'No';
-            } else {
-                this.form.featured = 'Yes';
-            }
-
-            if ($('.special_deals').is(':checked') === false) {
-                this.form.special_deals = 'No';
-            } else {
-                this.form.special_deals = 'Yes';
-            }
+        removeDuplicatesFileInfo(arr) {
+            let s = new Set(arr);
+            let it = s.values();
+            return Array.from(it);
         },
         validateInputNumber(className) {
             // disable right click
@@ -1561,6 +1513,19 @@ export default {
                         $('#brand_id').append(option);
                         $('div.get-brands select').val('default').change();
                     });
+
+                    if (this.form.brand_id !== null || this.form.brand_id !== undefined) {
+                        var brandId = this.form.brand_id;
+                        var selectedBrand = brands.filter(function (x) {
+                            return x.id == brandId;
+                        });
+
+                        selectedBrand.forEach(function (brand) {
+                            var option = new Option(brand.brand_name, brand.id, true, true);
+                            // show selected brand data in the first time
+                            $('div.get-brands select').append(option);
+                        });
+                    }
                 })
                 .catch((error) => {
                     console.log(error);
@@ -1585,6 +1550,19 @@ export default {
                         );
                         $('div.get-categories select').val('default').change();
                     });
+
+                    if (this.form.category_id !== null || this.form.category_id !== undefined) {
+                        var categoryId = this.form.category_id;
+                        var selectedCategory = categories.filter(function (x) {
+                            return x.id == categoryId;
+                        });
+
+                        selectedCategory.forEach(function (cat) {
+                            var option = new Option(cat.category_name, cat.id, true, true);
+                            // show selected category data in the first time
+                            $('div.get-categories select').append(option);
+                        });
+                    }
                 })
                 .catch((error) => {
                     console.log(error);
@@ -1595,6 +1573,50 @@ export default {
         },
         loadCatAndSubCat() {
             const token = localStorage.getItem('token-staff');
+            let catId = this.form.category_id;
+            let subCatId = this.form.subcategory_id;
+
+            if (catId !== null || catId !== undefined) {
+                $.ajax({
+                    url: `${BASE_URL}/api/staff/sub-sub-categories/get-sub-category/` + catId,
+                    type: 'GET',
+                    dataType: 'json',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+                    },
+                    success: function (data) {
+                        let subCategories = data.sub_categories;
+
+                        subCategories.forEach(function (cat) {
+                            var option = new Option(cat.subcategory_name, cat.id, true, true);
+                            // show selected sub-categories data in the first time
+                            $('div.get-sub-categories select').append(option);
+                        });
+                    },
+                });
+            }
+
+            if (subCatId !== null || subCatId !== undefined) {
+                $.ajax({
+                    url:
+                        `${BASE_URL}/api/staff/sub-sub-categories/get-sub-sub-categories/` +
+                        subCatId,
+                    type: 'GET',
+                    dataType: 'json',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+                    },
+                    success: function (data) {
+                        let subSubCategories = data.sub_sub_categories;
+
+                        subSubCategories.forEach(function (cat) {
+                            var option = new Option(cat.subsubcategory_name, cat.id, true, true);
+                            // show selected sub-categories data in the first time
+                            $('div.get-sub-sub-categories select').append(option);
+                        });
+                    },
+                });
+            }
 
             $('#category_id').on('change', function () {
                 var category_id = $(this).find(':selected').attr('data-id');
@@ -1632,7 +1654,7 @@ export default {
                         });
                     },
                 });
-            });
+            }); // .on('change'
 
             $('#subcategory_id').on('change', function () {
                 var subcategory_id = $(this).find(':selected').attr('data-id');
@@ -1669,8 +1691,65 @@ export default {
                 });
             });
         },
+        getSwitchValue() {
+            // bootstrap-switch.min.js is already attached in main.js
+            $('.status').bootstrapSwitch();
+            $('.hot_deals').bootstrapSwitch();
+            $('.special_offer').bootstrapSwitch();
+            $('.special_deals').bootstrapSwitch();
+            $('.featured').bootstrapSwitch();
+
+            if ($('.status').is(':checked') === false) {
+                this.form.status = 'Inactive';
+            } else {
+                this.form.status = 'Active';
+            }
+
+            if ($('.hot_deals').is(':checked') === false) {
+                this.form.hot_deals = 'No';
+            } else {
+                this.form.hot_deals = 'Yes';
+            }
+
+            if ($('.special_offer').is(':checked') === false) {
+                this.form.special_offer = 'No';
+            } else {
+                this.form.special_offer = 'Yes';
+            }
+
+            if ($('.featured').is(':checked') === false) {
+                this.form.featured = 'No';
+            } else {
+                this.form.featured = 'Yes';
+            }
+
+            if ($('.special_deals').is(':checked') === false) {
+                this.form.special_deals = 'No';
+            } else {
+                this.form.special_deals = 'Yes';
+            }
+        },
         fileInput() {
             var self = this;
+
+            var images = [];
+            var imagesInfo = [];
+            if (this.form.images !== null) {
+                this.form.images.forEach((data) => {
+                    let dataObj = Object.values(data)[1];
+                    images.push(
+                        '<img class="kv-preview-data file-preview-image" src="' +
+                            BASE_URL +
+                            '/storage/app/public/products/' +
+                            dataObj.split(',') +
+                            '">'
+                    );
+                });
+                imagesInfo = this.removeDuplicatesFileInfo(this.form.images);
+            } else {
+                images = false;
+                imagesInfo = false;
+            }
 
             $('#picts')
                 .fileinput({
@@ -1705,42 +1784,450 @@ export default {
                     maxFileCount: 5,
                     validateInitialCount: true,
                     uploadAsync: false,
-                    initialPreviewConfig: self.removeDuplicatesFileInfo(self.form.images),
+                    initialPreview: images,
+                    // to display the name and size of file
+                    initialPreviewConfig: imagesInfo,
+                    slugCallback: function (filename) {
+                        return filename.replace('(', '_').replace(']', '_');
+                    },
+                })
+                .on('filebatchselected', function () {
+                    $('#picts').fileinput('upload');
+                })
+                .on('filebatchuploadsuccess', function (event, data) {
+                    self.form.images.push(...data.response.initialPreviewConfig);
+                    self.form.totalInputtedPicts = self.form.images.length;
+
+                    let formData = new FormData();
+                    formData.append('images', self.form.images);
+                    formData.append('_method', 'PUT');
+
+                    self.form
+                        .put('api/staff/products/update-images/' + self.form.id, {
+                            data: formData,
+                        })
+                        .then((response) => {
+                            console.log(response);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        })
+                        .finally(() => {
+                            console.log('Work');
+                        });
+                })
+                .on('filebeforedelete', function () {
+                    return new Promise(function (resolve) {
+                        $.confirm({
+                            title: 'Confirmation!',
+                            content: 'Are you sure you want to delete this file?',
+                            type: 'red',
+                            buttons: {
+                                ok: {
+                                    btnClass: 'btn-primary text-white',
+                                    keys: ['enter'],
+                                    action: function () {
+                                        resolve();
+                                    },
+                                },
+                                cancel: function () {
+                                    $.alert('File deletion was aborted! ');
+                                },
+                            },
+                        });
+                    });
+                })
+                .on('filedeleted', function (event, key) {
+                    if (self.form.images.length === 1) {
+                        self.form.images = null;
+                    } else {
+                        var singleRemoveFileInfo = self.form.images.filter(function (x) {
+                            return x.key !== key;
+                        });
+
+                        self.form.images = singleRemoveFileInfo;
+                        self.form.totalInputtedPicts = self.form.images.length;
+                    }
+
+                    let formData = new FormData();
+                    formData.append('images', self.form.images);
+                    formData.append('_method', 'PUT');
+
+                    self.form
+                        .put('api/staff/products/update-images/' + self.form.id, {
+                            data: formData,
+                        })
+                        .then((response) => {
+                            console.log(response);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        })
+                        .finally(() => {
+                            if (self.form.images === null) {
+                                self.form.images = [];
+                            }
+                        });
+
+                    setTimeout(function () {
+                        $.alert('File deletion was successful!');
+                    }, 900);
+                });
+        },
+        fileInputVariants(id) {
+            var self = this;
+
+            $('.status_' + id).bootstrapSwitch('state', $('.status_' + id).prop('checked'));
+
+            var varProdImgs = this.form.variants_prod.filter(function (x) {
+                return x.id == id;
+            });
+
+            $('.images' + id)
+                .fileinput({
+                    theme: 'fas',
+                    uploadUrl: `${BASE_URL}/api/products/store-images/` + id,
+                    dropZoneEnabled: false,
+                    browseOnZoneClick: false,
+                    showUpload: false, // mass upload
+                    showRemove: false, // mass remove
+                    required: true,
+                    fileActionSettings: {
+                        showUpload: false, // single upload
+                    },
+                    previewSettings: {
+                        image: {
+                            product_width: 'auto',
+                            product_height: 'auto',
+                            'max-product_width': '100%',
+                            'max-product_height': '100%',
+                        },
+                    },
+                    uploadExtraData: function () {
+                        return {
+                            _token: $("input[name='_token']").val(),
+                        };
+                    },
+                    allowedFileTypes: ['image'],
+                    allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+                    overwriteInitial: false,
+                    maxFileSize: 2000,
+                    maxFileCount: 5,
+                    validateInitialCount: true,
+                    uploadAsync: false,
+                    initialPreview: varProdImgs[0].initial_preview,
+                    // to display the name and size of file
+                    initialPreviewConfig: varProdImgs[0].images,
                     slugCallback: function (filename) {
                         return filename.replace('(', '_').replace(']', '_');
                     },
                 })
                 .on('filebatchselected', function () {
                     // event, files
-                    $('#picts').fileinput('upload');
+                    $('.images' + id).fileinput('upload');
                 })
                 .on('filebatchuploadsuccess', function (event, data) {
-                    self.form.images.push(...data.response.initialPreviewConfig);
-                    self.form.totalInputtedPicts = self.form.images.length;
+                    varProdImgs[0].images.push(...data.response.initialPreviewConfig);
+                    varProdImgs[0].total_images = varProdImgs[0].images.length;
+                    self.form.imagesUpdated = varProdImgs[0].images;
+
+                    let formData = new FormData();
+                    formData.append('imagesUpdated', self.form.imagesUpdated);
+                    formData.append('_method', 'PUT');
+
+                    self.form
+                        .put('api/staff/products/update-variant-product-images/' + id, {
+                            data: formData,
+                        })
+                        .then((response) => {
+                            console.log(response);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        })
+                        .finally(() => {
+                            console.log('Work');
+                        });
                 })
                 .on('filebeforedelete', function () {
                     //
                 })
                 .on('filedeleted', function (event, key) {
-                    let getDataFileInfo = self.removeDuplicatesFileInfo(self.form.images);
+                    if (varProdImgs[0].images.length === 1) {
+                        varProdImgs[0].images = null;
+                        varProdImgs[0].total_images = 0;
+                        self.form.imagesUpdated = varProdImgs[0].images;
+                    } else {
+                        var singleRemoveFileInfo = varProdImgs[0].images.filter(function (x) {
+                            return x.key !== key;
+                        });
+                        varProdImgs[0].images = singleRemoveFileInfo;
+                        varProdImgs[0].total_images = varProdImgs[0].images.length;
+                        self.form.imagesUpdated = varProdImgs[0].images;
+                    }
 
-                    var singleRemoveFileInfo = getDataFileInfo.filter(function (x) {
-                        return x.key == key;
+                    let formData = new FormData();
+                    formData.append('imagesUpdated', self.form.imagesUpdated);
+                    formData.append('_method', 'PUT');
+                    self.form
+                        .put('api/staff/products/update-variant-product-images/' + id, {
+                            data: formData,
+                        })
+                        .then((response) => {
+                            console.log(response);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        })
+                        .finally(() => {
+                            if (varProdImgs[0].images === null) {
+                                varProdImgs[0].images = [];
+                            }
+                        });
+                })
+                .on('fileclear', function () {
+                    // before bulk remove
+                })
+                .on('filecleared', function () {
+                    // after bulk remove
+                    let dataFileInfo = self.removeDuplicatesFileInfo(self.dataFiles);
+
+                    var bulkRemoveFileInfo = dataFileInfo.filter(function (x) {
+                        return x.id == id;
                     });
 
-                    var filteredRes = getDataFileInfo.filter(
-                        (item) => !singleRemoveFileInfo.includes(item)
+                    var filteredArray = dataFileInfo.filter(
+                        (item) => !bulkRemoveFileInfo.includes(item)
                     );
 
-                    self.form.images = filteredRes;
-                    self.form.totalInputtedPicts = self.form.images.length;
+                    self.dataFiles = filteredArray;
+                });
+        },
+        tokenField(id) {
+            // enter button is killed no current input data found. To activate again, open the bootstrap-tokenfield.js, and search "kill enter button", uncomment the rest of code, and delete e.preventDefault()
+            var self = this;
+
+            $('.variant_options_' + id).tokenfield({
+                showAutocompleteOnFocus: true,
+            });
+
+            $('.variant_options_' + id)
+                .on('tokenfield:createtoken', function (event) {
+                    var existingTokens = $(this).tokenfield('getTokens');
+                    const isEmpty = (str) => !str.trim().length;
+
+                    if (isEmpty($('#variant_type').val())) {
+                        event.preventDefault();
+                        self.error = 'Please fill the variant type first';
+                        $('#errMsg').show().delay(1000).fadeOut(300);
+                    }
+
+                    $.each(existingTokens, function (index, token) {
+                        if (token.value === event.attrs.value) {
+                            event.preventDefault();
+                            self.error = 'Duplicate value is not allowed!';
+                            $('#errMsg').show().delay(1000).fadeOut(300);
+                        }
+                    });
+                })
+                .on('tokenfield:createdtoken', function () {
+                    var varType = self.form.variants.filter(function (x) {
+                        return x.id == id;
+                    });
+
+                    varType.forEach((data) => {
+                        let dataObj = Object.values(data);
+                        let varOpt = $('.variant_options_' + dataObj[0]).tokenfield('getTokens');
+                        let lastArr = [];
+                        var last = varOpt[varOpt.length - 1];
+                        lastArr.push(last);
+                        data.variant_options = lastArr;
+                    });
+
+                    self.generateVariantProducts();
+                    self.form.variants_prod.forEach((data) => {
+                        // execute self.fileInputVariants(data.id) after 100 milisecond
+                        setTimeout(function () {
+                            self.fileInputVariants(data.id);
+                        }, 100);
+                    });
+                })
+                .on('tokenfield:removetoken', function (event) {
+                    console.log(event.attrs.value);
+                })
+                .on('tokenfield:removedtoken', function (event) {
+                    let deletedVarProdsImages = [];
+                    deletedVarProdsImages.push(self.form.variants_prod);
+
+                    var varType = self.form.variants.filter(function (x) {
+                        return x.id == id;
+                    });
+
+                    if (varType[0].variant_options.length === 1) {
+                        self.form.variantIsDeleted = 'Yes';
+                    }
+
+                    let prop = varType[0].variant_type;
+                    var varProd = self.form.variants_prod.filter(function (x) {
+                        return x[prop] !== event.attrs.value;
+                    });
+                    self.form.variants_prod = varProd;
+
+                    // update the value of variant_options
+                    self.form.variants.forEach((data) => {
+                        let dataObj = Object.values(data);
+                        data.variant_options = $('.variant_options_' + dataObj[0]).tokenfield(
+                            'getTokens'
+                        );
+                    });
+
+                    var getDeletedVarProdsImages = deletedVarProdsImages[0].filter(function (x) {
+                        return x[prop] == event.attrs.value;
+                    });
+                    self.deletedVarProdsImages.push(...getDeletedVarProdsImages);
+                    self.form.deletedVarProdsImages = self.deletedVarProdsImages;
+                });
+        },
+        fillTokenField(id) {
+            var dataInfo = this.form.variants.filter(function (x) {
+                return x.id == id;
+            });
+            let variants = [];
+            dataInfo.forEach((data) => {
+                data.variant_options.forEach((data) => {
+                    variants.push(data.value);
+                });
+            });
+
+            $('.variant_options_' + id).tokenfield({
+                showAutocompleteOnFocus: true,
+            });
+
+            $('.variant_options_' + id).tokenfield('setTokens', variants);
+
+            this.tokenField(id);
+        },
+        getDropdownVal() {
+            this.form.brand_id = $('#brand_id').val();
+            this.form.category_id = $('#category_id').val();
+            this.form.subcategory_id = $('#subcategory_id').val();
+            this.form.subsubcategory_id = $('#subsubcategory_id').val();
+        },
+        showData() {
+            const token = localStorage.getItem('token-staff');
+            this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+            let id = this.$route.params.id;
+            this.axios
+                .get('api/staff/products/show/' + id)
+                .then((response) => {
+                    this.form.reset(); // v form reset inputs
+                    this.form.clear(); // v form clear errors
+                    this.form.fill(response.data);
+                    this.form.images = JSON.parse(this.form.images);
+                    if (this.form.images === null) {
+                        this.form.images = [];
+                        this.form.totalInputtedPicts = 0;
+                    } else {
+                        this.form.totalInputtedPicts = this.form.images.length;
+                    }
+                    this.loadBrands();
+                    this.loadCatSelectOption();
+                    this.fileInput();
+                    this.form.selling_price = this.form.selling_price.toLocaleString('id');
+                    this.form.min_order = this.form.min_order.toLocaleString('id');
+                    this.form.product_stock = this.form.product_stock.toLocaleString('id');
+                    this.validateInputNumber('min_order');
+                    this.validateInputNumber('selling_price');
+                    this.validateInputNumber('product_stock');
+                    this.validateInputNumber('product_weight');
+                    this.validateInputNumber('product_length');
+                    this.validateInputNumber('product_width');
+                    this.validateInputNumber('product_height');
+                    this.pageIsLoaded = true;
+
+                    let variants = [];
+                    this.form.variants.forEach((data) => {
+                        delete data.product_id;
+                        delete data.variant_name;
+                        delete data.created_at;
+                        delete data.updated_at;
+                        delete data.deleted_at;
+                        data.variant_options.forEach((data) => {
+                            delete data.id;
+                            delete data.product_id;
+                            delete data.product_variant_id;
+                            delete data.variant_value_name;
+                            delete data.created_at;
+                            delete data.updated_at;
+                            delete data.deleted_at;
+                            delete data.label;
+                        });
+                        variants.push(data);
+                    });
+                    this.form.variants = variants;
+
+                    this.form.variants_prod.forEach((data) => {
+                        delete data.product_id;
+                        delete data.unique_string_id;
+                        delete data.updated_at;
+                        delete data.created_at;
+                        delete data.deleted_at;
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    this.getSwitchValue();
+
+                    let variantType = [];
+                    this.form.variants.forEach((data) => {
+                        variantType.push(data.variant_type);
+                        this.fillTokenField(data.id);
+                    });
+                    this.variantType = variantType;
+
+                    this.form.variants_prod.forEach((data) => {
+                        data.price = data.price.toLocaleString('id');
+                        data.available_stock = data.available_stock.toLocaleString('id');
+                        data.images = JSON.parse(data.images);
+                        var imgs = [];
+                        if (data.images !== null) {
+                            data.images.forEach((data) => {
+                                let dataObj = Object.values(data)[2];
+                                imgs.push(
+                                    '<img class="kv-preview-data file-preview-image" src="' +
+                                        BASE_URL +
+                                        '/storage/app/public/products/' +
+                                        dataObj.split(',') +
+                                        '">'
+                                );
+                            });
+                            data.total_images = imgs.length;
+                        } else {
+                            data.images = [];
+                            data.total_images = 0;
+                        }
+                        data.initial_preview = imgs;
+                        if (this.variantType.length > 1) {
+                            let prodVarStr = data.product_variant;
+                            var prodVar = prodVarStr.split('-');
+
+                            for (let i = 0; i < this.variantType.length; i++) {
+                                data[this.variantType[i]] = prodVar[i];
+                            }
+                        } else {
+                            data[this.variantType[0]] = data.product_variant;
+                        }
+
+                        this.fileInputVariants(data.id);
+                    });
+
+                    this.form.variantIsDeleted = 'No';
                 });
         },
         showSuccessMsg(response) {
-            let responseData = response.data;
-            this.msg = responseData.message;
-
-            console.log(this.msg);
+            var responseData = response.data;
             const Toast = swal.mixin({
                 toast: true,
                 position: 'top-end',
@@ -1755,18 +2242,19 @@ export default {
 
             Toast.fire({
                 icon: 'success',
-                title: this.msg,
+                title: responseData.message,
             });
+
+            console.log(responseData.message);
         },
         showErrMsg(response) {
-            //this.msg = response.responseJSON.message;
-            console.log(response);
             swal.fire({
                 icon: 'error',
                 title: 'Oopss...',
-                text: 'Make sure you have fill all the fields!', //this.msg,
+                text: 'Make sure you have fill all the fields!',
                 footer: '<a href>Why do I have this issue?</a>',
             });
+            console.log(response);
         },
         showVariantFieldsErr(response) {
             let responseData = response.data;
@@ -1812,14 +2300,13 @@ export default {
                 });
             }
 
-            let variant_type = this.variant_type;
-
+            //let variant_type = this.variant_type;
             this.form.variants.forEach((data) => {
                 let dataObjVal = Object.values(data);
 
                 $('.variant_type_' + dataObjVal[0]).removeClass('is-invalid');
                 var existingTokens = $('.variant_options_' + dataObjVal[0]).tokenfield('getTokens');
-                variant_type = $('.variant_type_' + dataObjVal[0]).val();
+                let variant_type = $('.variant_type_' + dataObjVal[0]).val();
 
                 if (variant_type == '') {
                     $('.variant_type_' + dataObjVal[0]).addClass('is-invalid');
@@ -1915,37 +2402,32 @@ export default {
                 this.showSuccessMsg(res);
             }
         },
-        store() {
-            console.log(this.form.variants_prod);
+        update() {
             $('#loadingButton').html(
                 `<div class="proc-regis"><i class='fa fa-circle-o-notch fa-spin'></i> Storing data</div>`
             );
             $('#loadingButton').attr('disabled', true);
 
+            this.getDropdownVal();
+            this.getSwitchValue();
+
             this.form.isVariantExists = $('#variant_type').length;
-            this.form.category_id = $('#category_id').find(':selected').attr('data-id');
-            this.form.subcategory_id = $('#subcategory_id').find(':selected').attr('data-id');
-            this.form.subsubcategory_id = $('#subsubcategory_id').find(':selected').attr('data-id');
+            let variants = JSON.stringify(this.form.variants);
 
             let formData = new FormData();
             formData.append('isVariantExists', this.form.isVariantExists);
-            let variants = JSON.stringify(this.form.variants);
             formData.append('variants', variants);
             formData.append('variants_prod', this.form.variants_prod);
             formData.append('totalInputtedPicts', this.form.totalInputtedPicts);
-
-            $('#loadingButton').html(
-                `<div class="proc-regis"><i class='fa fa-circle-o-notch fa-spin'></i> Storing data</div>`
-            );
-            $('#loadingButton').attr('disabled', true);
-
+            formData.append('variantIsDeleted', this.form.variantIsDeleted);
+            formData.append('deletedVarProdsImages', this.form.deletedVarProdsImages);
+            console.log(this.form.variantIsDeleted);
             this.form
-                .post(`${BASE_URL}/api/staff/products/store`, { data: formData })
-                .then((result) => {
-                    let responseData = result.data;
+                .put('api/staff/products/update/' + this.form.id, { data: formData })
+                .then((response) => {
                     if (this.form.isVariantExists > 0) {
                         this.validateInputFields();
-                        this.validateVariants(result);
+                        this.validateVariants(response);
                     } else {
                         let images = this.form.images;
 
@@ -1957,17 +2439,13 @@ export default {
 
                         if (uploadedImages == 0 || inputImages == '') {
                             $('#picts').fileinput('upload');
-                            swal.fire({
-                                icon: 'error',
-                                title: 'Oouch...',
-                                text: responseData.message,
-                                footer: '<a href>Why do I have this issue?</a>',
-                            });
+                            this.showErrMsg(response);
                         } else {
-                            //this.$router.push({ name: 'products-index' });
-                            this.showSuccessMsg(result);
+                            this.$router.push({ name: 'products-index' });
+                            this.showSuccessMsg(response);
                         }
                     }
+
                     $('#loadingButton').attr('disabled', false);
                     $('.proc-regis').remove();
                     $('#loadingButton').html(`Save`);
@@ -1986,30 +2464,15 @@ export default {
                 });
         },
     }, // methods:
-    created() {},
+    created() {
+        this.showData();
+    },
     mounted() {
-        // bootstrap-switch.min.js is already attached in main.js
-        $('.status').bootstrapSwitch('state', $('.status').prop('checked'));
-        $('.hot_deals').bootstrapSwitch('state', $('.hot_deals').prop('checked'));
-        $('.special_offer').bootstrapSwitch('state', $('.special_offer').prop('checked'));
-        $('.special_deals').bootstrapSwitch('state', $('.special_deals').prop('checked'));
-        $('.featured').bootstrapSwitch('state', $('.featured').prop('checked'));
-        this.tokenField();
         this.form.variants.splice(0, this.form.variants.length); // empty an array of dynamic variants field
         // prevent sweetalert error if user change the route when swal is still visible.
         if (swal.isVisible()) {
             document.querySelector('body').setAttribute('class', 'swal2-toast-shown swal2-shown');
         }
-        this.loadBrands();
-        this.loadCatSelectOption();
-        this.fileInput();
-        this.validateInputNumber('min_order');
-        this.validateInputNumber('selling_price');
-        this.validateInputNumber('product_stock');
-        this.validateInputNumber('product_weight');
-        this.validateInputNumber('product_length');
-        this.validateInputNumber('product_width');
-        this.validateInputNumber('product_height');
     },
 };
 </script>

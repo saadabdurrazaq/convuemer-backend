@@ -311,6 +311,26 @@ const routes = [
             next();
         }
     },
+    {
+        path: '/staff/products/edit/:id',
+        name: 'products-edit',
+        component: () => import('@/views/staff/products/edit.vue'),
+        meta: {
+            requiresAuth: true,
+            breadcrumb: [
+                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Products', link: 'index', home: 'index' },
+                { name: 'Edit', active: 'active' }
+            ],
+            pageTitle: "Edit Product"
+        },
+        beforeEnter: (to, from, next) => {
+            if (!localStorage.getItem('token-staff')) {
+                next('/staff/login');
+            }
+            next();
+        }
+    },
 ]
 
 //create router

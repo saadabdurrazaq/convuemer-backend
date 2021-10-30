@@ -800,6 +800,8 @@ export default {
             this.form.clear(); // v form clear errors
             $('#exampleModal').modal('show'); // show modal
             this.form.fill(sub_category);
+            console.log(sub_category); // object
+            console.log(this.form);
         },
 
         // /updateSubCategory() function. Function we use to update user details by calling api/categories/{id} method PUT (carrying form input data).

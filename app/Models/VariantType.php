@@ -10,10 +10,10 @@ class VariantType extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public function variantOption()
+    public function variantOptions()
     {
         // one variant type has many variant options
-        return $this->hasMany(VariantOption::class);
+        return $this->hasMany(VariantOption::class, 'product_variant_id', 'id');
     }
 
     public function product()

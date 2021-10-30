@@ -122,8 +122,14 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     Route::get('sub-sub-categories/trash/search/{keyword}', [SubSubCategoryController::class, 'searchTrashSubSubCat']);
 
     // CRUD products
-    Route::post('products/store', [ProductController::class, 'store']);
     Route::get('get-brands', [ProductController::class, 'getBrands']);
+    Route::post('products/store', [ProductController::class, 'store']);
+    Route::get('products/index', [ProductController::class, 'index']);
+    Route::put('products/update-status/{id}', [ProductController::class, 'updateStatus']);
+    Route::get('products/show/{id}', [ProductController::class, 'show']);
+    Route::put('products/update-images/{id}', [ProductController::class, 'updateImages']);
+    Route::put('products/update-variant-product-images/{id}', [ProductController::class, 'updateVarProdImages']);
+    Route::put('products/update/{id}', [ProductController::class, 'update']);
 });
 
 Route::middleware(['auth:staff-api', 'scopes:staff'])->get('/staff', function (Request $request) {

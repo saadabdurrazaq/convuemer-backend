@@ -198,7 +198,7 @@
                                                 </td>
                                                 <td class="align-middle">
                                                     {{
-                                                        brands.indexOf(brand) +
+                                                        brands.indexOf(brand) + 
                                                         1 +
                                                         (currentPage - 1) * perPage
                                                     }}

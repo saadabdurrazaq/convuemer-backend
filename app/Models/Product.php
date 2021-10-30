@@ -28,13 +28,19 @@ class Product extends Model
         return $this->belongsTo(SubSubCategory::class, 'subsubcategory_id', 'id');
     }
 
-    public function variantType()
+    public function variants()
     {
         // one product has many variants types
-        return $this->hasMany(VariantType::class);
+        return $this->hasMany(VariantType::class); // , 'product_variant_id', 'id'
     }
 
-    public function productCombination()
+    public function variantOptions()
+    {
+        // one category has many sub sub categories
+        return $this->hasMany(VariantOption::class);
+    }
+
+    public function variantsProd()
     {
         // one product has many product variants
         return $this->hasMany(ProductCombination::class);
@@ -42,6 +48,27 @@ class Product extends Model
 
     protected $fillable = [
         'product_name',
+        'brand_id',
+        'category_id',
+        'subcategory_id',
+        'subsubcategory_id',
+        'short_desc',
+        'long_desc',
+        'min_order',
+        'selling_price',
+        'product_stock',
+        'product_cond',
+        'sku',
+        'product_length',
+        'product_width',
+        'product_height',
+        'product_weight',
+        'metric_mass',
+        'status',
+        'hot_deals',
+        'special_offer',
+        'featured',
+        'special_deals',
     ];
 
     protected $table = "products";

@@ -456,24 +456,22 @@
                                                                 </div>
                                                                 <input
                                                                     id="variant_price"
+                                                                    type="text"
+                                                                    :class="
+                                                                        'variant_price_' +
+                                                                        variantVal.id
+                                                                    "
+                                                                    v-model="variantVal.price"
+                                                                    v-bind:name="variantVal.price"
+                                                                    class="form-control"
+                                                                    required
+                                                                    autofocus
                                                                     @mouseover="
                                                                         validateInputNumber(
                                                                             'variant_price_' +
                                                                                 variantVal.id
                                                                         )
                                                                     "
-                                                                    :class="
-                                                                        'variant_price_' +
-                                                                        variantVal.id
-                                                                    "
-                                                                    v-model="variantVal.price"
-                                                                    type="text"
-                                                                    class="
-                                                                        form-control
-                                                                        variant_price
-                                                                    "
-                                                                    required
-                                                                    autofocus
                                                                 />
                                                             </div>
                                                         </td>
@@ -500,12 +498,15 @@
                                                                 autofocus
                                                             />
                                                         </td>
-                                                        <td>
+                                                        <td v-if="variantVal.condition === 'New'">
                                                             <input
                                                                 value="New"
                                                                 type="radio"
                                                                 id="new"
                                                                 :name="'condition_' + variantVal.id"
+                                                                :class="
+                                                                    'condition_' + variantVal.id
+                                                                "
                                                                 checked
                                                             />
                                                             <label for="new">New</label> <br />
@@ -514,6 +515,32 @@
                                                                 type="radio"
                                                                 id="second"
                                                                 :name="'condition_' + variantVal.id"
+                                                                :class="
+                                                                    'condition_' + variantVal.id
+                                                                "
+                                                            />
+                                                            <label for="second">Second</label>
+                                                        </td>
+                                                        <td v-else>
+                                                            <input
+                                                                value="New"
+                                                                type="radio"
+                                                                id="new"
+                                                                :name="'condition_' + variantVal.id"
+                                                                :class="
+                                                                    'condition_' + variantVal.id
+                                                                "
+                                                            />
+                                                            <label for="new">New</label> <br />
+                                                            <input
+                                                                value="Second"
+                                                                type="radio"
+                                                                id="second"
+                                                                :name="'condition_' + variantVal.id"
+                                                                :class="
+                                                                    'condition_' + variantVal.id
+                                                                "
+                                                                checked
                                                             />
                                                             <label for="second">Second</label>
                                                         </td>
@@ -535,14 +562,14 @@
                                                         <td v-if="variantVal.status === 'Active'">
                                                             <input
                                                                 type="checkbox"
-                                                                class="switch"
                                                                 name="permission[]"
                                                                 data-bootstrap-switch
                                                                 data-off-color="danger"
                                                                 data-on-text=""
                                                                 data-off-text=""
                                                                 data-size="small"
-                                                                value="testing"
+                                                                class="status_varprod"
+                                                                :value="variantVal.id"
                                                                 :class="'status_' + variantVal.id"
                                                                 checked
                                                             />
@@ -552,14 +579,14 @@
                                                         <td v-else>
                                                             <input
                                                                 type="checkbox"
-                                                                class="switch"
                                                                 name="permission[]"
                                                                 data-bootstrap-switch
                                                                 data-off-color="danger"
                                                                 data-on-text=""
                                                                 data-off-text=""
                                                                 data-size="small"
-                                                                value="testing"
+                                                                :value="variantVal.id"
+                                                                class="status_varprod"
                                                                 :class="'status_' + variantVal.id"
                                                             />
                                                             <br />
@@ -1256,18 +1283,21 @@ export default {
                         variant_options: [],
                     },
                 ],
-                variants_prod: [],
                 imagesUpdated: [],
                 variantIsDeleted: '',
-                deletedVarProdsImages: [],
+                variants_prod: [], // al general variant products that displayed in view.
+                varProdsImgsToBeDeleted: [], // all of the variant options that has been deleted in the view, it's uploaded images should be stored here to be deleted.
+                varProdsToBeDeleted: [], // The existing variant products that has been stored in db, but user delete it in the view, it will be stored here.
+                addedNewVarProds: [], // collect all new added variant products. It's gonna be stored in db.
+                varProdsBeenStoredInDb: [], // it's used to update all existing variant products that already stored in db.
             }),
             error: '',
             attributes: [],
             title: '',
-            dataFiles: [],
             pageIsLoaded: false,
             variantType: [],
-            deletedVarProdsImages: [],
+            varProdsImgsToBeDeleted: [],
+            addedNewVarProds: [],
         };
     },
     methods: {
@@ -1350,6 +1380,18 @@ export default {
                 data.variant_options = $('.variant_options_' + dataObj[0]).tokenfield('getTokens');
             });
         },
+        getVarProdsBeenStoredInDb() {
+            var storedVarProds = this.form.variants_prod.filter(function (x) {
+                return Object.keys(x).length == 12; // including initial_preview property
+            });
+            this.form.varProdsBeenStoredInDb = storedVarProds;
+        },
+        getNewAddedVarProds() {
+            var newVarProds = this.form.variants_prod.filter(function (x) {
+                return Object.keys(x).length !== 12; // excluding initial_preview property
+            });
+            this.form.addedNewVarProds = newVarProds;
+        },
         addVariant() {
             var self = this;
             if (this.form.variants.length === 0) {
@@ -1417,10 +1459,6 @@ export default {
                 return false;
             });
 
-            function addDot(x) {
-                return x.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-            }
-
             var flag = 0;
             $('.' + className + '').on('keydown', function (e) {
                 flag++;
@@ -1451,6 +1489,11 @@ export default {
             });
 
             //////////////////////////////////////////////////////////////////////////////////
+            // paste function is disabled. If it's enabled, it will reproduce a new bug.
+
+            function addDot(x) {
+                return x.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
 
             $('.' + className + '').on('paste', function (event) {
                 // This will allow only number with dot (/^[0-9]*\.?[0-9]*$/).
@@ -1482,6 +1525,8 @@ export default {
                     } else {
                         return true;
                     }
+
+                    //event.preventDefault();
                 }
             });
         },
@@ -1532,6 +1577,8 @@ export default {
                 });
         },
         loadCatSelectOption() {
+            var self = this;
+
             this.axios
                 .get('api/staff/get-categories', {})
                 .then((response) => {
@@ -1568,7 +1615,9 @@ export default {
                     console.log(error);
                 })
                 .finally(() => {
-                    this.loadCatAndSubCat();
+                    setTimeout(function () {
+                        self.loadCatAndSubCat();
+                    }, 1000);
                 });
         },
         loadCatAndSubCat() {
@@ -1728,6 +1777,24 @@ export default {
             } else {
                 this.form.special_deals = 'Yes';
             }
+        },
+        getSwitchValueVarProds() {
+            var self = this;
+            this.form.variants_prod.forEach((item) => {
+                if ($('.status_' + item.id).is(':checked') === false) {
+                    item.status = 'Inactive';
+                } else {
+                    item.status = 'Active';
+                }
+                setTimeout(function () {
+                    self.fileInputVariants(item.id);
+                }, 1000);
+            });
+        },
+        getRadioButtonVarProdsVal() {
+            this.form.variants_prod.forEach((item) => {
+                item.condition = $('input[name="condition_' + item.id + '"]:checked').val();
+            });
         },
         fileInput() {
             var self = this;
@@ -2035,6 +2102,7 @@ export default {
                         return x.id == id;
                     });
 
+                    // get new added variant options
                     varType.forEach((data) => {
                         let dataObj = Object.values(data);
                         let varOpt = $('.variant_options_' + dataObj[0]).tokenfield('getTokens');
@@ -2044,9 +2112,17 @@ export default {
                         data.variant_options = lastArr;
                     });
 
+                    // Generate variant products
                     self.generateVariantProducts();
+
+                    // Add only new product variant to the list
+                    self.getNewAddedVarProds();
+
+                    // Get all the displayed variant products in the view that already stored in database.
+                    self.getVarProdsBeenStoredInDb();
+
+                    // execute self.fileInputVariants(data.id) after 100 milisecond
                     self.form.variants_prod.forEach((data) => {
-                        // execute self.fileInputVariants(data.id) after 100 milisecond
                         setTimeout(function () {
                             self.fileInputVariants(data.id);
                         }, 100);
@@ -2056,8 +2132,8 @@ export default {
                     console.log(event.attrs.value);
                 })
                 .on('tokenfield:removedtoken', function (event) {
-                    let deletedVarProdsImages = [];
-                    deletedVarProdsImages.push(self.form.variants_prod);
+                    let varProdsImgsToBeDeleted = [];
+                    varProdsImgsToBeDeleted.push(self.form.variants_prod);
 
                     var varType = self.form.variants.filter(function (x) {
                         return x.id == id;
@@ -2081,17 +2157,43 @@ export default {
                         );
                     });
 
-                    var getDeletedVarProdsImages = deletedVarProdsImages[0].filter(function (x) {
+                    // get and updated deleted variant products images
+                    var getVarProdsImgsToBeDeleted = varProdsImgsToBeDeleted[0].filter(function (
+                        x
+                    ) {
                         return x[prop] == event.attrs.value;
                     });
-                    self.deletedVarProdsImages.push(...getDeletedVarProdsImages);
-                    self.form.deletedVarProdsImages = self.deletedVarProdsImages;
+                    self.varProdsImgsToBeDeleted.push(...getVarProdsImgsToBeDeleted);
+                    self.form.varProdsImgsToBeDeleted = self.varProdsImgsToBeDeleted;
+
+                    // variant products to be deleted from database
+                    self.form.varProdsToBeDeleted = self.varProdsImgsToBeDeleted;
+                    if (self.form.varProdsToBeDeleted.length > 0) {
+                        var deleteVarProdsFromDb = self.form.varProdsToBeDeleted.filter(function (
+                            x
+                        ) {
+                            return Object.keys(x).length == 12; // including initial_preview property
+                        });
+                        self.form.varProdsToBeDeleted = deleteVarProdsFromDb;
+                    }
+
+                    // delete related deleted data that stored in addedNewVarProds
+                    if (self.form.addedNewVarProds !== undefined) {
+                        let remainingVarProds = self.form.addedNewVarProds.filter(function (x) {
+                            return x[prop] !== event.attrs.value;
+                        });
+                        self.form.addedNewVarProds = remainingVarProds;
+                    }
+
+                    // Get all the displayed variant products in the view that already stored in database.
+                    self.getVarProdsBeenStoredInDb();
                 });
         },
         fillTokenField(id) {
             var dataInfo = this.form.variants.filter(function (x) {
                 return x.id == id;
             });
+
             let variants = [];
             dataInfo.forEach((data) => {
                 data.variant_options.forEach((data) => {
@@ -2117,6 +2219,7 @@ export default {
             const token = localStorage.getItem('token-staff');
             this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             let id = this.$route.params.id;
+
             this.axios
                 .get('api/staff/products/show/' + id)
                 .then((response) => {
@@ -2224,7 +2327,7 @@ export default {
                     });
 
                     this.form.variantIsDeleted = 'No';
-                });
+                }); // .finally
         },
         showSuccessMsg(response) {
             var responseData = response.data;
@@ -2398,7 +2501,7 @@ export default {
                 emptyInputImgs.length == 0 && // empty input images is not exist.
                 this.form.images.length > 0
             ) {
-                //this.$router.push({ name: 'products-index' });
+                this.$router.push({ name: 'products-index' });
                 this.showSuccessMsg(res);
             }
         },
@@ -2410,18 +2513,24 @@ export default {
 
             this.getDropdownVal();
             this.getSwitchValue();
+            this.getSwitchValueVarProds();
+            this.getRadioButtonVarProdsVal();
+            this.getVarProdsBeenStoredInDb();
 
             this.form.isVariantExists = $('#variant_type').length;
             let variants = JSON.stringify(this.form.variants);
 
             let formData = new FormData();
+            formData.append('totalInputtedPicts', this.form.totalInputtedPicts);
+            formData.append('variantIsDeleted', this.form.variantIsDeleted);
             formData.append('isVariantExists', this.form.isVariantExists);
             formData.append('variants', variants);
             formData.append('variants_prod', this.form.variants_prod);
-            formData.append('totalInputtedPicts', this.form.totalInputtedPicts);
-            formData.append('variantIsDeleted', this.form.variantIsDeleted);
-            formData.append('deletedVarProdsImages', this.form.deletedVarProdsImages);
-            console.log(this.form.variantIsDeleted);
+            formData.append('varProdsImgsToBeDeleted', this.form.varProdsImgsToBeDeleted);
+            formData.append('varProdsToBeDeleted', this.form.varProdsToBeDeleted);
+            formData.append('addedNewVarProds', this.form.addedNewVarProds);
+            formData.append('varProdsBeenStoredInDb', this.form.varProdsBeenStoredInDb);
+
             this.form
                 .put('api/staff/products/update/' + this.form.id, { data: formData })
                 .then((response) => {

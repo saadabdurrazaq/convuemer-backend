@@ -16,6 +16,7 @@ use DB;
 //use Symfony\Component\HttpFoundation\Response;
 use Response;
 use Image;
+use Mockery\Undefined;
 
 class ProductController extends Controller
 {
@@ -203,52 +204,6 @@ class ProductController extends Controller
         ]);
     }
 
-    public function validateVariantsFields()
-    {
-        $variants = $this->request->get('variants');
-        $variantsProd = $this->request->get('variants_prod');
-
-        // validate variant type 
-        foreach ($variants as $variant) {
-            $variant_type = $variant['variant_type'];
-            $variant_options = $variant['variant_options'];
-
-            // if user, input varian opt ended with comma, but after then he delete it
-            if (is_array($variant_options)) {
-                $countVarOpt = count(array_filter($variant_options));
-                if ($variant_type == null || $countVarOpt == 0) {
-                    return response()->json([
-                        'success' => true,
-                        'message' => 'Please fill the variant type and variant options field!', // 
-                    ]);
-                }
-            } else {
-                // if user doesn't input the variant options at all, all he input variant opt but not end with comma
-                if ($variant_type == null || $variant_options == null) {
-                    return response()->json([
-                        'success' => true,
-                        'message' => 'Please fill the variant type and variant options field!', // 
-                    ]);
-                }
-            }
-        }
-
-        // validate product variant
-        foreach ($variantsProd as $var) {
-            $price = $var['price'];
-            $stock = $var['available_stock'];
-            $sku = $var['sku'];
-            $total_images = $var['total_images'];
-
-            if ($price == null || $stock == null || $sku == null || $total_images == 0) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Please fill the variant product input!',
-                ]);
-            }
-        }
-    }
-
     public function inputData()
     {
         $data = array();
@@ -344,6 +299,64 @@ class ProductController extends Controller
         ]);
     }
 
+    public function storeNewVarTypeAndVarOpt($id)
+    {
+        $variants = $this->request->get('variants');
+
+        foreach ($variants as $variant) {
+            $variant_type = $variant['variant_type'];
+            $variant_options = $variant['variant_options'];
+
+            $newVariantTypeId = VariantType::insertGetId([
+                'product_id' => $id,
+                'variant_name' => $variant_type,
+                'variant_type' => $variant_type,
+            ]);
+
+            foreach ($variant_options as $varOpt) {
+                $varVal = $varOpt['value'];
+
+                $newVariantOptionId = VariantOption::insertGetId([
+                    'product_id' => $id,
+                    'product_variant_id' => $newVariantTypeId,
+                    'variant_value_name' => $varVal,
+                    'value' => $varVal,
+                ]);
+            }
+        }
+    }
+
+    public function storeNewVarProds($id)
+    {
+        $variantsProd = $this->request->get('variants_prod');
+
+        foreach ($variantsProd as $key) {
+            $productVariant = $key['product_variant'];
+            $price = $key['price'];
+            $sku = $key['sku'];
+            $images = $key['images'];
+            $condition = $key['condition'];
+            $status = $key['status'];
+            $stock = $key['available_stock'];
+
+            $stringParts = str_split($productVariant);
+            sort($stringParts);
+            $string = implode($stringParts);
+
+            $newProductCombinationId = ProductCombination::insertGetId([
+                'product_id' => $id,
+                'product_variant' => $productVariant,
+                'unique_string_id' => Str::lower($string),
+                'price' => str_replace(".", "", $price),
+                'sku' => $sku,
+                'available_stock' => str_replace(".", "", $stock),
+                'condition' => $condition,
+                'status' => $status,
+                'images' => json_encode($images),
+            ]);
+        }
+    }
+
     public function store(Request $request)
     {
         $this->validateFields();
@@ -408,53 +421,8 @@ class ProductController extends Controller
                 ]);
             }
 
-            foreach ($variants as $variant) {
-                $variant_type = $variant['variant_type'];
-                $variant_options = $variant['variant_options'];
-
-                $newVariantTypeId = VariantType::insertGetId([
-                    'product_id' => $this->newProductId,
-                    'variant_name' => $variant_type,
-                    'variant_type' => $variant_type,
-                ]);
-
-                foreach ($variant_options as $varOpt) {
-                    $varVal = $varOpt['value'];
-
-                    $newVariantOptionId = VariantOption::insertGetId([
-                        'product_id' => $this->newProductId,
-                        'product_variant_id' => $newVariantTypeId,
-                        'variant_value_name' => $varVal,
-                        'value' => $varVal,
-                    ]);
-                }
-            }
-
-            foreach ($variantsProd as $key) {
-                $productVariant = $key['product_variant'];
-                $price = $key['price'];
-                $sku = $key['sku'];
-                $images = $key['images'];
-                $condition = $key['condition'];
-                $status = $key['status'];
-                $stock = $key['stock'];
-
-                $stringParts = str_split($productVariant);
-                sort($stringParts);
-                $string = implode($stringParts);
-
-                $newProductCombinationId = ProductCombination::insertGetId([
-                    'product_id' => $this->newProductId,
-                    'product_variant' => $productVariant,
-                    'unique_string_id' => Str::lower($string),
-                    'price' => str_replace(".", "", $price),
-                    'sku' => $sku,
-                    'available_stock' => str_replace(".", "", $stock),
-                    'condition' => $condition,
-                    'status' => $status,
-                    'images' => json_encode($images),
-                ]);
-            }
+            $this->storeNewVarTypeAndVarOpt($this->newProductId);
+            $this->storeNewVarProds($this->newProductId);
 
             return response()->json([
                 'success' => true,
@@ -535,18 +503,89 @@ class ProductController extends Controller
         ]);
     }
 
+    public function deleteAllVarProdsImages($id)
+    {
+        $varProds = ProductCombination::where('product_id', $id)->get('images');
+
+        if ($varProds) {
+            $varProdImages = array();
+            foreach ($varProds as $varProd) {
+                $varProdImages[] = json_decode($varProd['images']);
+            }
+
+            if (sizeof($varProdImages) > 0) {
+                $varProdImagesName = array();
+                foreach ($varProdImages as $varProdImage) {
+                    if ($varProdImage) {
+                        foreach ($varProdImage as $varProdFileName) {
+
+                            $varProdImagesName[] = $varProdFileName;
+                        }
+                    }
+                }
+
+                if (sizeof($varProdImagesName) > 0) {
+                    $deleteAllImages = array_column($varProdImagesName, 'caption');
+
+                    foreach ($deleteAllImages as $deleteImage) {
+                        $this->deleteImages($deleteImage);
+                    }
+                }
+            }
+        }
+        // end
+    }
+
+    public function deleteAllVarProds($id)
+    {
+        $varProds = ProductCombination::where('product_id', $id);
+        if ($varProds) {
+            $varProds->forceDelete();
+        }
+
+        $varOpt = VariantOption::where('product_id', $id);
+        if ($varOpt) {
+            $varOpt->forceDelete();
+        }
+
+        $varType = VariantType::where('product_id', $id);
+        if ($varType) {
+            $varType->forceDelete();
+        }
+    }
+
+    public function updateVarTypesAndVarOpts($id)
+    {
+        // delete all variant type and variant options
+        $varOpts = VariantOption::where('product_id', $id);
+        if ($varOpts) {
+            $varOpts->forceDelete();
+        }
+
+        $varTypes = VariantType::where('product_id', $id);
+        if ($varTypes) {
+            $varTypes->forceDelete();
+        }
+
+        // insert the new updated variant type and variant options
+        $this->storeNewVarTypeAndVarOpt($id);
+    }
+
     public function update($id)
     {
         $this->validateFields();
 
         $totalInputtedPicts = $this->request->get('totalInputtedPicts');
         $isVariantExists =  $this->request->get('isVariantExists');
+        $variantIsDeleted = $this->request->get('variantIsDeleted');
 
         if ($isVariantExists > 0) {
             $variants = $this->request->get('variants');
             $variantsProd = $this->request->get('variants_prod');
-            $deletedVarProdsImages = $this->request->get('deletedVarProdsImages');
-            $variantIsDeleted = $this->request->get('variantIsDeleted');
+            $varProdsToBeDeleted = $this->request->get('varProdsToBeDeleted');
+            $varProdsImgsToBeDeleted = $this->request->get('varProdsImgsToBeDeleted');
+            $newVarProdIsExist = $this->request->get('addedNewVarProds');
+            $varProdsBeenStoredInDb = $this->request->get('varProdsBeenStoredInDb');
 
             // validate variant type 
             foreach ($variants as $variant) {
@@ -590,7 +629,8 @@ class ProductController extends Controller
 
             ///////////////////////////////////////////////////////////////////////////////////////
 
-            if ($totalInputtedPicts > 0) {
+            // update the single product
+            if ($totalInputtedPicts > 0) { // if total input images of single product is more than 0
                 $this->updateProduct($id);
             } else {
                 return response()->json([
@@ -599,11 +639,28 @@ class ProductController extends Controller
                 ]);
             }
 
-            if ($deletedVarProdsImages !== null) {
-                if (sizeof($deletedVarProdsImages) > 0) {
+            // Do this action if variant is deleted from the view. 
+            if ($variantIsDeleted == 'Yes') {
+                // delete all variant product images
+                $this->deleteAllVarProdsImages($id);
+
+                // delete all variant products
+                $this->deleteAllVarProds($id);
+
+                // store new variant products
+                $this->storeNewVarProds($id);
+
+                // update the change of variant type and variant options
+                $this->updateVarTypesAndVarOpts($id);
+            }
+
+            // if one or some of variant options is deleted from the view, do this action. 
+            if ($varProdsImgsToBeDeleted !== null && $variantIsDeleted == 'No') {
+                // delete variant product images file that has been uploaded. 
+                if (sizeof($varProdsImgsToBeDeleted) > 0) {
                     $images = array();
-                    foreach ($deletedVarProdsImages as $deletedVarProdsImage) {
-                        $images[] = $deletedVarProdsImage['images'];
+                    foreach ($varProdsImgsToBeDeleted as $deletedVarProd) {
+                        $images[] = $deletedVarProd['images'];
                     }
 
                     $imagesName = array();
@@ -619,38 +676,110 @@ class ProductController extends Controller
                         $this->deleteImages($imageName);
                     }
                 }
+
+                // if the variant product that stored in database is deleted in the view, then also delete it from database. 
+                if ($varProdsToBeDeleted !== null) {
+                    if (sizeof($varProdsToBeDeleted)  > 0) {
+                        $varProdIds = array();
+                        foreach ($varProdsToBeDeleted as $varProd) {
+                            $varProdIds[] = $varProd['id'];
+                        }
+
+                        if (count($varProdIds) > 0) {
+                            foreach ($varProdIds as $varProdId) {
+                                $varProd = ProductCombination::where('id', $varProdId);
+                                $varProd->forceDelete();
+                            }
+                        }
+                    }
+
+                    // update the change of variant type and variant options
+                    $this->updateVarTypesAndVarOpts($id);
+                }
             }
 
-            if ($variantIsDeleted == 'Yes') {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Variant is deleted!',
-                ]);
-            }
+            // If the new variant products exist, then insert it to database. 
+            if ($newVarProdIsExist !== null) {
+                if (sizeof($newVarProdIsExist) > 0) {
+                    foreach ($newVarProdIsExist as $key) {
+                        $productVariant = $key['product_variant'];
+                        $price = $key['price'];
+                        $sku = $key['sku'];
+                        $images = $key['images'];
+                        $condition = $key['condition'];
+                        $status = $key['status'];
+                        $stock = $key['available_stock'];
 
-            $varProds = ProductCombination::where('product_id', $id)->get('images');
+                        $stringParts = str_split($productVariant);
+                        sort($stringParts);
+                        $string = implode($stringParts);
 
-            $varProdImages = array();
-            foreach ($varProds as $varProd) {
-                $varProdImages[] = json_decode($varProd['images']);
-            }
-
-            /*$varProdImagesName = array();
-            foreach ($varProdImages as $varProdImage) {
-                if ($varProdImage) {
-                    foreach ($varProdImage as $varProdFileName) {
-                        $varProdImagesName[] = $varProdFileName['caption'];
+                        $newProductCombinationId = ProductCombination::insertGetId([
+                            'product_id' => $id,
+                            'product_variant' => $productVariant,
+                            'unique_string_id' => Str::lower($string),
+                            'price' => str_replace(".", "", $price),
+                            'sku' => $sku,
+                            'available_stock' => str_replace(".", "", $stock),
+                            'condition' => $condition,
+                            'status' => $status,
+                            'images' => json_encode($images),
+                        ]);
                     }
                 }
-            }*/
+
+                // update the change of variant type and variant options
+                $this->updateVarTypesAndVarOpts($id);
+            }
+
+            // If the variant products that has been stored in database are exist in the view, then update all of it. 
+            if ($varProdsBeenStoredInDb !== null) {
+                // bulk update all the existing variant products. 
+                if (sizeof($varProdsBeenStoredInDb) > 0) {
+                    $varProdIds = array();
+                    foreach ($varProdsBeenStoredInDb as $varProd) {
+                        $varProdIds[] = $varProd['id'];
+                    }
+
+                    $prices = array();
+                    $sku = array();
+                    $available_stocks = array();
+                    $conditions = array();
+                    $status = array();
+                    for ($i = 0; $i < count($varProdsBeenStoredInDb); $i++) {
+                        array_push($prices, $varProdsBeenStoredInDb[$i]['price']);
+                        array_push($sku, $varProdsBeenStoredInDb[$i]['sku']);
+                        array_push($available_stocks, $varProdsBeenStoredInDb[$i]['available_stock']);
+                        array_push($conditions, $varProdsBeenStoredInDb[$i]['condition']);
+                        array_push($status, $varProdsBeenStoredInDb[$i]['status']);
+                    }
+
+                    foreach ($varProdIds as $index => $varProdId) {
+                        $prod = ProductCombination::where('id', $varProdId);
+
+                        $prod->update([
+                            'price' => str_replace(".", "", $prices[$index]),
+                            'sku' => $sku[$index],
+                            'available_stock' => str_replace(".", "", $available_stocks[$index]),
+                            'condition' => $conditions[$index],
+                            'status' => $status[$index],
+                        ]);
+                    }
+                }
+            }
 
             return response()->json([
                 'success' => true,
-                'message' => $varProdImages //'Product successfully updated!',
+                'message' => 'Product successfully updated!',
             ]);
         } else {
             if ($totalInputtedPicts > 0) {
                 $this->updateProduct($id);
+
+                if ($variantIsDeleted == 'Yes') {
+                    $this->deleteAllVarProdsImages($id);
+                    $this->deleteAllVarProds($id);
+                }
 
                 return response()->json([
                     'success' => true,

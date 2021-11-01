@@ -1382,13 +1382,13 @@ export default {
         },
         getVarProdsBeenStoredInDb() {
             var storedVarProds = this.form.variants_prod.filter(function (x) {
-                return Object.keys(x).length == 12; // including initial_preview property
+                return Object.keys(x).includes('initial_preview');
             });
             this.form.varProdsBeenStoredInDb = storedVarProds;
         },
         getNewAddedVarProds() {
             var newVarProds = this.form.variants_prod.filter(function (x) {
-                return Object.keys(x).length !== 12; // excluding initial_preview property
+                return Object.keys(x).includes('initial_preview') === false;
             });
             this.form.addedNewVarProds = newVarProds;
         },
@@ -1432,6 +1432,8 @@ export default {
         },
         deleteVariant(index) {
             var self = this;
+            this.form.variantIsDeleted = 'Yes';
+            console.log(this.form.variantIsDeleted);
             $('#errMsg').hide();
             this.form.variants.splice(index, 1);
             if (this.form.variants.length === 0) {
@@ -1446,7 +1448,6 @@ export default {
                     self.fileInputVariants(data.id);
                 }, 100);
             });
-            this.form.variantIsDeleted = 'Yes';
         },
         removeDuplicatesFileInfo(arr) {
             let s = new Set(arr);
@@ -2172,7 +2173,7 @@ export default {
                         var deleteVarProdsFromDb = self.form.varProdsToBeDeleted.filter(function (
                             x
                         ) {
-                            return Object.keys(x).length == 12; // including initial_preview property
+                            return Object.keys(x).includes('initial_preview'); // including initial_preview property
                         });
                         self.form.varProdsToBeDeleted = deleteVarProdsFromDb;
                     }

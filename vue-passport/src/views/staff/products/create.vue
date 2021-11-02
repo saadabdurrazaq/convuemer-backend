@@ -473,21 +473,23 @@
                                                         </td>
                                                         <td>
                                                             <input
-                                                                id="variant_stock"
+                                                                id="variant_available_stock"
                                                                 type="text"
                                                                 :class="
-                                                                    'variant_stock_' + variantVal.id
+                                                                    'variant_available_stock_' +
+                                                                    variantVal.id
                                                                 "
                                                                 @mouseover="
                                                                     validateInputNumber(
-                                                                        'variant_stock_' +
+                                                                        'variant_available_stock_' +
                                                                             variantVal.id
                                                                     )
                                                                 "
-                                                                v-bind:name="variantVal.stock"
+                                                                :name="variantVal.available_stock"
+                                                                v-model="variantVal.available_stock"
                                                                 class="form-control"
                                                                 required
-                                                                autocomplete="variant_stock"
+                                                                autocomplete="variant_available_stock"
                                                                 autofocus
                                                             />
                                                         </td>
@@ -571,7 +573,7 @@
                                                     <input
                                                         type="text"
                                                         id="min_order"
-                                                        v-bind:name="form.min_order"
+                                                        :name="form.min_order"
                                                         v-model="form.min_order"
                                                         :class="{
                                                             'is-invalid':
@@ -1164,7 +1166,7 @@ export default {
                 item.id = i + 1;
                 item.product_variant = $('.variant_product_' + item.id).text();
                 item.price = $('.variant_price_' + item.id).val();
-                item.available_stock = $('.variant_stock_' + item.id).val();
+                item.available_stock = $('.variant_available_stock_' + item.id).val();
                 item.sku = $('.variant_sku_' + item.id).val();
             });
 
@@ -1204,13 +1206,13 @@ export default {
                 item.condition = document.querySelector(
                     'input[name="condition_' + item.id + '"]:checked'
                 ).value;
-                item.available_stock = $('.variant_stock_' + item.id).val();
+                item.available_stock = $('.variant_available_stock_' + item.id).val();
                 item.sku = $('.variant_sku_' + item.id).val();
 
                 if (item.price === undefined || isEmpty(item.product_variant)) {
                     item.product_variant = $('.variant_product_' + last.id).text();
                     item.price = $('.variant_price_' + last.id).val();
-                    item.available_stock = $('.variant_stock_' + last.id).val();
+                    item.available_stock = $('.variant_available_stock_' + last.id).val();
                     item.sku = $('.variant_sku_' + last.id).val();
                 }
             });
@@ -1469,6 +1471,7 @@ export default {
                 return x.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
             }
 
+            // prevent bug for long press
             var flag = 0;
             $('.' + className + '').on('keydown', function (e) {
                 flag++;
@@ -1493,8 +1496,12 @@ export default {
                 }
 
                 // add dot in numbers and only number is allowed (replace(/\D/g, '')).
-                $(this).val(function (index, value) {
+                /*$(this).val(function (index, value) {
                     return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                });*/
+
+                $(this).val(function (index, value) {
+                    return value.replace(/\D/g, '').toLocaleString('id');
                 });
             });
 
@@ -1857,7 +1864,7 @@ export default {
 
             this.form.variants_prod.forEach((data) => {
                 let inputPrice = $('.variant_price_' + data.id).val();
-                let inputStock = $('.variant_stock_' + data.id).val();
+                let inputStock = $('.variant_available_stock_' + data.id).val();
                 let inputSku = $('.variant_sku_' + data.id).val();
                 let images = data.images;
 
@@ -1868,7 +1875,7 @@ export default {
                 }
 
                 $('.variant_price_' + data.id).removeClass('is-invalid');
-                $('.variant_stock_' + data.id).removeClass('is-invalid');
+                $('.variant_available_stock_' + data.id).removeClass('is-invalid');
                 $('.variant_sku_' + data.id).removeClass('is-invalid');
 
                 if (inputPrice == '') {
@@ -1877,7 +1884,7 @@ export default {
                 }
 
                 if (inputStock == '') {
-                    $('.variant_stock_' + data.id).addClass('is-invalid');
+                    $('.variant_available_stock_' + data.id).addClass('is-invalid');
                     this.showVariantFieldsErr(res);
                 }
 

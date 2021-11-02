@@ -462,14 +462,12 @@
                                                                         variantVal.id
                                                                     "
                                                                     v-model="variantVal.price"
-                                                                    v-bind:name="variantVal.price"
                                                                     class="form-control"
                                                                     required
                                                                     autofocus
-                                                                    @mouseover="
-                                                                        validateInputNumber(
-                                                                            'variant_price_' +
-                                                                                variantVal.id
+                                                                    @keyup="
+                                                                        allowOnlyNumberAndDot(
+                                                                            $event
                                                                         )
                                                                     "
                                                                 />
@@ -482,20 +480,14 @@
                                                                 :class="
                                                                     'variant_stock_' + variantVal.id
                                                                 "
-                                                                @mouseover="
-                                                                    validateInputNumber(
-                                                                        'variant_stock_' +
-                                                                            variantVal.id
-                                                                    )
-                                                                "
-                                                                v-bind:name="
-                                                                    variantVal.available_stock
-                                                                "
                                                                 v-model="variantVal.available_stock"
                                                                 class="form-control"
                                                                 required
                                                                 autocomplete="variant_stock"
                                                                 autofocus
+                                                                @keyup="
+                                                                    allowOnlyNumberAndDot($event)
+                                                                "
                                                             />
                                                         </td>
                                                         <td v-if="variantVal.condition === 'New'">
@@ -634,6 +626,7 @@
                                                         required
                                                         autocomplete="min_order"
                                                         autofocus
+                                                        @keyup="allowOnlyNumberAndDot($event)"
                                                     />
                                                     <span
                                                         class="text-danger"
@@ -666,6 +659,7 @@
                                                         autocomplete="selling_price"
                                                         autofocus
                                                         aria-label="Amount (to the nearest dollar)"
+                                                        @keyup="allowOnlyNumberAndDot($event)"
                                                     />
                                                 </div>
                                                 <span
@@ -704,6 +698,7 @@
                                                         required
                                                         autocomplete="product_stock"
                                                         autofocus
+                                                        @keyup="allowOnlyNumberAndDot($event)"
                                                     />
                                                     <span
                                                         class="text-danger"
@@ -852,6 +847,7 @@
                                                         autocomplete="product_weight"
                                                         placeholder="Product Weight"
                                                         autofocus
+                                                        @keyup="allowOnlyNumberAndDot($event)"
                                                     />
                                                     <span
                                                         class="text-danger"
@@ -926,6 +922,7 @@
                                                             }"
                                                             class="form-control product_length"
                                                             placeholder="Product Length"
+                                                            @keyup="allowOnlyNumberAndDot($event)"
                                                         />
                                                         <div class="input-group-append">
                                                             <span class="input-group-text">cm</span>
@@ -960,6 +957,7 @@
                                                             }"
                                                             class="form-control product_width"
                                                             placeholder="product_width"
+                                                            @keyup="allowOnlyNumberAndDot($event)"
                                                         />
                                                         <div class="input-group-append">
                                                             <span class="input-group-text">cm</span>
@@ -994,6 +992,7 @@
                                                             }"
                                                             class="form-control product_height"
                                                             placeholder="product_height"
+                                                            @keyup="allowOnlyNumberAndDot($event)"
                                                         />
                                                         <div class="input-group-append">
                                                             <span class="input-group-text">cm</span>
@@ -1301,6 +1300,95 @@ export default {
         };
     },
     methods: {
+        disableRightClickAndLongPress(className) {
+            // disable right click
+            $('.' + className + '').on('contextmenu', function () {
+                return false;
+            });
+
+            let flag = 0;
+            $('.' + className + '').on('keydown', function (evt) {
+                evt = evt ? evt : window.event;
+                var charCode = evt.which ? evt.which : evt.keyCode;
+                var vKey = 86, // paste
+                    cKey = 67; // copy
+
+                if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
+                    flag++;
+                    if (flag > 4) {
+                        evt.preventDefault();
+                    }
+                }
+
+                if (evt.keyCode == cKey && evt.keyCode == vKey) {
+                    evt.preventDefault();
+                }
+            });
+        },
+        allowOnlyNumberAndDot: function (evt) {
+            evt = evt ? evt : window.event;
+            var charCode = evt.which ? evt.which : evt.keyCode;
+            var vKey = 86,
+                cKey = 67;
+            if (
+                charCode > 31 &&
+                (charCode < 48 || charCode > 57) &&
+                charCode !== 46 &&
+                evt.keyCode == cKey &&
+                evt.keyCode == vKey
+            ) {
+                evt.preventDefault();
+            } else {
+                this.form.variants_prod.forEach((data) => {
+                    // limit input
+                    var txtVal = $('.variant_price_' + data.id).val();
+                    if (txtVal.length > 11) {
+                        $('.variant_price_' + data.id).val(txtVal.substring(0, 11));
+                        return false;
+                    }
+
+                    // add dot in numbers and only number is allowed (replace(/\D/g, '')).
+                    $('.variant_price_' + data.id).val(function (index, value) {
+                        return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                    });
+
+                    var varStock = $('.variant_stock_' + data.id).val();
+                    if (varStock.length > 11) {
+                        $('.variant_stock_' + data.id).val(varStock.substring(0, 11));
+                        return false;
+                    }
+
+                    // add dot in numbers and only number is allowed (replace(/\D/g, '')).
+                    $('.variant_stock_' + data.id).val(function (index, value) {
+                        return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                    });
+                });
+
+                let className = [
+                    'min_order',
+                    'selling_price',
+                    'product_stock',
+                    'product_weight',
+                    'product_length',
+                    'product_width',
+                    'product_height',
+                ];
+
+                className.forEach((data) => {
+                    var theClass = $('.' + data + '').val();
+
+                    if (theClass.length > 11) {
+                        $('.' + data + '').val(theClass.substring(0, 11));
+                        return false;
+                    }
+
+                    // add dot in numbers and only number is allowed (replace(/\D/g, '')).
+                    $('.' + data + '').val(function (index, value) {
+                        return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                    });
+                });
+            }
+        },
         generateVariantProducts() {
             let variants = this.form.variants;
             var variantsValue = [];
@@ -1433,7 +1521,6 @@ export default {
         deleteVariant(index) {
             var self = this;
             this.form.variantIsDeleted = 'Yes';
-            console.log(this.form.variantIsDeleted);
             $('#errMsg').hide();
             this.form.variants.splice(index, 1);
             if (this.form.variants.length === 0) {
@@ -1453,83 +1540,6 @@ export default {
             let s = new Set(arr);
             let it = s.values();
             return Array.from(it);
-        },
-        validateInputNumber(className) {
-            // disable right click
-            $('.' + className + '').on('contextmenu', function () {
-                return false;
-            });
-
-            var flag = 0;
-            $('.' + className + '').on('keydown', function (e) {
-                flag++;
-                if (flag > 4) {
-                    e.preventDefault();
-                }
-            });
-
-            $('.' + className + '').on('keyup', this, function (event) {
-                flag = 0;
-
-                // skip for arrow left (37) and arrow down (40)
-                if (event.which >= 37 && event.which <= 40) {
-                    return;
-                }
-
-                // Limit number
-                var txtVal = $(this).val();
-                if (txtVal.length > 11) {
-                    $(this).val(txtVal.substring(0, 11));
-                    return false;
-                }
-
-                // add dot in numbers and only number is allowed (replace(/\D/g, '')).
-                $(this).val(function (index, value) {
-                    return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-                });
-            });
-
-            //////////////////////////////////////////////////////////////////////////////////
-            // paste function is disabled. If it's enabled, it will reproduce a new bug.
-
-            function addDot(x) {
-                return x.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-            }
-
-            $('.' + className + '').on('paste', function (event) {
-                // This will allow only number with dot (/^[0-9]*\.?[0-9]*$/).
-                // But if we want only number without dot, we can use ( /[^\d]/ )
-                var rgx = /^[0-9]*\.?[0-9]*$[^\d]/;
-
-                if (event.originalEvent.clipboardData.getData('text').match(rgx)) {
-                    event.preventDefault();
-                } else {
-                    var dataText = event.originalEvent.clipboardData.getData('text');
-
-                    // Limit number
-                    if (dataText.length > 11) {
-                        var subsData = dataText.substring(0, 11);
-                        var res = addDot(subsData);
-
-                        $(this).val(subsData);
-                        $('.' + className + '').val(res); // Assume, we paste 200000, without if else below, it will result 200.000200000
-
-                        return false;
-                    } else {
-                        var res2 = addDot(dataText);
-                        $('.' + className + '').val(res2); // Assume, we paste 200000, without if else below, it will result 200.000200000
-                    }
-
-                    // if 200000 is exsist, remove 200000
-                    if (dataText || subsData) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-
-                    //event.preventDefault();
-                }
-            });
         },
         clearAllSubCatSelectOption() {
             $('#subcategory_id')
@@ -2126,6 +2136,8 @@ export default {
                     self.form.variants_prod.forEach((data) => {
                         setTimeout(function () {
                             self.fileInputVariants(data.id);
+                            self.disableRightClickAndLongPress('variant_price_' + data.id);
+                            self.disableRightClickAndLongPress('variant_stock_' + data.id);
                         }, 100);
                     });
                 })
@@ -2240,13 +2252,13 @@ export default {
                     this.form.selling_price = this.form.selling_price.toLocaleString('id');
                     this.form.min_order = this.form.min_order.toLocaleString('id');
                     this.form.product_stock = this.form.product_stock.toLocaleString('id');
-                    this.validateInputNumber('min_order');
-                    this.validateInputNumber('selling_price');
-                    this.validateInputNumber('product_stock');
-                    this.validateInputNumber('product_weight');
-                    this.validateInputNumber('product_length');
-                    this.validateInputNumber('product_width');
-                    this.validateInputNumber('product_height');
+                    this.disableRightClickAndLongPress('min_order');
+                    this.disableRightClickAndLongPress('selling_price');
+                    this.disableRightClickAndLongPress('product_stock');
+                    this.disableRightClickAndLongPress('product_weight');
+                    this.disableRightClickAndLongPress('product_length');
+                    this.disableRightClickAndLongPress('product_width');
+                    this.disableRightClickAndLongPress('product_height');
                     this.pageIsLoaded = true;
 
                     let variants = [];
@@ -2325,6 +2337,8 @@ export default {
                         }
 
                         this.fileInputVariants(data.id);
+                        this.disableRightClickAndLongPress('variant_price_' + data.id);
+                        this.disableRightClickAndLongPress('variant_stock_' + data.id);
                     });
 
                     this.form.variantIsDeleted = 'No';

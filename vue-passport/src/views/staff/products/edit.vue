@@ -57,7 +57,7 @@
                                                         }"
                                                     >
                                                         <option value="default" selected="true">
-                                                            === Select Brand ===
+                                                            Select Brand
                                                         </option>
                                                     </select>
                                                     <span
@@ -82,7 +82,7 @@
                                                         :required="true"
                                                     >
                                                         <option value="default" selected="true">
-                                                            === Select Category ===
+                                                            Select Category
                                                         </option>
                                                     </select>
                                                     <span
@@ -115,7 +115,7 @@
                                                             id="default-subcat"
                                                             selected="true"
                                                         >
-                                                            === Select Sub Category ===
+                                                            Select Sub Category
                                                         </option>
                                                     </select>
                                                     <span
@@ -150,7 +150,7 @@
                                                             id="default-subcat"
                                                             selected="true"
                                                         >
-                                                            === Select Sub Sub Category ===
+                                                            Select Sub Sub Category
                                                         </option>
                                                     </select>
                                                     <span
@@ -318,10 +318,6 @@
                                                                             v-model="
                                                                                 variant.variant_type
                                                                             "
-                                                                            v-on:keydown.tab="
-                                                                                tokenField()
-                                                                            "
-                                                                            @change="tokenField()"
                                                                             onkeydown="if (event.keyCode == 13) event.preventDefault()"
                                                                             placeholder="Input variant type. E.g: Color"
                                                                             required
@@ -1170,7 +1166,7 @@
                                                     <div class="file-loading">
                                                         <input
                                                             id="picts"
-                                                            name="picts[]"
+                                                            name="images[]"
                                                             type="file"
                                                             multiple
                                                         />
@@ -1186,7 +1182,7 @@
                                                 class="btn btn-primary btn-md"
                                                 id="loadingButton"
                                             >
-                                                Save
+                                                Update
                                             </button>
                                         </div>
                                     </div>
@@ -1284,11 +1280,12 @@ export default {
                 ],
                 imagesUpdated: [],
                 variantIsDeleted: '',
-                variants_prod: [], // al general variant products that displayed in view.
-                varProdsImgsToBeDeleted: [], // all of the variant options that has been deleted in the view, it's uploaded images should be stored here to be deleted.
-                varProdsToBeDeleted: [], // The existing variant products that has been stored in db, but user delete it in the view, it will be stored here.
+                variants_prod: [], // all general variant products that displayed in the view.
+                varProdsBeenStoredInDb: [], // it's used to update all existing variant products that displayed in the view and also already stored in db.
+                varProdsImgsToBeDeleted: [], // all of the variant options that has been deleted in the view whether the new added variant products or the variant products that has been stored in DB, it's uploaded images should be stored here to be deleted. But the important thing, all the exisitng variant products in DB that user deleted through the variant options field, all that images will be deleted in controller if user click the update button.
+                varProdsToBeDeleted: [], // The existing variant products that has been stored in db but user delete it in the view, it will be stored here to be deleted in controller if user click the update button.
                 addedNewVarProds: [], // collect all new added variant products. It's gonna be stored in db.
-                varProdsBeenStoredInDb: [], // it's used to update all existing variant products that already stored in db.
+                newVarProdsImagesToBeDeleted: [], // All new added variant products images (that not exist in database) must be deleted directly if user delete one of them through the variant options fields.
             }),
             error: '',
             attributes: [],
@@ -1362,6 +1359,9 @@ export default {
                     $('.variant_stock_' + data.id).val(function (index, value) {
                         return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
                     });
+
+                    data.price = $('.variant_price_' + data.id).val();
+                    data.available_stock = $('.variant_stock_' + data.id).val();
                 });
 
                 let className = [
@@ -1386,6 +1386,14 @@ export default {
                     $('.' + data + '').val(function (index, value) {
                         return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
                     });
+
+                    this.form.min_order = $('.min_order').val();
+                    this.form.selling_price = $('.selling_price').val();
+                    this.form.product_stock = $('.product_stock').val();
+                    this.form.product_weight = $('.product_weight').val();
+                    this.form.product_length = $('.product_length').val();
+                    this.form.product_width = $('.product_width').val();
+                    this.form.product_height = $('.product_height').val();
                 });
             }
         },
@@ -1480,6 +1488,38 @@ export default {
             });
             this.form.addedNewVarProds = newVarProds;
         },
+        deleteAllNewAddedVarProdImages() {
+            let formData = new FormData();
+            formData.append('addedNewVarProds', this.form.addedNewVarProds);
+
+            this.form
+                .post('api/products/delete-all-new-added-variant-product-images', {
+                    data: formData,
+                })
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+                .finally(() => {});
+        },
+        deleteSomeNewAddedVarProdImages() {
+            let formData = new FormData();
+            formData.append('newVarProdsImagesToBeDeleted', this.form.newVarProdsImagesToBeDeleted);
+
+            this.form
+                .post('api/products/delete-some-new-added-variant-product-images', {
+                    data: formData,
+                })
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+                .finally(() => {});
+        },
         addVariant() {
             var self = this;
             if (this.form.variants.length === 0) {
@@ -1522,40 +1562,46 @@ export default {
             var self = this;
             this.form.variantIsDeleted = 'Yes';
             $('#errMsg').hide();
+
             this.form.variants.splice(index, 1);
+
+            // if the last variant left is deleted.
             if (this.form.variants.length === 0) {
+                // empty the variants_prod.
                 this.form.variants_prod.splice(0, this.form.variants_prod.length);
+
+                // delete the related variant product images.
+                this.deleteAllNewAddedVarProdImages();
+
+                // empty the new variant products.
+                this.form.addedNewVarProds = [];
             }
+
+            ///////////////////////////////////////////////////////////////////////////////////////////
+
+            // if there is another variant after one of variant is deleted.
             $('.product_variants').find(':input').val('');
             this.form.variants_prod = [];
             this.generateVariantProducts();
+
             this.form.variants_prod.forEach((data) => {
                 // execute this.fileInputVariants(data.id) after 100 milisecond
                 setTimeout(function () {
                     self.fileInputVariants(data.id);
                 }, 100);
             });
+
+            // delete the related variant product images.
+            this.deleteAllNewAddedVarProdImages();
+
+            // update the new added products list.
+            this.form.addedNewVarProds = [];
+            this.form.addedNewVarProds.push(this.form.variants_prod);
         },
         removeDuplicatesFileInfo(arr) {
             let s = new Set(arr);
             let it = s.values();
             return Array.from(it);
-        },
-        clearAllSubCatSelectOption() {
-            $('#subcategory_id')
-                .find('option')
-                .remove()
-                .end()
-                .append('<option value="default">Select Sub Category</option>')
-                .val('default');
-        },
-        clearAllSubSubCatSelectOption() {
-            $('#subsubcategory_id')
-                .find('option')
-                .remove()
-                .end()
-                .append('<option value="default">Select Sub Sub Category</option>')
-                .val('default');
         },
         loadBrands() {
             this.axios
@@ -1564,14 +1610,18 @@ export default {
                     var responseData = response.data;
                     let brands = responseData.brands;
 
-                    brands.forEach(function (brand) {
+                    var brandId = this.form.brand_id;
+
+                    var loadTheRestBrands = brands.filter(function (x) {
+                        return x.id !== brandId;
+                    });
+                    loadTheRestBrands.forEach(function (brand) {
                         var option = new Option(brand.brand_name, brand.id, true, true);
                         $('#brand_id').append(option);
                         $('div.get-brands select').val('default').change();
                     });
 
                     if (this.form.brand_id !== null || this.form.brand_id !== undefined) {
-                        var brandId = this.form.brand_id;
                         var selectedBrand = brands.filter(function (x) {
                             return x.id == brandId;
                         });
@@ -1587,137 +1637,162 @@ export default {
                     console.log(error);
                 });
         },
-        loadCatSelectOption() {
-            var self = this;
-
+        fillCatSubCatAndSubSubCat() {
+            // Fill category input
+            const token = localStorage.getItem('token-staff');
+            this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             this.axios
-                .get('api/staff/get-categories', {})
+                .get(
+                    'api/staff/sub-sub-categories/get-cat-sub-cat/' + this.form.subsubcategory_id,
+                    {}
+                ) // The id refer to subsubcat
                 .then((response) => {
                     var responseData = response.data;
-                    let categories = responseData.categories;
+                    let allCategories = responseData.all_categories;
+                    let allRelatedSubCategories = responseData.all_related_sub_categories;
+                    let allRelatedSubSubCategories = responseData.all_related_sub_sub_categories;
+                    let category = responseData.category;
+                    let subCategory = responseData.sub_category;
+                    let subSubCategory = responseData.sub_sub_category;
 
-                    categories.forEach(function (category) {
-                        $('#category_id').append(
-                            '<option value="' +
-                                category.id +
-                                '" data-id="' +
-                                category.id +
-                                '">' +
-                                category.category_name +
-                                '</option>'
-                        );
-                        $('div.get-categories select').val('default').change();
+                    allCategories.forEach(function (category) {
+                        var option = new Option(category.category_name, category.id, true, true);
+                        // Dump all categories data
+                        $('#category_id').append(option);
                     });
 
-                    if (this.form.category_id !== null || this.form.category_id !== undefined) {
-                        var categoryId = this.form.category_id;
-                        var selectedCategory = categories.filter(function (x) {
-                            return x.id == categoryId;
+                    if (allRelatedSubCategories !== undefined) {
+                        allRelatedSubCategories.forEach(function (subCategory) {
+                            var option = new Option(
+                                subCategory.subcategory_name,
+                                subCategory.id,
+                                true,
+                                true
+                            );
+                            // Dump all sub categories data
+                            $('#subcategory_id').append(option);
                         });
+                    }
 
-                        selectedCategory.forEach(function (cat) {
-                            var option = new Option(cat.category_name, cat.id, true, true);
+                    if (allRelatedSubSubCategories !== undefined) {
+                        allRelatedSubSubCategories.forEach(function (subSubCategory) {
+                            var option = new Option(
+                                subSubCategory.subsubcategory_name,
+                                subSubCategory.id,
+                                true,
+                                true
+                            );
+                            // Dump all sub sub categories data
+                            $('#subsubcategory_id').append(option);
+                        });
+                    }
+
+                    /////////////////////////////////////////////////////////////////////////////////
+
+                    if (category !== null && subCategory !== null && subSubCategory !== null) {
+                        category.forEach(function (category) {
+                            var option = new Option(
+                                category.category_name,
+                                category.id,
+                                true,
+                                true
+                            );
                             // show selected category data in the first time
                             $('div.get-categories select').append(option);
                         });
+
+                        subCategory.forEach(function (subCategory) {
+                            var option = new Option(
+                                subCategory.subcategory_name,
+                                subCategory.id,
+                                true,
+                                true
+                            );
+                            // show selected sub category data in the first time
+                            $('div.get-sub-categories select').append(option);
+                        });
+
+                        subSubCategory.forEach(function (subSubCategory) {
+                            var option = new Option(
+                                subSubCategory.subsubcategory_name,
+                                subSubCategory.id,
+                                true,
+                                true
+                            );
+                            // show selected sub sub category data in the first time
+                            $('div.get-sub-sub-categories select').append(option);
+                        });
+                    } else {
+                        $('div.get-categories select').val('default').change();
+                        $('div.get-sub-categories select').val('default').change();
                     }
                 })
                 .catch((error) => {
                     console.log(error);
-                })
-                .finally(() => {
-                    setTimeout(function () {
-                        self.loadCatAndSubCat();
-                    }, 1000);
                 });
         },
-        loadCatAndSubCat() {
+        catSubCatOnChange() {
             const token = localStorage.getItem('token-staff');
-            let catId = this.form.category_id;
-            let subCatId = this.form.subcategory_id;
 
-            if (catId !== null || catId !== undefined) {
-                $.ajax({
-                    url: `${BASE_URL}/api/staff/sub-sub-categories/get-sub-category/` + catId,
-                    type: 'GET',
-                    dataType: 'json',
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-                    },
-                    success: function (data) {
-                        let subCategories = data.sub_categories;
-
-                        subCategories.forEach(function (cat) {
-                            var option = new Option(cat.subcategory_name, cat.id, true, true);
-                            // show selected sub-categories data in the first time
-                            $('div.get-sub-categories select').append(option);
-                        });
-                    },
-                });
-            }
-
-            if (subCatId !== null || subCatId !== undefined) {
-                $.ajax({
-                    url:
-                        `${BASE_URL}/api/staff/sub-sub-categories/get-sub-sub-categories/` +
-                        subCatId,
-                    type: 'GET',
-                    dataType: 'json',
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-                    },
-                    success: function (data) {
-                        let subSubCategories = data.sub_sub_categories;
-
-                        subSubCategories.forEach(function (cat) {
-                            var option = new Option(cat.subsubcategory_name, cat.id, true, true);
-                            // show selected sub-categories data in the first time
-                            $('div.get-sub-sub-categories select').append(option);
-                        });
-                    },
-                });
-            }
-
+            // fill sub category input
             $('#category_id').on('change', function () {
-                var category_id = $(this).find(':selected').attr('data-id');
+                var category_id = $(this).val();
 
-                $.ajax({
-                    url: `${BASE_URL}/api/staff/sub-sub-categories/get-sub-category/` + category_id,
-                    type: 'GET',
-                    dataType: 'json',
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-                    },
-                    success: function (data) {
-                        let subCategories = data.sub_categories;
-
-                        $('#subcategory_id').empty();
-                        $('#subcategory_id').append(
-                            '<option value="default" selected="true">=== Select Sub Category ===</option>'
-                        );
-
-                        $('#subsubcategory_id').empty();
-                        $('#subsubcategory_id').append(
-                            '<option value="default" selected="true">=== Select Sub Sub Categories ===</option>'
-                        );
-
-                        $.each(subCategories, function (index, subCat) {
+                if (category_id !== 'default') {
+                    $.ajax({
+                        url:
+                            `${BASE_URL}/api/staff/sub-sub-categories/get-sub-category/` +
+                            category_id,
+                        type: 'GET',
+                        dataType: 'json',
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+                        },
+                        success: function (data) {
+                            $('#subcategory_id').empty();
                             $('#subcategory_id').append(
-                                '<option value="' +
-                                    subCat.id +
-                                    '" data-id="' +
-                                    subCat.id +
-                                    '">' +
-                                    subCat.subcategory_name +
-                                    '</option>'
+                                '<option value="default" selected="true">Select Sub Category</option>'
                             );
-                        });
-                    },
-                });
-            }); // .on('change'
+
+                            $('#subsubcategory_id').empty();
+                            $('#subsubcategory_id').append(
+                                '<option value="default" selected="true">Select Sub Sub Category</option>'
+                            );
+
+                            let subCategories = data.sub_categories;
+
+                            subCategories.forEach(function (category) {
+                                var option = new Option(
+                                    category.subcategory_name,
+                                    category.id,
+                                    true,
+                                    true
+                                );
+                                // Bulk assign form
+                                $('#subcategory_id').append(option);
+                                $('div.get-sub-categories select').val('default').change();
+                            });
+                        },
+                    });
+                } else {
+                    $('#subcategory_id')
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append('<option value="default">Select Sub Category</option>')
+                        .val('default');
+
+                    $('#subsubcategory_id')
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append('<option value="default">Select Sub Sub Category</option>')
+                        .val('default');
+                }
+            });
 
             $('#subcategory_id').on('change', function () {
-                var subcategory_id = $(this).find(':selected').attr('data-id');
+                var subcategory_id = $(this).val();
 
                 $.ajax({
                     url:
@@ -1733,7 +1808,7 @@ export default {
 
                         $('#subsubcategory_id').empty();
                         $('#subsubcategory_id').append(
-                            '<option value="0" selected="true">=== Select Sub Sub Category ===</option>'
+                            '<option value="0" selected="true">Select Sub Sub Category</option>'
                         );
 
                         $.each(subSubCategories, function (index, subSubCat) {
@@ -1832,7 +1907,7 @@ export default {
             $('#picts')
                 .fileinput({
                     theme: 'fas',
-                    uploadUrl: `${BASE_URL}/api/products/store-picts-single-product`,
+                    uploadUrl: `${BASE_URL}/api/products/store-images`,
                     dropZoneEnabled: true,
                     browseOnZoneClick: true,
                     showUpload: false, // mass upload
@@ -1964,7 +2039,7 @@ export default {
             $('.images' + id)
                 .fileinput({
                     theme: 'fas',
-                    uploadUrl: `${BASE_URL}/api/products/store-images/` + id,
+                    uploadUrl: `${BASE_URL}/api/products/store-images`,
                     dropZoneEnabled: false,
                     browseOnZoneClick: false,
                     showUpload: false, // mass upload
@@ -2087,9 +2162,13 @@ export default {
 
             $('.variant_options_' + id).tokenfield({
                 showAutocompleteOnFocus: true,
+                disableEdit: false,
             });
 
             $('.variant_options_' + id)
+                .on('tokenfield:edittoken', function (event) {
+                    event.preventDefault();
+                })
                 .on('tokenfield:createtoken', function (event) {
                     var existingTokens = $(this).tokenfield('getTokens');
                     const isEmpty = (str) => !str.trim().length;
@@ -2192,6 +2271,16 @@ export default {
 
                     // delete related deleted data that stored in addedNewVarProds
                     if (self.form.addedNewVarProds !== undefined) {
+                        // All new added variant products images must be deleted directly if user delete one of them through the variant options fields
+                        let deletedNewInputtedVarProds = self.form.addedNewVarProds.filter(
+                            function (x) {
+                                return x[prop] == event.attrs.value;
+                            }
+                        );
+                        self.form.newVarProdsImagesToBeDeleted = deletedNewInputtedVarProds;
+                        self.deleteSomeNewAddedVarProdImages();
+
+                        // get the remaining new added variant products that still exist after deletion was happened.
                         let remainingVarProds = self.form.addedNewVarProds.filter(function (x) {
                             return x[prop] !== event.attrs.value;
                         });
@@ -2247,7 +2336,8 @@ export default {
                         this.form.totalInputtedPicts = this.form.images.length;
                     }
                     this.loadBrands();
-                    this.loadCatSelectOption();
+                    this.fillCatSubCatAndSubSubCat();
+                    this.catSubCatOnChange();
                     this.fileInput();
                     this.form.selling_price = this.form.selling_price.toLocaleString('id');
                     this.form.min_order = this.form.min_order.toLocaleString('id');
@@ -2310,7 +2400,7 @@ export default {
                         var imgs = [];
                         if (data.images !== null) {
                             data.images.forEach((data) => {
-                                let dataObj = Object.values(data)[2];
+                                let dataObj = Object.values(data)[1];
                                 imgs.push(
                                     '<img class="kv-preview-data file-preview-image" src="' +
                                         BASE_URL +

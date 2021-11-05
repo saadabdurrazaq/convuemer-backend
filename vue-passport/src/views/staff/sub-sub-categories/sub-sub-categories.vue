@@ -721,7 +721,7 @@ export default {
             sub_sub_categories: {},
             sub_sub_categories_id: [],
             form: new Form({
-                id: '',
+                id: '', // refer to sub sub category
                 subsubcategory_name: '',
                 category_id: '',
                 subcategory_id: '',
@@ -764,12 +764,10 @@ export default {
             this.form.category_id = $('#category_id2').val();
             this.form.subcategory_id = $('#subcategory_id2').val();
         },
-
         clearAndResetForm() {
             this.form.reset(); // v form reset
             this.form.clear();
         },
-
         clearCatSelectOption1() {
             $('#category_id')
                 .find('option')
@@ -778,7 +776,6 @@ export default {
                 .append('<option value="default">Select Category</option>')
                 .val('default');
         },
-
         clearCatSelectOption2() {
             $('#category_id2')
                 .find('option')
@@ -787,7 +784,6 @@ export default {
                 .append('<option value="default">Select Category</option>')
                 .val('default');
         },
-
         clearSubCatSelectOption1() {
             $('#subcategory_id')
                 .find('option')
@@ -796,7 +792,6 @@ export default {
                 .append('<option value="default">Select Sub Category</option>')
                 .val('default');
         },
-
         clearSubCatSelectOption2() {
             $('#subcategory_id2')
                 .find('option')
@@ -805,18 +800,15 @@ export default {
                 .append('<option value="default">Select Sub Category</option>')
                 .val('default');
         },
-
         clearAllSubCatSelectOption() {
             this.clearSubCatSelectOption1();
             this.clearSubCatSelectOption2();
         },
-
         clearAllCatSubCatSelectOption() {
             this.clearCatSelectOption1();
             this.clearCatSelectOption2();
             this.clearAllSubCatSelectOption();
         },
-
         // This method is used in bulk assign modal form
         loadCatSelectOption() {
             this.loadingForm = true;
@@ -844,7 +836,6 @@ export default {
                     this.loadingForm = false;
                 });
         },
-
         // This method is used in single and bulk assign modal form
         loadSubCatSelectOption() {
             var self = this;
@@ -917,7 +908,6 @@ export default {
                 }
             });
         },
-
         selectSubCatFirstBeforeSelectSubSubCat() {
             $('#sub_sub_cat_bulk_assign').select2({
                 placeholder: 'Select available sub sub categories',
@@ -928,7 +918,6 @@ export default {
                 },
             });
         },
-
         // This used in bulk assign show modal. Called inside mounted()
         fillAndLoadSubSubCat() {
             const token = localStorage.getItem('token-staff');
@@ -1010,22 +999,18 @@ export default {
             // If user haven't selected category and sub category yet.
             this.selectSubCatFirstBeforeSelectSubSubCat();
         },
-
         getSubSubCatVal() {
             this.form.subsubcategory_name = $('#subsubcategory_name').val();
         },
-
         getRelatedSubSubCatVal() {
             // Bulk Assign form
             this.form.category_id = $('#category_id').val();
             this.form.subcategory_id = $('#subcategory_id').val();
             this.form.subsubcategory_name = $('#sub_sub_cat_bulk_assign').val();
         },
-
         closeModal() {
             $('#errMsg').hide('slow');
         },
-
         showSuccessMsg(response) {
             var responseData = response.data;
             this.msg = responseData.message;
@@ -1048,11 +1033,9 @@ export default {
                 title: this.title,
             });
         },
-
         closeMsg() {
             $('#errMsg').hide('slow');
         },
-
         loadData(response) {
             var responseData = response.data;
             this.sub_sub_categories = responseData.sub_sub_categories.data;
@@ -1063,7 +1046,6 @@ export default {
             this.trashed = responseData.total_trashed_sub_sub_categories;
             this.perPage = responseData.items;
         },
-
         loadSpecificPage() {
             if (this.defaultSubSubCatPagination === true) {
                 this.isSubSubCatPagination = true;
@@ -1082,7 +1064,6 @@ export default {
                 console.log(`No matching option. So, I am in getSubSubCat`);
             }
         },
-
         determineDefaultPage() {
             // for example if user trash data in show entries page, after submit he should be directed to show entries page as well with same page (if he was in page 3, he should be directed in page 3. etc...)
             if (_.isEmpty(this.search) === false) {
@@ -1092,7 +1073,6 @@ export default {
                 this.defaultShowEntriesPagination = false;
             }
         },
-
         highlightNewRecords() {
             // Highlight new record if new record exist after submit
             var newRecord = document.getElementById('cat-table');
@@ -1110,7 +1090,6 @@ export default {
             }
             this.total_sub_sub_cat = 0;
         },
-
         highlightChangedRecord() {
             if (
                 this.detectUpdate === true ||
@@ -1138,7 +1117,6 @@ export default {
             this.detectTrash = false;
             this.detectMultipleTrash = false;
         },
-
         // /GetSubSubCategories() function. Function we use to get user list by calling api/categories method GET.
         GetSubSubCategories(page) {
             this.loading = true;
@@ -1173,7 +1151,6 @@ export default {
                     this.highlightNewRecords();
                 });
         },
-
         showEntries(page) {
             this.loading = true;
             this.isShowEntriesPagination = true;
@@ -1213,7 +1190,6 @@ export default {
                     this.highlightNewRecords();
                 });
         },
-
         searchSubSubCat: _.debounce(function (page) {
             if (_.isEmpty(this.search)) {
                 this.defaultSearchPagination = false;
@@ -1248,7 +1224,6 @@ export default {
                     });
             }
         }),
-
         // /showModalCreate() function. Function we use to 1. Set /isFormCreate to 'true', 2. Reset form data, 3. Show modal containing dynamic form for adding/updating user details.
         showModalCreate() {
             this.isFormCreate = true;
@@ -1259,7 +1234,6 @@ export default {
             $('#subsubcategory_name').tokenfield('setTokens', []);
             $('#exampleModal').modal('show'); // show modal
         },
-
         // /create() function. Function we use to store user details by calling api/categories method POST (carrying form input data).
         create() {
             this.loadingForm = true;
@@ -1290,7 +1264,6 @@ export default {
                     this.loadingForm = false;
                 });
         },
-
         // /editUser() function. Function we use to 1. Set /isFormCreate to 'false', 2. Reset and clear form data, 3. Show modal containing dynamic form for adding/updating user details, 4. Fill form with user details.
         showModalEdit(sub_sub_category) {
             this.isFormEdit = true;
@@ -1301,7 +1274,6 @@ export default {
             $('#exampleModal').modal('show'); // show modal
             this.form.fill(sub_sub_category);
         },
-
         // /update() function. Function we use to update user details by calling api/categories/{id} method PUT (carrying form input data).
         update() {
             this.loadingForm = true;
@@ -1325,7 +1297,6 @@ export default {
                     this.loadingForm = false;
                 });
         },
-
         showModalBulkAssign(sub_sub_category) {
             this.isFormBulkAssign = true;
             this.isFormEdit = false;
@@ -1349,7 +1320,6 @@ export default {
 
             // for event listener subcategory and select2 found in mounted()
         },
-
         bulkAssign() {
             this.loadingForm = true;
 
@@ -1377,7 +1347,6 @@ export default {
                     this.loadingForm = false;
                 });
         },
-
         // This method is used in single assign modal form
         fillCatAndSubSelectOption() {
             this.loadingForm = true;
@@ -1386,7 +1355,7 @@ export default {
             const token = localStorage.getItem('token-staff');
             this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             this.axios
-                .get('api/staff/sub-sub-categories/get-cat-sub-cat/' + this.form.id, {})
+                .get('api/staff/sub-sub-categories/get-cat-sub-cat/' + this.form.id, {}) // The id refer to subsubcat
                 .then((response) => {
                     var responseData = response.data;
                     let allCategories = responseData.all_categories;
@@ -1447,7 +1416,6 @@ export default {
                     this.loadingForm = false;
                 });
         },
-
         showModalSingleAssign(sub_sub_category) {
             this.isFormSingleAssign = true;
             this.isFormBulkAssign = false;
@@ -1465,7 +1433,6 @@ export default {
             // Trigger select option to load the data
             this.fillCatAndSubSelectOption();
         },
-
         singleAssign() {
             this.loadingForm = true;
 
@@ -1494,7 +1461,6 @@ export default {
                     this.loadingForm = false;
                 });
         },
-
         // /softDelete() function. Function we use to delete user record by calling api/categories/{id} method DELETE.
         softDelete(id) {
             this.form.id = id;
@@ -1533,7 +1499,6 @@ export default {
                 }
             });
         },
-
         selectMultiple() {
             var checked = $('#select-multiple').is(':checked', true);
             if (checked) {
@@ -1542,7 +1507,6 @@ export default {
                 $('.sub_chk').prop('checked', false);
             }
         },
-
         bulkActions() {
             if ($('.trash_multiple').val() == 'trashMultiple') {
                 var allVals = [];
@@ -1597,12 +1561,10 @@ export default {
             }
         },
     },
-
     created() {
         // Call /GetSubSubCategories() function initially.
         this.GetSubSubCategories();
     },
-
     mounted() {
         console.log('Component mounted.');
 

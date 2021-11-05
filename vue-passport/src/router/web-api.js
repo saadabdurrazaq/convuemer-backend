@@ -300,7 +300,7 @@ const routes = [
             breadcrumb: [
                 { name: 'Home', link: 'home', home: 'home' },
                 { name: 'Products', link: 'index', home: 'index' },
-                { name: 'create', active: 'active' }
+                { name: 'Create', active: 'active' }
             ],
             pageTitle: "Create Product"
         },
@@ -319,7 +319,7 @@ const routes = [
             requiresAuth: true,
             breadcrumb: [
                 { name: 'Home', link: 'home', home: 'home' },
-                { name: 'Products', link: 'index', home: 'index' },
+                { name: 'Products', link: '/staff/products/index', home: 'index' },
                 { name: 'Edit', active: 'active' }
             ],
             pageTitle: "Edit Product"

@@ -145,7 +145,7 @@ class SubSubCategoryController extends Controller
 
 	public function getCatSubCat($id)
 	{
-		$subSubCat = SubSubCategory::find($id);
+		$subSubCat = SubSubCategory::find($id); // id of sub sub category
 
 		if ($subSubCat->subCategory()->exists()) {
 
@@ -160,6 +160,10 @@ class SubSubCategoryController extends Controller
 			})
 				->orderBy('subcategory_name', 'ASC')
 				->get();
+
+			$subSubCategory = SubSubCategory::where('id', $id)->get();
+
+			/////////////////////////////////////////////////////////////////////////////
 
 			$getCategoryId = Category::select('id')
 				->OrWhereHas('subSubCategory', function ($q) use ($id) {
@@ -183,23 +187,31 @@ class SubSubCategoryController extends Controller
 			$allCategories = Category::where('id', '!=', $categoryId)->get();
 			$allRelatedSubCategories = SubCategory::OrWhereHas('category', function ($q) use ($categoryId) {
 				$q->where('id', $categoryId);
-			})->where('id', '!=', $subCategoryId)->get();
+			})->where('id', '!=', $subCategoryId)->get(); // It's to remove duplicate result. That's mean if the value of first displayed sub category is 'Foo', then the same 'Foo' of the rest result should not exist if user click the dropdown 
+			$allRelatedSubSubCategories = SubSubCategory::OrWhereHas('subCategory', function ($q) use ($subCategoryId) {
+				$q->where('id', $subCategoryId);
+			})->where('id', '!=', $id)->get();
 
 			return response()->json([
 				'category' => $category,
 				'sub_category' => $subCategory,
+				'sub_sub_category' => $subSubCategory,
 				'all_categories' => $allCategories,
 				'all_related_sub_categories' => $allRelatedSubCategories,
+				'all_related_sub_sub_categories' => $allRelatedSubSubCategories,
 			], 200);
 		} else {
 			$allCategories2 = Category::all();
 			$allSubCategories2 = SubCategory::all();
+			$allSubSubCategories2 = SubSubCategory::all();
 
 			return response()->json([
 				'category' => null,
 				'sub_category' => null,
+				'sub_sub_category' => null,
 				'all_categories' => $allCategories2,
 				'all_sub_categories' => $allSubCategories2,
+				'all_sub_sub_categories' => $allSubSubCategories2,
 			], 200);
 		}
 	}

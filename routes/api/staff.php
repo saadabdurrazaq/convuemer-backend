@@ -29,10 +29,12 @@ Route::get('json-regencies/{id}', [AddressController::class, 'regencies']);
 Route::get('json-districts/{id}', [AddressController::class, 'districts']);
 Route::get('json-village/{id}', [AddressController::class, 'villages']);
 
-Route::post('products/store-images/{id}', [ProductController::class, 'storeImages']);
+Route::post('products/store-images', [ProductController::class, 'storeImages']);
 Route::post('products/delete-images/{id}', [ProductController::class, 'deleteImages']);
-Route::post('products/store-picts-single-product', [ProductController::class, 'storePictsSingleProd']);
-Route::post('products/delete-picts-single-product/{id}', [ProductController::class, 'deletePictsSingleProd']);
+Route::post('products/delete-selected-variant-product-images', [ProductController::class, 'deleteSelectedVarProdsImages']);
+Route::post('products/delete-all-new-added-variant-product-images', [ProductController::class, 'deleteAllNewAddedVarProdImages']);
+Route::post('products/delete-all-new-added-variant-product-images-in-create-page', [ProductController::class, 'deleteAllNewAddedVarProdImagesInCreatePage']);
+Route::post('products/delete-some-new-added-variant-product-images', [ProductController::class, 'deleteSomeNewAddedVarProdImages']);
 
 // To see the route url, use php artisan r:l
 Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:staff']], function () {

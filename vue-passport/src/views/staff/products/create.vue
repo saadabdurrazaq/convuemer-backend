@@ -316,10 +316,6 @@
                                                                             v-model="
                                                                                 variant.variant_type
                                                                             "
-                                                                            v-on:keydown.tab="
-                                                                                tokenField()
-                                                                            "
-                                                                            @change="tokenField()"
                                                                             onkeydown="if (event.keyCode == 13) event.preventDefault()"
                                                                             placeholder="Input variant type. E.g: Color"
                                                                             required
@@ -449,12 +445,6 @@
                                                                 </div>
                                                                 <input
                                                                     id="variant_price"
-                                                                    @mouseover="
-                                                                        validateInputNumber(
-                                                                            'variant_price_' +
-                                                                                variantVal.id
-                                                                        )
-                                                                    "
                                                                     :class="
                                                                         'variant_price_' +
                                                                         variantVal.id
@@ -468,6 +458,11 @@
                                                                     "
                                                                     required
                                                                     autofocus
+                                                                    @keyup="
+                                                                        allowOnlyNumberAndDot(
+                                                                            $event
+                                                                        )
+                                                                    "
                                                                 />
                                                             </div>
                                                         </td>
@@ -479,18 +474,15 @@
                                                                     'variant_available_stock_' +
                                                                     variantVal.id
                                                                 "
-                                                                @mouseover="
-                                                                    validateInputNumber(
-                                                                        'variant_available_stock_' +
-                                                                            variantVal.id
-                                                                    )
-                                                                "
                                                                 :name="variantVal.available_stock"
                                                                 v-model="variantVal.available_stock"
                                                                 class="form-control"
                                                                 required
                                                                 autocomplete="variant_available_stock"
                                                                 autofocus
+                                                                @keyup="
+                                                                    allowOnlyNumberAndDot($event)
+                                                                "
                                                             />
                                                         </td>
                                                         <td>
@@ -584,6 +576,7 @@
                                                         autocomplete="min_order"
                                                         autofocus
                                                         placeholder="Minimum Order"
+                                                        @keyup="allowOnlyNumberAndDot($event)"
                                                     />
                                                     <span
                                                         class="text-danger"
@@ -617,6 +610,7 @@
                                                         autofocus
                                                         aria-label="Amount (to the nearest dollar)"
                                                         placeholder="Price"
+                                                        @keyup="allowOnlyNumberAndDot($event)"
                                                     />
                                                 </div>
                                                 <span
@@ -656,6 +650,7 @@
                                                         autocomplete="product_stock"
                                                         autofocus
                                                         placeholder="Stock"
+                                                        @keyup="allowOnlyNumberAndDot($event)"
                                                     />
                                                     <span
                                                         class="text-danger"
@@ -760,6 +755,7 @@
                                                         autocomplete="product_weight"
                                                         placeholder="Product Weight"
                                                         autofocus
+                                                        @keyup="allowOnlyNumberAndDot($event)"
                                                     />
                                                     <span
                                                         class="text-danger"
@@ -812,6 +808,7 @@
                                                             }"
                                                             class="form-control product_length"
                                                             placeholder="Product Length"
+                                                            @keyup="allowOnlyNumberAndDot($event)"
                                                         />
                                                         <div class="input-group-append">
                                                             <span class="input-group-text">cm</span>
@@ -846,6 +843,7 @@
                                                             }"
                                                             class="form-control product_width"
                                                             placeholder="Product Width"
+                                                            @keyup="allowOnlyNumberAndDot($event)"
                                                         />
                                                         <div class="input-group-append">
                                                             <span class="input-group-text">cm</span>
@@ -880,6 +878,7 @@
                                                             }"
                                                             class="form-control product_height"
                                                             placeholder="Product Height"
+                                                            @keyup="allowOnlyNumberAndDot($event)"
                                                         />
                                                         <div class="input-group-append">
                                                             <span class="input-group-text">cm</span>
@@ -985,7 +984,7 @@
                                                     <div class="file-loading">
                                                         <input
                                                             id="picts"
-                                                            name="picts[]"
+                                                            name="images[]"
                                                             type="file"
                                                             multiple
                                                         />
@@ -1000,8 +999,6 @@
                                                 type="submit"
                                                 class="btn btn-primary btn-md"
                                                 id="loadingButton"
-                                                @mouseover="collectData()"
-                                                v-on:keydown.enter="collectData()"
                                             >
                                                 Save
                                             </button>
@@ -1095,12 +1092,15 @@ export default {
                         variant_options: [],
                     },
                 ],
-                variants_prod: [],
+                variants_prod: [], // all general variant products that displayed in view.
+                varProdsImgsToBeDeleted: [], // all of the variant options that has been deleted in the view, it's uploaded images should be stored here to be deleted.
+                deletedVarProdsFromVariants: [],
             }),
             error: '',
             attributes: [],
             title: '',
             dataFiles: [],
+            varProdsImgsToBeDeleted: [],
         };
     },
     methods: {
@@ -1109,16 +1109,14 @@ export default {
             let it = s.values();
             return Array.from(it);
         },
-        getVariantProducts() {
+        generateVariantProducts() {
             let variants = this.form.variants;
             var variantsValue = [];
 
             variants.forEach((data) => {
                 let dataObj = Object.values(data);
-
                 var variantOpt = $('.variant_options_' + dataObj[0]).tokenfield('getTokens');
                 var varianOptVal = [];
-
                 variantOpt.forEach((data) => {
                     varianOptVal.push(data.value);
                 });
@@ -1162,82 +1160,29 @@ export default {
             attrs = attrs.reduce((a, b) => a.flatMap((d) => b.map((e) => ({ ...d, ...e }))));
 
             // Add id to each row.
+            var last = this.form.variants_prod[this.form.variants_prod.length - 1];
             attrs.forEach((item, i) => {
-                item.id = i + 1;
-                item.product_variant = $('.variant_product_' + item.id).text();
-                item.price = $('.variant_price_' + item.id).val();
-                item.available_stock = $('.variant_available_stock_' + item.id).val();
-                item.sku = $('.variant_sku_' + item.id).val();
+                if (last) {
+                    item.id = i + 1 + last.id;
+                } else {
+                    item.id = i + 1;
+                }
+                setTimeout(function () {
+                    item.product_variant = $('.variant_product_' + item.id).text();
+                }, 100);
+                item.price = '';
+                item.available_stock = '';
+                item.sku = '';
+                item.condition = '';
+                item.images = [];
+                item.status = '';
+                item.total_images = item.images.length;
             });
 
             this.form.variants_prod = attrs;
         },
-        collectData() {
-            this.form.variants_prod.forEach((item) => {
-                var last = this.form.variants_prod[this.form.variants_prod.length - 1];
-                const isEmpty = (str) => !str.trim().length;
-
-                if (this.dataFiles.length > 0) {
-                    let dataFileInfo = this.removeDuplicatesFileInfo(this.dataFiles);
-                    var fileInfo = dataFileInfo.filter(function (x) {
-                        return x.id == item.id;
-                    });
-
-                    if (fileInfo.length > 0) {
-                        var totalImages = fileInfo.length;
-                    } else {
-                        totalImages = 0;
-                    }
-                } else {
-                    fileInfo = [];
-                    totalImages = 0;
-                }
-
-                if ($('.status_' + item.id).is(':checked') === false) {
-                    item.status = 'Inactive';
-                } else {
-                    item.status = 'Active';
-                }
-
-                item.product_variant = $('.variant_product_' + item.id).text();
-                item.price = $('.variant_price_' + item.id).val();
-                item.images = fileInfo;
-                item.total_images = totalImages;
-                item.condition = document.querySelector(
-                    'input[name="condition_' + item.id + '"]:checked'
-                ).value;
-                item.available_stock = $('.variant_available_stock_' + item.id).val();
-                item.sku = $('.variant_sku_' + item.id).val();
-
-                if (item.price === undefined || isEmpty(item.product_variant)) {
-                    item.product_variant = $('.variant_product_' + last.id).text();
-                    item.price = $('.variant_price_' + last.id).val();
-                    item.available_stock = $('.variant_available_stock_' + last.id).val();
-                    item.sku = $('.variant_sku_' + last.id).val();
-                }
-            });
-
-            this.getSwitchValue();
-            this.form.brand_id = $('#brand_id').val();
-            this.form.category_id = $('#category_id').val();
-            this.form.subcategory_id = $('#subcategory_id').val();
-            this.form.subsubcategory_id = $('#subsubcategory_id').val();
-            this.form.metric_mass = $('#metric_mass').val();
-            this.form.min_order = $('.min_order').val();
-            this.form.selling_price = $('.selling_price').val();
-            this.form.product_stock = $('.product_stock').val();
-            this.form.product_weight = $('.product_weight').val();
-            this.form.product_length = $('.product_length').val();
-            this.form.product_width = $('.product_width').val();
-            this.form.product_height = $('.product_height').val();
-            this.form.product_cond = document.querySelector(
-                'input[name="product_cond"]:checked'
-            ).value;
-
-            //console.log(JSON.stringify(this.form.variants));
-            console.log(this.form.variants_prod);
-        },
         addVariant() {
+            var self = this;
             if (this.form.variants.length === 0) {
                 this.form.variants.push({
                     id: this.nextId++,
@@ -1271,28 +1216,47 @@ export default {
                 this.error = 'You can only add 2 type of varians';
                 $('#errMsg').show();
             }
+
+            this.form.variants.forEach((data) => {
+                setTimeout(function () {
+                    self.tokenField(data.id);
+                }, 100);
+            });
+        },
+        deleteAllNewAddedVarProdImages() {
+            let formData = new FormData();
+            formData.append('variants_prod', this.form.variants_prod);
+
+            this.form
+                .post('api/products/delete-all-new-added-variant-product-images-in-create-page', {
+                    data: formData,
+                })
+                .then((response) => {
+                    console.log(response);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+                .finally(() => {});
         },
         deleteVariant(index) {
-            if (this.dataFiles.length > 0) {
-                alert('Please delete all the inputted images variant products first!');
-            } else {
-                $('#errMsg').hide();
-                this.form.variants.splice(index, 1);
-                if (this.form.variants.length === 0) {
-                    this.form.variants_prod.splice(0, this.form.variants_prod.length);
-                }
-                $('.product_variants').find(':input').val('');
-                this.getVariantProducts();
+            this.deleteAllNewAddedVarProdImages();
+            $('#errMsg').hide();
+            this.form.variants.splice(index, 1); // deleted variants
+            if (this.form.variants.length === 0) {
+                this.form.variants_prod.splice(0, this.form.variants_prod.length);
             }
+            $('.product_variants').find(':input').val('');
+            this.generateVariantProducts();
         },
-        tokenField() {
+        tokenField(id) {
             // enter button is killed no current input data found. To activate again, open the bootstrap-tokenfield.js, and search "kill enter button", uncomment the rest of code, and delete e.preventDefault()
             var self = this;
-            $('.variant_options').tokenfield({
+            $('.variant_options_' + id).tokenfield({
                 showAutocompleteOnFocus: true,
             });
 
-            $('.variant_options')
+            $('.variant_options_' + id)
                 .on('tokenfield:createtoken', function (event) {
                     var existingTokens = $(this).tokenfield('getTokens');
                     const isEmpty = (str) => !str.trim().length;
@@ -1312,7 +1276,8 @@ export default {
                     });
                 })
                 .on('tokenfield:createdtoken', function () {
-                    self.getVariantProducts();
+                    self.generateVariantProducts();
+
                     // fill the value of variant_options
                     self.form.variants.forEach((data) => {
                         let dataObj = Object.values(data);
@@ -1325,18 +1290,34 @@ export default {
                         // execute self.fileInputVariants(data.id) after 100 milisecond
                         setTimeout(function () {
                             self.fileInputVariants(data.id);
+                            self.disableRightClickAndLongPress('variant_price_' + data.id);
+                            self.disableRightClickAndLongPress(
+                                'variant_available_stock_' + data.id
+                            );
                         }, 100);
                     });
                 })
-                .on('tokenfield:removetoken', function (event) {
-                    if (self.dataFiles.length > 0) {
-                        alert('Please delete all the inputted images variant products first!');
-                        event.preventDefault();
-                    }
+                .on('tokenfield:removetoken', function () {
+                    //
                 })
-                .on('tokenfield:removedtoken', function () {
-                    self.getVariantProducts();
-                    $('.product_variants').find(':input').val(''); // clear price, sku, stock input field
+                .on('tokenfield:removedtoken', function (event) {
+                    let varProdsImgsToBeDeleted = [];
+                    varProdsImgsToBeDeleted.push(self.form.variants_prod);
+
+                    var varType = self.form.variants.filter(function (x) {
+                        return x.id == id;
+                    });
+
+                    if (varType[0].variant_options.length === 1) {
+                        self.form.variantIsDeleted = 'Yes';
+                    }
+
+                    let prop = varType[0].variant_type;
+                    var varProd = self.form.variants_prod.filter(function (x) {
+                        return x[prop] !== event.attrs.value;
+                    });
+                    self.form.variants_prod = varProd;
+
                     // update the value of variant_options
                     self.form.variants.forEach((data) => {
                         let dataObj = Object.values(data);
@@ -1344,6 +1325,30 @@ export default {
                             'getTokens'
                         );
                     });
+
+                    // get and updated deleted variant products images
+                    var getVarProdsImgsToBeDeleted = varProdsImgsToBeDeleted[0].filter(function (
+                        x
+                    ) {
+                        return x[prop] == event.attrs.value;
+                    });
+                    self.varProdsImgsToBeDeleted.push(...getVarProdsImgsToBeDeleted);
+                    self.form.varProdsImgsToBeDeleted = self.varProdsImgsToBeDeleted;
+
+                    let formData = new FormData();
+                    formData.append('varProdsImgsToBeDeleted', self.form.varProdsImgsToBeDeleted);
+
+                    self.form
+                        .post('api/products/delete-selected-variant-product-images', {
+                            data: formData,
+                        })
+                        .then((response) => {
+                            console.log(response);
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        })
+                        .finally(() => {});
                 });
         },
         fileInputVariants(id) {
@@ -1351,10 +1356,14 @@ export default {
 
             $('.status_' + id).bootstrapSwitch('state', $('.status_' + id).prop('checked'));
 
+            var varProdImgs = this.form.variants_prod.filter(function (x) {
+                return x.id == id;
+            });
+
             $('.images' + id)
                 .fileinput({
                     theme: 'fas',
-                    uploadUrl: `${BASE_URL}/api/products/store-images/` + id,
+                    uploadUrl: `${BASE_URL}/api/products/store-images`,
                     dropZoneEnabled: false,
                     browseOnZoneClick: false,
                     showUpload: false, // mass upload
@@ -1393,7 +1402,9 @@ export default {
                     $('.images' + id).fileinput('upload');
                 })
                 .on('filebatchuploadsuccess', function (event, data) {
-                    self.dataFiles.push(...data.response.initialPreviewConfig);
+                    //self.dataFiles.push(...data.response.initialPreviewConfig);
+                    varProdImgs[0].images.push(...data.response.initialPreviewConfig);
+                    varProdImgs[0].total_images = varProdImgs[0].images.length;
                 })
                 .on('filebeforedelete', function () {
                     //
@@ -1413,7 +1424,6 @@ export default {
                 })
                 .on('fileclear', function () {
                     // before bulk remove
-                    self.collectData();
                 })
                 .on('filecleared', function () {
                     // after bulk remove
@@ -1461,84 +1471,123 @@ export default {
                 this.form.special_deals = 'Yes';
             }
         },
-        validateInputNumber(className) {
+        getSwitchValueVarProds() {
+            var self = this;
+            this.form.variants_prod.forEach((item) => {
+                if ($('.status_' + item.id).is(':checked') === false) {
+                    item.status = 'Inactive';
+                } else {
+                    item.status = 'Active';
+                }
+                setTimeout(function () {
+                    self.fileInputVariants(item.id);
+                }, 1000);
+            });
+        },
+        getRadioButtonVarProdsVal() {
+            this.form.variants_prod.forEach((item) => {
+                item.condition = $('input[name="condition_' + item.id + '"]:checked').val();
+            });
+        },
+        disableRightClickAndLongPress(className) {
             // disable right click
             $('.' + className + '').on('contextmenu', function () {
                 return false;
             });
 
-            function addDot(x) {
-                return x.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-            }
+            let flag = 0;
+            $('.' + className + '').on('keydown', function (evt) {
+                evt = evt ? evt : window.event;
+                var charCode = evt.which ? evt.which : evt.keyCode;
+                var vKey = 86, // paste
+                    cKey = 67; // copy
 
-            // prevent bug for long press
-            var flag = 0;
-            $('.' + className + '').on('keydown', function (e) {
-                flag++;
-                if (flag > 4) {
-                    e.preventDefault();
+                if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
+                    flag++;
+                    if (flag > 4) {
+                        evt.preventDefault();
+                    }
+                }
+
+                if (evt.keyCode == cKey && evt.keyCode == vKey) {
+                    evt.preventDefault();
                 }
             });
+        },
+        allowOnlyNumberAndDot: function (evt) {
+            evt = evt ? evt : window.event;
+            var charCode = evt.which ? evt.which : evt.keyCode;
+            var vKey = 86,
+                cKey = 67;
+            if (
+                charCode > 31 &&
+                (charCode < 48 || charCode > 57) &&
+                charCode !== 46 &&
+                evt.keyCode == cKey &&
+                evt.keyCode == vKey
+            ) {
+                evt.preventDefault();
+            } else {
+                this.form.variants_prod.forEach((data) => {
+                    // limit input
+                    var txtVal = $('.variant_price_' + data.id).val();
+                    if (txtVal.length > 11) {
+                        $('.variant_price_' + data.id).val(txtVal.substring(0, 11));
+                        return false;
+                    }
 
-            $('.' + className + '').on('keyup', this, function (event) {
-                flag = 0;
+                    // add dot in numbers and only number is allowed (replace(/\D/g, '')).
+                    $('.variant_price_' + data.id).val(function (index, value) {
+                        return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                    });
 
-                // skip for arrow left (37) and arrow down (40)
-                if (event.which >= 37 && event.which <= 40) {
-                    return;
-                }
+                    var varStock = $('.variant_available_stock_' + data.id).val();
+                    if (varStock.length > 11) {
+                        $('.variant_available_stock_' + data.id).val(varStock.substring(0, 11));
+                        return false;
+                    }
 
-                // Limit number
-                var txtVal = $(this).val();
-                if (txtVal.length > 11) {
-                    $(this).val(txtVal.substring(0, 11));
-                    return false;
-                }
+                    // add dot in numbers and only number is allowed (replace(/\D/g, '')).
+                    $('.variant_available_stock_' + data.id).val(function (index, value) {
+                        return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                    });
 
-                // add dot in numbers and only number is allowed (replace(/\D/g, '')).
-                /*$(this).val(function (index, value) {
-                    return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-                });*/
-
-                $(this).val(function (index, value) {
-                    return value.replace(/\D/g, '').toLocaleString('id');
+                    data.price = $('.variant_price_' + data.id).val();
+                    data.available_stock = $('.variant_available_stock_' + data.id).val();
                 });
-            });
 
-            //////////////////////////////////////////////////////////////////////////////////
+                let className = [
+                    'min_order',
+                    'selling_price',
+                    'product_stock',
+                    'product_weight',
+                    'product_length',
+                    'product_width',
+                    'product_height',
+                ];
 
-            $('.' + className + '').on('paste', function (event) {
-                // This will allow only number with dot (/^[0-9]*\.?[0-9]*$/).
-                // But if we want only number without dot, we can use ( /[^\d]/ )
-                var rgx = /^[0-9]*\.?[0-9]*$[^\d]/;
+                className.forEach((data) => {
+                    var theClass = $('.' + data + '').val();
 
-                if (event.originalEvent.clipboardData.getData('text').match(rgx)) {
-                    event.preventDefault();
-                } else {
-                    var dataText = event.originalEvent.clipboardData.getData('text');
-
-                    // Limit number
-                    if (dataText.length > 11) {
-                        var subsData = dataText.substring(0, 11);
-                        var res = addDot(subsData);
-
-                        $(this).val(subsData);
-                        $('.' + className + '').val(res); // Assume, we paste 200000, without if else below, it will result 200.000200000
-
+                    if (theClass.length > 11) {
+                        $('.' + data + '').val(theClass.substring(0, 11));
                         return false;
-                    } else {
-                        var res2 = addDot(dataText);
-                        $('.' + className + '').val(res2); // Assume, we paste 200000, without if else below, it will result 200.000200000
                     }
 
-                    // if 200000 is exsist, remove 200000
-                    if (dataText || subsData) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                }
-            });
+                    // add dot in numbers and only number is allowed (replace(/\D/g, '')).
+                    $('.' + data + '').val(function (index, value) {
+                        return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                    });
+
+                    this.form.min_order = $('.min_order').val();
+                    this.form.selling_price = $('.selling_price').val();
+                    this.form.product_stock = $('.product_stock').val();
+                    this.form.product_weight = $('.product_weight').val();
+                    this.form.product_length = $('.product_length').val();
+                    this.form.product_width = $('.product_width').val();
+                    this.form.product_height = $('.product_height').val();
+                });
+            }
         },
         clearAllSubCatSelectOption() {
             $('#subcategory_id')
@@ -1682,7 +1731,7 @@ export default {
             $('#picts')
                 .fileinput({
                     theme: 'fas',
-                    uploadUrl: `${BASE_URL}/api/products/store-picts-single-product`,
+                    uploadUrl: `${BASE_URL}/api/products/store-images`,
                     dropZoneEnabled: true,
                     browseOnZoneClick: true,
                     showUpload: false, // mass upload
@@ -1918,18 +1967,21 @@ export default {
                 emptyInputImgs.length == 0 && // empty input images is not exist.
                 this.form.images.length > 0
             ) {
-                //this.$router.push({ name: 'products-index' });
+                this.$router.push({ name: 'products-index' });
                 this.showSuccessMsg(res);
             }
         },
         store() {
-            console.log(this.form.variants_prod);
             $('#loadingButton').html(
                 `<div class="proc-regis"><i class='fa fa-circle-o-notch fa-spin'></i> Storing data</div>`
             );
             $('#loadingButton').attr('disabled', true);
 
+            this.getSwitchValue();
+            this.getSwitchValueVarProds();
+            this.getRadioButtonVarProdsVal();
             this.form.isVariantExists = $('#variant_type').length;
+            this.form.brand_id = $('#brand_id').val();
             this.form.category_id = $('#category_id').find(':selected').attr('data-id');
             this.form.subcategory_id = $('#subcategory_id').find(':selected').attr('data-id');
             this.form.subsubcategory_id = $('#subsubcategory_id').find(':selected').attr('data-id');
@@ -1940,11 +1992,6 @@ export default {
             formData.append('variants', variants);
             formData.append('variants_prod', this.form.variants_prod);
             formData.append('totalInputtedPicts', this.form.totalInputtedPicts);
-
-            $('#loadingButton').html(
-                `<div class="proc-regis"><i class='fa fa-circle-o-notch fa-spin'></i> Storing data</div>`
-            );
-            $('#loadingButton').attr('disabled', true);
 
             this.form
                 .post(`${BASE_URL}/api/staff/products/store`, { data: formData })
@@ -1971,7 +2018,7 @@ export default {
                                 footer: '<a href>Why do I have this issue?</a>',
                             });
                         } else {
-                            //this.$router.push({ name: 'products-index' });
+                            this.$router.push({ name: 'products-index' });
                             this.showSuccessMsg(result);
                         }
                     }
@@ -2010,13 +2057,13 @@ export default {
         this.loadBrands();
         this.loadCatSelectOption();
         this.fileInput();
-        this.validateInputNumber('min_order');
-        this.validateInputNumber('selling_price');
-        this.validateInputNumber('product_stock');
-        this.validateInputNumber('product_weight');
-        this.validateInputNumber('product_length');
-        this.validateInputNumber('product_width');
-        this.validateInputNumber('product_height');
+        this.disableRightClickAndLongPress('min_order');
+        this.disableRightClickAndLongPress('selling_price');
+        this.disableRightClickAndLongPress('product_stock');
+        this.disableRightClickAndLongPress('product_weight');
+        this.disableRightClickAndLongPress('product_length');
+        this.disableRightClickAndLongPress('product_width');
+        this.disableRightClickAndLongPress('product_height');
     },
 };
 </script>

@@ -12,6 +12,7 @@ use App\Models\Brand;
 use App\Models\ImageGallery;
 use App\Models\ImageGalleryProductCombination;
 use Illuminate\Support\Str;
+use App\Models\SubCategory;
 use DB;
 //use Symfony\Component\HttpFoundation\Response;
 use Response;
@@ -37,10 +38,10 @@ class ProductController extends Controller
         ], 200);
     }
 
-    public function storeImages($id)
+    public function storeImages()
     {
         $preview = $config = $errors = [];
-        $input = 'images';
+        $input = 'images'; // name of input
 
         if (empty($_FILES[$input])) {
             return [];
@@ -68,7 +69,6 @@ class ProductController extends Controller
                     $fileId = $fileName . $i; // some unique key to identify the file
                     $preview[] = '<img class="kv-preview-data file-preview-image" src="' . $newFileUrl . '">'; //$newFileUrl;
                     $config[] = [
-                        'id' => $id,
                         'key' => $fileId,
                         'caption' => $fileName,
                         'size' => $fileSize,
@@ -95,76 +95,6 @@ class ProductController extends Controller
     }
 
     public function deleteImages($fileName)
-    {
-        $storedImage = storage_path('app\\public\\products\\' . $fileName);
-
-        if (file_exists($storedImage)) {
-            unlink($storedImage);
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'File sucessfully deleted!',
-        ]);
-    }
-
-    public function storePictsSingleProd()
-    {
-        $preview = $config = $errors = [];
-        $input = 'picts';
-
-        if (empty($_FILES[$input])) {
-            return [];
-        }
-
-        $total = count($_FILES[$input]['name']);
-        $path = 'storage/app/public/products/';
-
-        for ($i = 0; $i < $total; $i++) {
-            $tmpFilePath = $_FILES[$input]['tmp_name'][$i]; // the temp file path
-            $getFileName = $_FILES[$input]['name'][$i]; // the file name
-            $array = explode('.', $getFileName);
-            $extension = end($array);
-            $fileName = hexdec(uniqid()) . '.' . $extension;
-            $fileSize = $_FILES[$input]['size'][$i]; // the file size
-
-            //Make sure we have a file path
-            if ($tmpFilePath != "") {
-                //Setup our new file path
-                $newFilePath = $path . $fileName;
-                $newFileUrl = 'http://localhost/my-project/laravue/storage/app/public/products/' . $fileName;
-
-                //Upload the file into the new path
-                if (move_uploaded_file($tmpFilePath, $newFilePath)) {
-                    $fileId = $fileName . $i; // some unique key to identify the file
-                    $preview[] = '<img class="kv-preview-data file-preview-image" src="' . $newFileUrl . '">'; //$newFileUrl;
-                    $config[] = [
-                        'key' => $fileId,
-                        'caption' => $fileName,
-                        'size' => $fileSize,
-                        'downloadUrl' => $newFileUrl, // the url to download the file
-                        'url' => 'http://localhost/my-project/laravue/api/products/delete-picts-single-product/' . $fileName, // server api to delete the file based on key
-                    ];
-                } else {
-                    $errors[] = $fileName;
-                }
-            } else {
-                $errors[] = $fileName;
-            }
-        }
-
-        $out = ['initialPreview' => $preview, 'initialPreviewConfig' => $config, 'initialPreviewAsData' => true];
-
-        if (!empty($errors)) {
-            $error = [];
-            $img = count($errors) === 1 ? 'file "' . $error[0]  . '" ' : 'files: "' . implode('", "', $errors) . '" ';
-            $out['error'] = 'Oh snap! We could not upload the ' . $img . 'now. Please try again later.';
-        }
-
-        return $out;
-    }
-
-    public function deletePictsSingleProd($fileName)
     {
         $storedImage = storage_path('app\\public\\products\\' . $fileName);
 
@@ -503,7 +433,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function deleteAllVarProdsImages($id)
+    public function deleteAllVarProdsImagesInDb($id)
     {
         $varProds = ProductCombination::where('product_id', $id)->get('images');
 
@@ -534,6 +464,65 @@ class ProductController extends Controller
             }
         }
         // end
+    }
+
+    public function deleteVarProdImages($varProdImages)
+    {
+        $images = array();
+        foreach ($varProdImages as $deletedVarProd) {
+            $images[] = $deletedVarProd['images'];
+        }
+
+        $imagesName = array();
+        foreach ($images as $image) {
+            if ($image) {
+                foreach ($image as $fileName) {
+                    $imagesName[] = $fileName['caption'];
+                }
+            }
+        }
+
+        foreach ($imagesName as $imageName) {
+            $this->deleteImages($imageName);
+        }
+    }
+
+    public function deleteSelectedVarProdsImages()
+    {
+        $varProdsImgsToBeDeleted = $this->request->get('varProdsImgsToBeDeleted');
+
+        if (sizeof($varProdsImgsToBeDeleted) > 0) {
+            $this->deleteVarProdImages($varProdsImgsToBeDeleted);
+        }
+    }
+
+    // This function is executed directly only from the view when user delete the variant type. 
+    public function deleteAllNewAddedVarProdImages()
+    {
+        $newAddedVarProdImages = $this->request->get('addedNewVarProds');
+
+        if (sizeof($newAddedVarProdImages) > 0) {
+            $this->deleteVarProdImages($newAddedVarProdImages);
+        }
+    }
+
+    public function deleteAllNewAddedVarProdImagesInCreatePage()
+    {
+        $variantsProd = $this->request->get('variants_prod');
+
+        if (sizeof($variantsProd) > 0) {
+            $this->deleteVarProdImages($variantsProd);
+        }
+    }
+
+    // This function is executed directly from the view when user delete the new added variant products through the variant options field. 
+    public function deleteSomeNewAddedVarProdImages()
+    {
+        $newVarProdsImagesToBeDeleted = $this->request->get('newVarProdsImagesToBeDeleted');
+
+        if (sizeof($newVarProdsImagesToBeDeleted) > 0) {
+            $this->deleteVarProdImages($newVarProdsImagesToBeDeleted);
+        }
     }
 
     public function deleteAllVarProds($id)
@@ -642,7 +631,7 @@ class ProductController extends Controller
             // Do this action if variant is deleted from the view. 
             if ($variantIsDeleted == 'Yes') {
                 // delete all variant product images
-                $this->deleteAllVarProdsImages($id);
+                $this->deleteAllVarProdsImagesInDb($id);
 
                 // delete all variant products
                 $this->deleteAllVarProds($id);
@@ -657,25 +646,7 @@ class ProductController extends Controller
             // if one or some of variant options is deleted from the view, do this action. 
             if ($varProdsImgsToBeDeleted !== null && $variantIsDeleted == 'No') {
                 // delete variant product images file that has been uploaded. 
-                if (sizeof($varProdsImgsToBeDeleted) > 0) {
-                    $images = array();
-                    foreach ($varProdsImgsToBeDeleted as $deletedVarProd) {
-                        $images[] = $deletedVarProd['images'];
-                    }
-
-                    $imagesName = array();
-                    foreach ($images as $image) {
-                        if ($image) {
-                            foreach ($image as $fileName) {
-                                $imagesName[] = $fileName['caption'];
-                            }
-                        }
-                    }
-
-                    foreach ($imagesName as $imageName) {
-                        $this->deleteImages($imageName);
-                    }
-                }
+                $this->deleteSelectedVarProdsImages();
 
                 // if the variant product that stored in database is deleted in the view, then also delete it from database. 
                 if ($varProdsToBeDeleted !== null) {
@@ -777,7 +748,7 @@ class ProductController extends Controller
                 $this->updateProduct($id);
 
                 if ($variantIsDeleted == 'Yes') {
-                    $this->deleteAllVarProdsImages($id);
+                    $this->deleteAllVarProdsImagesInDb($id);
                     $this->deleteAllVarProds($id);
                 }
 

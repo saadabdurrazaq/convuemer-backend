@@ -331,6 +331,26 @@ const routes = [
             next();
         }
     },
+    {
+        path: '/staff/products/trash',
+        name: 'products-trash',
+        component: () => import('@/views/staff/products/trash.vue'),
+        meta: {
+            requiresAuth: true,
+            breadcrumb: [
+                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Products', link: 'index', home: 'index' },
+                { name: 'trash', active: 'active' }
+            ],
+            pageTitle: "Trash Products"
+        },
+        beforeEnter: (to, from, next) => {
+            if (!localStorage.getItem('token-staff')) {
+                next('/staff/login');
+            }
+            next();
+        }
+    },
 ]
 
 //create router

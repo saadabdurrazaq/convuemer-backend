@@ -127,6 +127,15 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     Route::get('get-brands', [ProductController::class, 'getBrands']);
     Route::post('products/store', [ProductController::class, 'store']);
     Route::get('products/index', [ProductController::class, 'index']);
+    Route::get('products/search/{keyword}', [ProductController::class, 'searchProduct']);
+    Route::delete('products/soft-delete/{id}', [ProductController::class, 'softDelete']);
+    Route::get('products/soft-delete-multiple/ids={ids}', [ProductController::class, 'softDeleteMultiple']);
+    Route::get('products/trash', [ProductController::class, 'trash']);
+    Route::get('products/trash/search/{keyword}', [ProductController::class, 'searchInTrash']);
+    Route::get('products/restore/{id}', [ProductController::class, 'restore']);
+    Route::get('products/restore-multiple/ids={ids}', [ProductController::class, 'restoreMultiple']);
+    Route::delete('products/force-delete/{id}', [ProductController::class, 'forceDelete']);
+    Route::get('products/force-delete-multiple/ids={ids}', [ProductController::class, 'forceDeleteMultiple']);
     Route::put('products/update-status/{id}', [ProductController::class, 'updateStatus']);
     Route::get('products/show/{id}', [ProductController::class, 'show']);
     Route::put('products/update-images/{id}', [ProductController::class, 'updateImages']);

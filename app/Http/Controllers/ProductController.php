@@ -14,10 +14,9 @@ use App\Models\ImageGalleryProductCombination;
 use Illuminate\Support\Str;
 use App\Models\SubCategory;
 use DB;
-//use Symfony\Component\HttpFoundation\Response;
-use Response;
 use Image;
 use Mockery\Undefined;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
@@ -388,6 +387,163 @@ class ProductController extends Controller
         ], 200);
     }
 
+    public function softDelete($id)
+    {
+        Product::findOrFail($id)->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Product has been trashed successfully.',
+        ]);
+    }
+
+    public function softDeleteMultiple(Request $request)
+    {
+        $get_ids = $request->ids;
+        $ids = explode(',', $get_ids);
+
+        // precess request one by one 
+        foreach ($ids as $id) {
+            $product = Product::findOrFail($id);
+
+            if ($product) {
+                $product->delete();
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Product/s has been trashed successfully.'
+        ]);
+    }
+
+    public function searchProduct($keyword)
+    {
+        $items = $this->request->items ?? 5;
+        $product = Product::where('product_name', 'LIKE', "%{$keyword}%")->paginate($items);
+        $trashedProducts = Product::onlyTrashed()->count();
+
+        return response()->json([
+            'products' => $product,
+            'total_trashed_products' => $trashedProducts,
+            'items' => $items,
+        ], Response::HTTP_OK);
+    }
+
+    public function trash(Request $request)
+    {
+        $items = $request->items ?? 5;
+        $products = Product::orderBy('id', 'desc')->onlyTrashed()->paginate($items);
+        $trashedProducts = Product::onlyTrashed()->count();
+        $nonTrashed = Product::count();
+
+        return response()->json([
+            'products' => $products,
+            'total_trashed_products' => $trashedProducts,
+            'items' => $items,
+            'non_trashed' => $nonTrashed,
+        ], 200);
+    }
+
+    public function searchInTrash($keyword)
+    {
+        $items = $this->request->items ?? 5;
+        $product = Product::onlyTrashed()->where('product_name', 'LIKE', "%{$keyword}%")->paginate($items);
+        $trashedProducts = Product::onlyTrashed()->count();
+        $nonTrashed = Product::count();
+
+        return response()->json([
+            'products' => $product,
+            'total_trashed_products' => $trashedProducts,
+            'items' => $items,
+            'non_trashed' => $nonTrashed,
+        ], Response::HTTP_OK);
+    }
+
+    public function restore($id)
+    {
+        $product = Product::withTrashed()->findOrFail($id);
+
+        if ($product->trashed()) {
+            $product->restore();
+            return response()->json([
+                'success' => true,
+                'message' => 'Product successfully restored.',
+            ]);
+        }
+    }
+
+    public function restoreMultiple(Request $request)
+    {
+        $get_ids = $request->ids;
+        $ids = explode(',', $get_ids);
+
+        $products = Product::withTrashed()->whereIn('id', $ids);
+        $products->restore();
+        return response()->json([
+            'success' => true,
+            'message' => 'Selected products successfully restored'
+        ]);
+    }
+
+    public function forceDeleteProduct($id)
+    {
+        $product = Product::withTrashed()->findOrFail($id);
+
+        // Delete product images. 
+        $imagesProduct = Product::withTrashed()->where('id', $id)->get('images');
+        $this->deleteStoredImages($imagesProduct);
+
+        $varProds = ProductCombination::withTrashed()->where('product_id', $id);
+        if ($varProds) {
+            // Delete variant product images. 
+            $this->deleteAllVarProdsImagesInDb($id);
+
+            // Delete variant products
+            $varProds->forceDelete();
+        }
+
+        // Delete product variant type and product variant options
+        $this->deleteVarTypeAndVarOpt($id);
+
+        // Delete product
+        $product->forceDelete();
+    }
+
+    public function forceDelete($id)
+    {
+        $product = Product::withTrashed()->findOrFail($id);
+
+        if ($product) {
+            $this->forceDeleteProduct($id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Product deleted successfully.',
+            ]);
+        }
+    }
+
+    public function forceDeleteMultiple(Request $request)
+    {
+        $get_ids = $request->ids;
+        $ids = explode(',', $get_ids);
+
+        // precess request one by one
+        foreach ($ids as $id) {
+            $product = Product::withTrashed()->findOrFail($id);
+
+            if ($product) {
+                $this->forceDeleteProduct($id);
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Product deleted successfully.'
+        ]);
+    }
+
     public function updateStatus($id)
     {
         $status =  $this->request->get('status');
@@ -433,29 +589,26 @@ class ProductController extends Controller
         ]);
     }
 
-    public function deleteAllVarProdsImagesInDb($id)
+    public function deleteStoredImages($images)
     {
-        $varProds = ProductCombination::where('product_id', $id)->get('images');
-
-        if ($varProds) {
-            $varProdImages = array();
-            foreach ($varProds as $varProd) {
-                $varProdImages[] = json_decode($varProd['images']);
+        if ($images) {
+            $imagesArr = array();
+            foreach ($images as $image) {
+                $imagesArr[] = json_decode($image['images']);
             }
 
-            if (sizeof($varProdImages) > 0) {
-                $varProdImagesName = array();
-                foreach ($varProdImages as $varProdImage) {
-                    if ($varProdImage) {
-                        foreach ($varProdImage as $varProdFileName) {
-
-                            $varProdImagesName[] = $varProdFileName;
+            if (sizeof($imagesArr) > 0) {
+                $imagesArrName = array();
+                foreach ($imagesArr as $imageArr) {
+                    if ($imageArr) {
+                        foreach ($imageArr as $imageFileName) {
+                            $imagesArrName[] = $imageFileName;
                         }
                     }
                 }
 
-                if (sizeof($varProdImagesName) > 0) {
-                    $deleteAllImages = array_column($varProdImagesName, 'caption');
+                if (sizeof($imagesArrName) > 0) {
+                    $deleteAllImages = array_column($imagesArrName, 'caption');
 
                     foreach ($deleteAllImages as $deleteImage) {
                         $this->deleteImages($deleteImage);
@@ -463,10 +616,15 @@ class ProductController extends Controller
                 }
             }
         }
-        // end
     }
 
-    public function deleteVarProdImages($varProdImages)
+    public function deleteAllVarProdsImagesInDb($id)
+    {
+        $varProds = ProductCombination::where('product_id', $id)->get('images');
+        $this->deleteStoredImages($varProds);
+    }
+
+    public function getVarProdImagesToDelete($varProdImages)
     {
         $images = array();
         foreach ($varProdImages as $deletedVarProd) {
@@ -492,7 +650,7 @@ class ProductController extends Controller
         $varProdsImgsToBeDeleted = $this->request->get('varProdsImgsToBeDeleted');
 
         if (sizeof($varProdsImgsToBeDeleted) > 0) {
-            $this->deleteVarProdImages($varProdsImgsToBeDeleted);
+            $this->getVarProdImagesToDelete($varProdsImgsToBeDeleted);
         }
     }
 
@@ -502,7 +660,7 @@ class ProductController extends Controller
         $newAddedVarProdImages = $this->request->get('addedNewVarProds');
 
         if (sizeof($newAddedVarProdImages) > 0) {
-            $this->deleteVarProdImages($newAddedVarProdImages);
+            $this->getVarProdImagesToDelete($newAddedVarProdImages);
         }
     }
 
@@ -511,7 +669,7 @@ class ProductController extends Controller
         $variantsProd = $this->request->get('variants_prod');
 
         if (sizeof($variantsProd) > 0) {
-            $this->deleteVarProdImages($variantsProd);
+            $this->getVarProdImagesToDelete($variantsProd);
         }
     }
 
@@ -521,7 +679,7 @@ class ProductController extends Controller
         $newVarProdsImagesToBeDeleted = $this->request->get('newVarProdsImagesToBeDeleted');
 
         if (sizeof($newVarProdsImagesToBeDeleted) > 0) {
-            $this->deleteVarProdImages($newVarProdsImagesToBeDeleted);
+            $this->getVarProdImagesToDelete($newVarProdsImagesToBeDeleted);
         }
     }
 
@@ -543,9 +701,8 @@ class ProductController extends Controller
         }
     }
 
-    public function updateVarTypesAndVarOpts($id)
+    public function deleteVarTypeAndVarOpt($id)
     {
-        // delete all variant type and variant options
         $varOpts = VariantOption::where('product_id', $id);
         if ($varOpts) {
             $varOpts->forceDelete();
@@ -555,6 +712,12 @@ class ProductController extends Controller
         if ($varTypes) {
             $varTypes->forceDelete();
         }
+    }
+
+    public function updateVarTypesAndVarOpts($id)
+    {
+        // delete all variant type and variant options
+        $this->deleteVarTypeAndVarOpt($id);
 
         // insert the new updated variant type and variant options
         $this->storeNewVarTypeAndVarOpt($id);

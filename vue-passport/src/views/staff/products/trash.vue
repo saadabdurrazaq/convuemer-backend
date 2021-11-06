@@ -35,17 +35,17 @@
                                                 <li>
                                                     <router-link
                                                         :to="{ name: 'products-index' }"
-                                                        :class="
-                                                            isInAllData ? 'menu current' : 'menu'
-                                                        "
+                                                        class="menu"
                                                         href="#"
-                                                        >All ({{ totalRecords }})</router-link
+                                                        >All ({{ nonTrashed }})</router-link
                                                     >
                                                 </li>
                                                 <li>
                                                     <router-link
                                                         :to="{ name: 'products-trash' }"
-                                                        class="menu"
+                                                        :class="
+                                                            isInAllData ? 'menu current' : 'menu'
+                                                        "
                                                         href="#"
                                                         >Trash ({{ trashed }})</router-link
                                                     >
@@ -104,7 +104,7 @@
                                             form-control
                                             select2bs4
                                             select2-accessible
-                                            trash_multiple
+                                            bulk_actions
                                         "
                                         style="width: 130px"
                                         data-select2-id=" 17"
@@ -115,8 +115,11 @@
                                         <option selected="selected" data-select2-id="19">
                                             Bulk Actions
                                         </option>
-                                        <option data-select2-id="38" value="trashMultiple">
-                                            Trash
+                                        <option data-select2-id="38" value="restoreMultiple">
+                                            Restore
+                                        </option>
+                                        <option data-select2-id="38" value="deleteMultiple">
+                                            Delete
                                         </option>
                                     </select>
                                 </div>
@@ -266,21 +269,20 @@
                                                     </div>
                                                 </td>
                                                 <td style="text-align: center; width: 30%">
-                                                    <router-link
-                                                        :to="{
-                                                            name: 'products-edit',
-                                                            params: { id: product.id },
-                                                        }"
-                                                        class="btn btn-info"
-                                                        style="margin-right: 7px"
-                                                        ><i class="fa fa-edit"></i> Edit
-                                                    </router-link>
                                                     <a
-                                                        class="btn btn-warning"
+                                                        class="btn btn-success"
+                                                        style="margin-right: 7px"
                                                         href=""
-                                                        @click.prevent="softDelete(product.id)"
+                                                        @click.prevent="restore(product.id)"
                                                     >
-                                                        <i class="fa fa-trash"></i> Trash
+                                                        <i class="fa fa-undo"></i> Restore
+                                                    </a>
+                                                    <a
+                                                        class="btn btn-danger"
+                                                        href=""
+                                                        @click.prevent="forceDelete(product.id)"
+                                                    >
+                                                        <i class="fa fa-trash"></i> Delete
                                                     </a>
                                                 </td>
                                             </tr>
@@ -394,6 +396,7 @@ export default {
             page: 1,
             perPage: 0,
             totalRecords: 0,
+            nonTrashed: 0,
             from: 0,
             to: 0,
             currentPage: 0,
@@ -502,6 +505,7 @@ export default {
             this.currentPage = responseData.products.current_page;
             this.trashed = responseData.total_trashed_products;
             this.perPage = responseData.items;
+            this.nonTrashed = responseData.non_trashed;
         },
 
         loadSpecificPage() {
@@ -552,13 +556,13 @@ export default {
         },
 
         highlightChangedRecord() {
-            if (this.detectUpdate === true || this.detectTrash === true) {
+            if (this.detectRestore === true || this.detectDelete === true) {
                 $('.data-' + this.form.id)
                     .toggleClass('highlight')
                     .fadeOut(1500, function () {
                         $(this).toggleClass('highlight').fadeIn(1);
                     });
-            } else if (this.detectMultipleTrash === true) {
+            } else if (this.detectMultipleRestore === true || this.detectMultipleDelete === true) {
                 let values = this.selectedValues;
                 values.forEach(function (value) {
                     $('.data-' + value)
@@ -569,9 +573,10 @@ export default {
                 });
             }
 
-            this.detectUpdate = false;
-            this.detectTrash = false;
-            this.detectMultipleTrash = false;
+            this.detectRestore = false;
+            this.detectDelete = false;
+            this.detectMultipleRestore = false;
+            this.detectMultipleDelete = false;
         },
 
         // /showAllDataIndex() function. Function we use to get user list by calling api/categories method GET.
@@ -592,7 +597,7 @@ export default {
 
             this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             this.axios
-                .get('api/staff/products/index', {
+                .get('api/staff/products/trash', {
                     params: {
                         page: page,
                     },
@@ -626,7 +631,7 @@ export default {
             }
 
             this.axios
-                .get('api/staff/products/index?items=' + val, {
+                .get('api/staff/products/trash?items=' + val, {
                     params: {
                         page: page,
                     },
@@ -648,6 +653,7 @@ export default {
                 .finally(() => {
                     this.loading = false;
                     this.highlightNewRecords();
+                    this.updateStatus();
                 });
         },
 
@@ -672,7 +678,7 @@ export default {
                 }
 
                 this.axios
-                    .get('api/staff/products/search/' + this.search, {
+                    .get('api/staff/products/trash/search/' + this.search, {
                         params: {
                             page: page,
                         },
@@ -726,6 +732,82 @@ export default {
             });
         },
 
+        restore(id) {
+            this.form.id = id;
+
+            swal.fire({
+                title: 'Are you sure?',
+                text: 'You still be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, restore it!',
+            }).then((result) => {
+                // confirm delete?
+                if (result.value) {
+                    // request delete
+                    this.form
+                        .get('api/staff/products/restore/' + id, {})
+                        .then((response) => {
+                            this.detectRestore = true;
+                            this.highlightChangedRecord();
+                            this.determineDefaultPage();
+                            this.loadSpecificPage();
+                            this.title = 'Product restored successfully!';
+                            this.showSuccessMsg(response);
+                        })
+                        .catch(() => {
+                            // sweet alert fail
+                            swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                                footer: '<a href>Why do I have this issue?</a>',
+                            });
+                        });
+                }
+            });
+        },
+
+        forceDelete(id) {
+            this.form.id = id;
+
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+            }).then((result) => {
+                if (result.value) {
+                    this.form
+                        .delete('api/staff/products/force-delete/' + id, {})
+                        .then((response) => {
+                            let responseData = response.data;
+                            this.detectDelete = true;
+                            this.highlightChangedRecord();
+                            this.determineDefaultPage();
+                            this.loadSpecificPage();
+                            this.title = 'Product deleted successfully!';
+                            console.log(responseData);
+                            this.showSuccessMsg(response);
+                        })
+                        .catch(() => {
+                            // sweet alert fail
+                            swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                                footer: '<a href>Why do I have this issue?</a>',
+                            });
+                        });
+                }
+            });
+        },
+
         selectMultiple() {
             var checked = $('#select-multiple').is(':checked', true);
             if (checked) {
@@ -736,7 +818,7 @@ export default {
         },
 
         bulkActions() {
-            if ($('.trash_multiple').val() == 'trashMultiple') {
+            if ($('.bulk_actions').val() == 'deleteMultiple') {
                 var allVals = [];
                 $('.sub_chk:checked').each(function () {
                     allVals.push($(this).attr('data-id'));
@@ -749,26 +831,75 @@ export default {
                 } else {
                     swal.fire({
                         title: 'Are you sure?',
-                        text: 'You still can revert this!',
+                        text: 'You wont be able to revert this!',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, trash it!',
+                        confirmButtonText: 'Yes, delete it!',
                     }).then((result) => {
                         if (result.isConfirmed) {
                             var join_selected_values = allVals.join(',');
                             this.axios
                                 .get(
-                                    'api/staff/products/soft-delete-multiple/ids=' +
+                                    'api/staff/products/force-delete-multiple/ids=' +
                                         join_selected_values
                                 )
                                 .then((response) => {
-                                    this.detectMultipleTrash = true;
+                                    this.detectMultipleDelete = true;
                                     this.highlightChangedRecord();
                                     this.determineDefaultPage();
                                     this.loadSpecificPage();
-                                    this.title = 'Sub category/ies has been trashed successfully!';
+                                    this.title = 'Products has been deleted successfully!';
+                                    this.showSuccessMsg(response);
+                                })
+                                .catch((error) => {
+                                    console.log(error.response.data);
+                                    swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: 'Something went wrong!',
+                                        footer: '<a href>Why do I have this issue?</a>',
+                                    });
+                                });
+                        } else {
+                            swal.fire('Cancelled', 'Your data is safe :)', 'error');
+                        }
+                    });
+                }
+            } else if ($('.bulk_actions').val() == 'restoreMultiple') {
+                var multipleVals = [];
+                $('.sub_chk:checked').each(function () {
+                    multipleVals.push($(this).attr('data-id'));
+                });
+
+                this.selectedValues = multipleVals;
+
+                if (multipleVals.length <= 0) {
+                    alert('Please select row.');
+                } else {
+                    swal.fire({
+                        title: 'Are you sure?',
+                        text: 'You still can revert this!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, restore it!',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var multipleRestoredIds = multipleVals.join(',');
+                            this.axios
+                                .get(
+                                    'api/staff/products/restore-multiple/ids=' + multipleRestoredIds
+                                )
+                                .then((response) => {
+                                    this.detectMultipleRestore = true;
+                                    this.highlightChangedRecord();
+                                    this.determineDefaultPage();
+                                    this.loadSpecificPage();
+                                    this.title =
+                                        'Selected products has been restored successfully!';
                                     this.showSuccessMsg(response);
                                 })
                                 .catch((error) => {

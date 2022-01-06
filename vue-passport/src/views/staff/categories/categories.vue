@@ -737,7 +737,7 @@ import '@/assets/css/custom.css';
 import swal from 'sweetalert2';
 import Nav from '../partials/Nav.vue';
 import Breadcrumbs from '../partials/Breadcrumbs.vue';
-import Sidebar from '../partials/Sidebar.vue';
+import Sidebar from '../partials/Sidebar.vue'; 
 import Footer from '../partials/Footer.vue';
 import { Form } from 'vform';
 import jQuery from 'jquery';

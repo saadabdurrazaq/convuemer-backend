@@ -21,13 +21,13 @@ npm install admin-lte@^3.1 --save
 FRONTEND THEME INSTALATION
 <your name of vue app>\src\assets
 
-CREATE MULTIAUTH API WITH LARAVEL PASSPORT
+CREATE API ROUTE AND MULTIAUTH API WITH LARAVEL PASSPORT
 composer require laravel/passport (it will create token keys for security)
 php artisan migrate (to create tables related with Laravel passport)
 php artisan passport:install (if the key is missing, run this)
 php artisan make:model Staff -m
 php artisan migrate
-app/Providers/AuthServiceProvider.php
+app/Providers/AuthServiceProvider.php // API Route
 config\auth.php
 app\Http\Kernel.php
 Add HasApiTokens in app\Models\User.php
@@ -216,7 +216,6 @@ run php artisan serve, and change vue-passport/assets/js/base-url.js to http://l
 
 php artisan make:migration name_table table
 php artisan migrate --path=/database/migrations/2014_10_12_000000_create_image_galleries_products_combinations_table.php
-
 
 php artisan cache:clear
 php artisan config:clear

@@ -34,7 +34,7 @@
                                             <ul id="navi" style="margin-top: 40px">
                                                 <li>
                                                     <router-link
-                                                        :to="{ name: 'brand-management' }"
+                                                        :to="{ name: 'sliders-index' }"
                                                         :class="
                                                             isInAllData ? 'menu current' : 'menu'
                                                         "
@@ -44,7 +44,7 @@
                                                 </li>
                                                 <li>
                                                     <router-link
-                                                        :to="{ name: 'brand-management-trash' }"
+                                                        :to="{ name: 'sliders-trash' }"
                                                         class="menu"
                                                         href="#"
                                                         >Trash ({{ trashed }})</router-link
@@ -62,7 +62,7 @@
                                             data-target="#exampleModal"
                                             @click.prevent="showModal"
                                         >
-                                            <i class="fas fa-user-plus"></i> Add new brand
+                                            <i class="fas fa-user-plus"></i> Add new slider
                                         </button>
                                     </div>
                                 </div>
@@ -130,7 +130,7 @@
                                         >
                                             <input
                                                 type="text"
-                                                @keyup="searchBrand"
+                                                @keyup="searchSlider"
                                                 placeholder="Search by name"
                                                 v-model="search"
                                                 class="form-control float-right"
@@ -164,8 +164,13 @@
                                                     />
                                                 </th>
                                                 <th>No</th>
-                                                <th>Brand Name</th>
-                                                <th>Brand Image</th>
+                                                <th>Image</th>
+                                                <th>Header Text</th>
+                                                <th>Title</th>
+                                                <th>Description</th>
+                                                <th>Button Text</th>
+                                                <th>Link</th>
+                                                <th>Status</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -182,51 +187,94 @@
                                             </div>
                                             <!-- Loop through each user record and display user details -->
                                             <tr
-                                                :class="'data-' + brand.id"
-                                                v-for="brand in brands"
-                                                :key="brand.id"
+                                                :class="'data-' + slider.id"
+                                                v-for="slider in sliders"
+                                                :key="slider.id"
                                             >
                                                 <td style="text-align: center">
                                                     <input
                                                         type="checkbox"
                                                         id="select"
                                                         class="sub_chk"
-                                                        :data-id="brand.id"
-                                                        :value="brand.id"
+                                                        :data-id="slider.id"
+                                                        :value="slider.id"
                                                         name="selected_values[]"
                                                     />
                                                 </td>
                                                 <td class="align-middle">
                                                     {{
-                                                        brands.indexOf(brand) +
+                                                        sliders.indexOf(slider) +
                                                         1 +
                                                         (currentPage - 1) * perPage
                                                     }}
                                                 </td>
-                                                <td class="align-middle">{{ brand.brand_name }}</td>
-                                                <td v-if="brand.brand_image" class="align-middle">
+                                                <td v-if="slider.slider_image" class="align-middle">
                                                     <img
-                                                        :src="`${BASE_URL}/storage/app/public/brands/${brand.brand_image}`"
+                                                        :src="`${BASE_URL}/storage/app/public/sliders/${slider.slider_image}`"
                                                         style="width: 70px; height: 40px"
                                                     />
                                                 </td>
+                                                <td>{{ slider.slider_header }}</td>
+                                                <td class="align-middle">{{ slider.title }}</td>
                                                 <td
-                                                    v-if="!brand.brand_image"
+                                                    v-if="!slider.slider_image"
                                                     class="align-middle"
                                                 ></td>
+                                                <td>{{ slider.description }}</td>
+                                                <td>{{ slider.button_text }}</td>
+                                                <td>{{ slider.link }}</td>
+                                                <!-- status -->
+                                                <td
+                                                    v-if="slider.status === 'Active'"
+                                                    class="align-middle"
+                                                >
+                                                    <div class="form-group">
+                                                        <input
+                                                            type="checkbox"
+                                                            name="permission[]"
+                                                            data-bootstrap-switch
+                                                            data-off-color="danger"
+                                                            data-on-text=""
+                                                            data-off-text=""
+                                                            data-size="small"
+                                                            class="status"
+                                                            :value="slider.id"
+                                                            checked
+                                                        />
+                                                    </div>
+                                                </td>
+                                                <td
+                                                    v-if="slider.status === 'Inactive'"
+                                                    class="align-middle"
+                                                >
+                                                    <div class="form-group">
+                                                        <input
+                                                            type="checkbox"
+                                                            name="permission[]"
+                                                            data-bootstrap-switch
+                                                            data-off-color="danger"
+                                                            data-on-text=""
+                                                            data-off-text=""
+                                                            data-size="small"
+                                                            class="status"
+                                                            :value="slider.id"
+                                                        />
+                                                    </div>
+                                                </td>
+                                                <!-- end status -->
                                                 <td style="text-align: center; width: 30%">
                                                     <a
                                                         class="btn btn-info"
                                                         style="margin-right: 7px"
                                                         href=""
-                                                        @click.prevent="editBrand(brand)"
+                                                        @click.prevent="editSlider(slider)"
                                                     >
                                                         <i class="fa fa-edit"></i> Edit
                                                     </a>
                                                     <a
                                                         class="btn btn-warning"
                                                         href=""
-                                                        @click.prevent="softDelete(brand.id)"
+                                                        @click.prevent="softDelete(slider.id)"
                                                     >
                                                         <i class="fa fa-trash"></i> Trash
                                                     </a>
@@ -234,7 +282,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div v-if="isBrandsPagination">
+                                    <div v-if="isSlidersPagination">
                                         <nav style="margin-top: 5px" class="float-left">
                                             <p>
                                                 Showing {{ from }} to {{ to }} of
@@ -250,7 +298,7 @@
                                                 v-model="page"
                                                 :records="totalRecords"
                                                 :per-page="perPage"
-                                                @paginate="GetBrands"
+                                                @paginate="getSliders"
                                             />
                                         </nav>
                                     </div>
@@ -290,7 +338,7 @@
                                                 v-model="page"
                                                 :records="totalRecords"
                                                 :per-page="perPage"
-                                                @paginate="searchBrand"
+                                                @paginate="searchSlider"
                                             />
                                         </nav>
                                     </div>
@@ -311,20 +359,20 @@
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <!-- Show/hide headings dynamically based on /isFormCreateBrandMode value (true/false) -->
+                                    <!-- Show/hide headings dynamically based on /isFormCreateSliderMode value (true/false) -->
                                     <h5
-                                        v-show="isFormCreateBrandMode"
+                                        v-show="isFormCreateSliderMode"
                                         class="modal-title"
                                         id="exampleModalLabel"
                                     >
-                                        Add new brand
+                                        Add new slider
                                     </h5>
                                     <h5
-                                        v-show="!isFormCreateBrandMode"
+                                        v-show="!isFormCreateSliderMode"
                                         class="modal-title"
                                         id="exampleModalLabel"
                                     >
-                                        Update brand
+                                        Update slider
                                     </h5>
                                     <button
                                         type="button"
@@ -336,10 +384,10 @@
                                     </button>
                                 </div>
 
-                                <!-- Form for adding/updating user details. When submitted call /createBrand() function if /isFormCreateBrandMode value is true. Otherwise call /updateBrand() function. -->
+                                <!-- Form for adding/updating user details. When submitted call /createSlider() function if /isFormCreateSliderMode value is true. Otherwise call /updateSlider() function. -->
                                 <form
                                     @submit.prevent="
-                                        isFormCreateBrandMode ? createBrand() : updateBrand()
+                                        isFormCreateSliderMode ? createSlider() : updateSlider()
                                     "
                                 >
                                     <div class="modal-body">
@@ -389,35 +437,116 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label for="slider_header">Slider Header</label>
                                             <input
-                                                v-model="form.brand_name"
+                                                v-model="form.slider_header"
                                                 type="text"
-                                                name="brand_name"
-                                                id="brand_name"
-                                                placeholder="Brand Name"
+                                                name="slider_header"
+                                                id="slider_header"
+                                                placeholder="Slider Header"
                                                 class="form-control"
                                                 :class="{
-                                                    'is-invalid': form.errors.has('brand_name'),
+                                                    'is-invalid': form.errors.has('slider_header'),
                                                 }"
                                             />
                                             <span class="text-danger" id="codeError"></span>
                                             <div
                                                 style="color: red"
-                                                v-if="form.errors.has('brand_name')"
-                                                v-html="form.errors.get('brand_name')"
+                                                v-if="form.errors.has('slider_header')"
+                                                v-html="form.errors.get('slider_header')"
+                                            />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="title">Title</label>
+                                            <input
+                                                v-model="form.title"
+                                                type="text"
+                                                name="title"
+                                                id="title"
+                                                placeholder="Slider Title"
+                                                class="form-control"
+                                                :class="{
+                                                    'is-invalid': form.errors.has('title'),
+                                                }"
+                                            />
+                                            <span class="text-danger" id="codeError"></span>
+                                            <div
+                                                style="color: red"
+                                                v-if="form.errors.has('title')"
+                                                v-html="form.errors.get('title')"
+                                            />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description">Description</label>
+                                            <textarea
+                                                v-model="form.description"
+                                                :class="{
+                                                    'is-invalid': form.errors.has('description'),
+                                                }"
+                                                id="description"
+                                                class="form-control"
+                                                name="description"
+                                                required
+                                                autocomplete="description"
+                                            />
+                                            <span class="text-danger" id="description_error"></span>
+                                            <div
+                                                style="color: red"
+                                                v-if="form.errors.has('description')"
+                                                v-html="form.errors.get('description')"
+                                            />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="button_text">Button Text</label>
+                                            <input
+                                                v-model="form.button_text"
+                                                type="text"
+                                                name="button_text"
+                                                id="button_text"
+                                                placeholder="Button Text"
+                                                class="form-control"
+                                                :class="{
+                                                    'is-invalid': form.errors.has('button_text'),
+                                                }"
+                                            />
+                                            <span class="text-danger" id="codeError"></span>
+                                            <div
+                                                style="color: red"
+                                                v-if="form.errors.has('button_text')"
+                                                v-html="form.errors.get('button_text')"
+                                            />
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="link">Link</label>
+                                            <input
+                                                v-model="form.link"
+                                                type="text"
+                                                name="link"
+                                                id="link"
+                                                placeholder="Button Text"
+                                                class="form-control"
+                                                :class="{
+                                                    'is-invalid': form.errors.has('link'),
+                                                }"
+                                            />
+                                            <span class="text-danger" id="codeError"></span>
+                                            <div
+                                                style="color: red"
+                                                v-if="form.errors.has('link')"
+                                                v-html="form.errors.get('link')"
                                             />
                                         </div>
                                         <div class="form-group">
                                             <input
                                                 type="file"
-                                                id="brand_image"
-                                                name="brand_image"
+                                                id="slider_image"
+                                                name="slider_image"
                                                 @change="handleFile"
                                             />
                                             <div
                                                 style="color: red"
-                                                v-if="form.errors.has('brand_image')"
-                                                v-html="form.errors.get('brand_image')"
+                                                v-if="form.errors.has('slider_image')"
+                                                v-html="form.errors.get('slider_image')"
                                             />
                                         </div>
                                         <div
@@ -469,14 +598,14 @@
                                         <button
                                             type="submit"
                                             class="btn btn-primary"
-                                            v-show="isFormCreateBrandMode"
+                                            v-show="isFormCreateSliderMode"
                                         >
                                             Save changes
                                         </button>
                                         <button
                                             type="submit"
                                             class="btn btn-primary"
-                                            v-show="!isFormCreateBrandMode"
+                                            v-show="!isFormCreateSliderMode"
                                         >
                                             Update
                                         </button>
@@ -510,7 +639,7 @@ import { Form } from 'vform';
 import { BASE_URL } from '@/assets/js/base-url.js';
 
 export default {
-    name: 'brand-management',
+    name: 'sliders-index',
 
     beforeCreate: function () {
         document.body.className = 'home-staff';
@@ -523,7 +652,7 @@ export default {
         Footer,
     },
 
-    // Declare brands (as object), form (as /vform instance) and /isFormCreateBrandMode (as boolean defaulted to 'true') inside /data() { return {} }.
+    // Declare sliders (as object), form (as /vform instance) and /isFormCreateSliderMode (as boolean defaulted to 'true') inside /data() { return {} }.
     data() {
         return {
             BASE_URL: BASE_URL,
@@ -535,24 +664,29 @@ export default {
             currentPage: 0,
             search: '',
             trashed: 0,
-            brands: {},
+            sliders: {},
             form: new Form({
                 id: '',
-                brand_name: '',
-                brand_image: [],
+                slider_image: [],
+                slider_header: '',
+                title: '',
+                description: '',
+                button_text: '',
+                link: '',
+                status: '',
             }),
             msg: '',
             title: '',
             imagePreview: null,
             showPreview: false,
-            isFormCreateBrandMode: true,
+            isFormCreateSliderMode: true,
             isInAllData: true,
             loading: false,
             loadingForm: false,
-            defaultBrandsPagination: false,
+            defaultSlidersPagination: false,
             defaultShowEntriesPagination: false,
             defaultSearchPagination: false,
-            isBrandsPagination: false,
+            isSlidersPagination: false,
             isShowEntriesPagination: false,
             isSearchPagination: false,
             detectNewRecord: false,
@@ -564,9 +698,43 @@ export default {
     },
 
     methods: {
+        updateStatus() {
+            var self = this;
+
+            $('.status').bootstrapSwitch();
+            $('.status').on('switchChange.bootstrapSwitch', function (e) {
+                var id = e.target.value;
+
+                if ($(this).is(':checked') === false) {
+                    self.form.status = 'Inactive';
+                } else {
+                    self.form.status = 'Active';
+                }
+
+                let formData = new FormData();
+                formData.append('status', self.form.status);
+                formData.append('_method', 'PUT');
+
+                self.form
+                    .put('api/staff/sliders/update-status/' + id, {
+                        data: formData,
+                    })
+                    .then((response) => {
+                        console.log(response);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+                    .finally(() => {
+                        console.log('Work');
+                    });
+            });
+        },
+
         showSuccessMsg(response) {
-            var responseData = response.data;
-            this.msg = responseData.message;
+            //var responseData = response.data;
+            //console.log(responseData);
+            this.msg = response.message;
             $('#errMsg').fadeIn().delay(2000).fadeOut();
 
             const Toast = swal.mixin({
@@ -589,31 +757,31 @@ export default {
 
         loadData(response) {
             var responseData = response.data;
-            this.brands = responseData.brands.data;
-            this.totalRecords = responseData.brands.total;
-            this.from = responseData.brands.from;
-            this.to = responseData.brands.to;
-            this.currentPage = responseData.brands.current_page;
-            this.trashed = responseData.total_trashed_brand;
+            this.sliders = responseData.sliders.data;
+            this.totalRecords = responseData.sliders.total;
+            this.from = responseData.sliders.from;
+            this.to = responseData.sliders.to;
+            this.currentPage = responseData.sliders.current_page;
+            this.trashed = responseData.total_trashed_sliders;
             this.perPage = responseData.items;
         },
 
         loadSpecificPage() {
-            if (this.defaultBrandsPagination === true) {
-                this.isBrandsPagination = true;
-                this.GetBrands(this.page);
-                console.log(`I am in getBrands`);
+            if (this.defaultSlidersPagination === true) {
+                this.isSlidersPagination = true;
+                this.getSliders(this.page);
+                console.log(`I am in getSliders`);
             } else if (this.defaultShowEntriesPagination === true) {
                 this.isShowEntriesPagination = true;
                 this.showEntries(this.page);
                 console.log(`I am in show entries`);
             } else if (this.defaultSearchPagination === true) {
-                this.searchBrand(); // the page is not defined because we should return it to page 1.
+                this.searchSlider(); // the page is not defined because we should return it to page 1.
                 console.log(`I am in search page`);
             } else {
                 this.page = 1;
-                this.GetBrands(this.page);
-                console.log(`No matching option. So, I am in getBrands`);
+                this.getSliders(this.page);
+                console.log(`No matching option. So, I am in getSliders`);
             }
         },
 
@@ -622,7 +790,7 @@ export default {
             if (_.isEmpty(this.search) === false) {
                 this.defaultSearchPagination = true;
                 this.isSearchPagination = true;
-                this.defaultBrandsPagination = false;
+                this.defaultSlidersPagination = false;
                 this.defaultShowEntriesPagination = false;
             }
         },
@@ -668,14 +836,14 @@ export default {
         },
 
         handleFile(event) {
-            let totalImagesFile = $('#brand_image')[0].files.length;
+            let totalImagesFile = $('#slider_image')[0].files.length;
 
             // Set the local file variable to what the user has selected.
             const file = event.target.files[0];
 
             for (let i = 0; i < totalImagesFile; i++) {
                 // Set the file object onto the form...
-                this.form.brand_image = file;
+                this.form.slider_image = file;
             }
 
             // Initialize a File Reader object
@@ -698,45 +866,45 @@ export default {
             // Check to see if the file is not empty.
             if (file) {
                 // Ensure the file is an image file.
-                if (/\.(jpe?g|png|gif)$/i.test(this.form.brand_image.name)) {
+                if (/\.(jpe?g|png|gif)$/i.test(this.form.slider_image.name)) {
                     /*
             Fire the readAsDataURL method which will read the file in and
             upon completion fire a 'load' event which we will listen to and
             display the image in the preview.
           */
-                    reader.readAsDataURL(this.form.brand_image);
+                    reader.readAsDataURL(this.form.slider_image);
                     $('#close-forEdit').show();
                 } else {
                     $('#errMsg').show('fast');
-                    document.getElementById('brand_image').value = '';
+                    document.getElementById('slider_image').value = '';
                     this.imagePreview = null;
                     this.showPreview = false;
-                    this.form.brand_image = null;
+                    this.form.slider_image = null;
                 }
             }
         },
 
         closeMsg() {
             $('#errMsg').hide('slow');
-            document.getElementById('brand_image').value = '';
+            document.getElementById('slider_image').value = '';
             this.imagePreview = null;
             this.showPreview = false;
-            this.form.brand_image = null;
+            this.form.slider_image = null;
         },
 
         clearImage() {
-            document.getElementById('brand_image').value = '';
+            document.getElementById('slider_image').value = '';
             this.imagePreview = null;
             this.showPreview = false;
-            this.form.brand_image = null;
+            this.form.slider_image = null;
             $('#close-forEdit').hide();
         },
 
-        // /GetBrands() function. Function we use to get user list by calling api/brands method GET.
-        GetBrands(page) {
+        // /getSliders() function. Function we use to get user list by calling api/sliders method GET.
+        getSliders(page) {
             this.loading = true;
-            this.isBrandsPagination = true;
-            this.defaultBrandsPagination = true;
+            this.isSlidersPagination = true;
+            this.defaultSlidersPagination = true;
             this.defaultShowEntriesPagination = false;
             this.defaultSearchPagination = false;
             this.isShowEntriesPagination = false;
@@ -750,7 +918,7 @@ export default {
 
             this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             this.axios
-                .get('api/staff/brand-management', {
+                .get('api/staff/sliders/index', {
                     params: {
                         page: page,
                     },
@@ -764,6 +932,7 @@ export default {
                 .finally(() => {
                     this.loading = false;
                     this.highlightNewRecords();
+                    this.updateStatus();
                 });
         },
 
@@ -771,9 +940,9 @@ export default {
             this.loading = true;
             this.isShowEntriesPagination = true;
             this.defaultShowEntriesPagination = true;
-            this.defaultBrandsPagination = false;
+            this.defaultSlidersPagination = false;
             this.defaultSearchPagination = false;
-            this.isBrandsPagination = false;
+            this.isSlidersPagination = false;
             this.isSearchPagination = false;
 
             var val = $('select[name=showEntries] option').filter(':selected').val();
@@ -783,7 +952,7 @@ export default {
             }
 
             this.axios
-                .get('api/staff/brand-management?items=' + val, {
+                .get('api/staff/sliders/index?items=' + val, {
                     params: {
                         page: page,
                     },
@@ -807,7 +976,7 @@ export default {
                 });
         },
 
-        searchBrand: _.debounce(function (page) {
+        searchSlider: _.debounce(function (page) {
             if (_.isEmpty(this.search)) {
                 this.defaultSearchPagination = false;
                 this.isSearchPagination = false;
@@ -815,8 +984,8 @@ export default {
             } else {
                 this.loading = true;
 
-                if (this.defaultBrandsPagination === true) {
-                    this.isBrandsPagination = false;
+                if (this.defaultSlidersPagination === true) {
+                    this.isSlidersPagination = false;
                 } else if (this.defaultShowEntriesPagination === true) {
                     this.isShowEntriesPagination = false;
                 }
@@ -828,7 +997,7 @@ export default {
                 }
 
                 this.axios
-                    .get('api/staff/brand-management/search/' + this.search, {
+                    .get('api/staff/sliders/search/' + this.search, {
                         params: {
                             page: page,
                         },
@@ -838,30 +1007,32 @@ export default {
                     })
                     .finally(() => {
                         this.loading = false;
+                        this.updateStatus();
                     });
             }
         }),
 
-        // /showModal() function. Function we use to 1. Set /isFormCreateBrandMode to 'true', 2. Reset form data, 3. Show modal containing dynamic form for adding/updating user details.
+        // /showModal() function. Function we use to 1. Set /isFormCreateSliderMode to 'true', 2. Reset form data, 3. Show modal containing dynamic form for adding/updating user details.
         showModal() {
-            this.isFormCreateBrandMode = true;
+            this.isFormCreateSliderMode = true;
             this.form.reset(); // v form reset
-            $('#exampleModal').modal('show'); // show modal
+            $('#exampleModal').modal('show'); // show modal 
         },
 
-        // /createBrand() function. Function we use to store user details by calling api/brands method POST (carrying form input data).
-        createBrand() {
+        // /createSlider() function. Function we use to store user details by calling api/sliders method POST (carrying form input data).
+        createSlider() {
             this.loadingForm = true;
             let formData = new FormData();
-
-            formData.append('brand_name', this.form.brand_name);
-            formData.append('brand_image', this.form.brand_image);
-
-            console.log(this.form.brand_image);
+            formData.append('slider_header', this.form.slider_header);
+            formData.append('title', this.form.title);
+            formData.append('description', this.form.description);
+            formData.append('button_text', this.form.button_text);
+            formData.append('link', this.form.link);
+            formData.append('slider_image', this.form.slider_image); 
 
             // request post
             this.form
-                .post('api/staff/brand-management', formData)
+                .post('api/staff/sliders/store', formData)
                 .then((response) => {
                     $('#exampleModal').modal('hide'); // hide modal
 
@@ -869,12 +1040,12 @@ export default {
                     this.page = 1;
                     this.determineDefaultPage();
                     this.loadSpecificPage();
-                    this.title = 'Brand/s created successfully!';
+                    this.title = 'Slider created successfully!';
                     this.showSuccessMsg(response);
-                    document.getElementById('brand_image').value = '';
+                    document.getElementById('slider_image').value = '';
                     this.imagePreview = null;
                     this.showPreview = false;
-                    this.form.brand_image = null;
+                    this.form.slider_image = null;
                 })
                 .catch((error) => {
                     // sweet alert fail
@@ -885,38 +1056,42 @@ export default {
                 });
         },
 
-        // /editUser() function. Function we use to 1. Set /isFormCreateBrandMode to 'false', 2. Reset and clear form data, 3. Show modal containing dynamic form for adding/updating user details, 4. Fill form with user details.
-        editBrand(brand) {
-            this.isFormCreateBrandMode = false;
+        // /editUser() function. Function we use to 1. Set /isFormCreateSliderMode to 'false', 2. Reset and clear form data, 3. Show modal containing dynamic form for adding/updating user details, 4. Fill form with user details.
+        editSlider(slider) {
+            this.isFormCreateSliderMode = false;
             this.form.reset(); // v form reset inputs
             this.form.clear(); // v form clear errors
             this.loadingForm = false;
             $('#exampleModal').modal('show'); // show modal
-            this.form.fill(brand);
+            this.form.fill(slider);
         },
 
-        // /updateBrand() function. Function we use to update user details by calling api/brands/{id} method PUT (carrying form input data).
-        updateBrand() {
+        // /updateSlider() function. Function we use to update user details by calling api/sliders/{id} method PUT (carrying form input data).
+        updateSlider() {
             let myXhr;
             const token = localStorage.getItem('token-staff');
             var self = this;
 
             // if input image is empty, set null and false. So that, data can be updated without attaching an image.
-            if (document.getElementById('brand_image').value == '') {
+            if (document.getElementById('slider_image').value == '') {
                 self.imagePreview = null;
                 self.showPreview = false;
-                self.form.brand_image = null;
+                self.form.slider_image = null;
             }
 
             let formDataUpdate = new FormData();
-            formDataUpdate.append('brand_name', this.form.brand_name);
-            formDataUpdate.append('brand_image', this.form.brand_image);
+            formDataUpdate.append('slider_header', this.form.slider_header);
+            formDataUpdate.append('title', this.form.title);
+            formDataUpdate.append('description', this.form.description);
+            formDataUpdate.append('button_text', this.form.button_text);
+            formDataUpdate.append('link', this.form.link);
+            formDataUpdate.append('slider_image', this.form.slider_image);
             formDataUpdate.append('_method', 'PUT');
-            let selectedImage = $('#brand_image')[0].files[0];
+            let selectedImage = $('#slider_image')[0].files[0];
             formDataUpdate.append('selectedImages', selectedImage);
 
             $.ajaxSetup({
-                url: `${BASE_URL}/api/staff/brand-management/` + this.form.id,
+                url: `${BASE_URL}/api/staff/sliders/update/` + this.form.id,
             });
 
             $.ajax({
@@ -956,20 +1131,20 @@ export default {
                         self.highlightChangedRecord();
                         self.determineDefaultPage();
                         self.loadSpecificPage();
-                        self.title = 'Brand updated successfully!';
+                        self.title = 'Slider updated successfully!';
                         self.showSuccessMsg(result);
                         self.loadingForm = false;
                         self.imagePreview = null;
                         self.showPreview = false;
-                        document.getElementById('brand_image').value = '';
-                        self.form.brand_image = null;
+                        document.getElementById('slider_image').value = '';
+                        self.form.slider_image = null;
                     }
                 },
                 error: function (response) {
                     self.loadingForm = false;
-                    console.log(response.responseJSON.errors.brand_name);
-                    $('#brand_name').addClass('is-invalid');
-                    $('#codeError').text(response.responseJSON.errors.brand_name);
+                    console.log(response.responseJSON.errors.title);
+                    $('#title').addClass('is-invalid');
+                    $('#codeError').text(response.responseJSON.errors.title);
                     $('.alert-danger').html('An error in your input fields');
                     $.each(response.responseJSON.errors, function (key, value) {
                         $('.alert-danger').show();
@@ -979,7 +1154,7 @@ export default {
             });
         },
 
-        // /softDelete() function. Function we use to delete user record by calling api/brands/{id} method DELETE.
+        // /softDelete() function. Function we use to delete user record by calling api/sliders/{id} method DELETE.
         softDelete(id) {
             this.form.id = id;
 
@@ -997,13 +1172,13 @@ export default {
                 if (result.value) {
                     // request delete
                     this.form
-                        .delete('api/staff/brand-management/soft-delete/' + id, {})
+                        .delete('api/staff/sliders/soft-delete/' + id, {})
                         .then((response) => {
                             this.detectTrash = true;
                             this.highlightChangedRecord();
                             this.determineDefaultPage();
                             this.loadSpecificPage();
-                            this.title = 'Brand has been trashed successfully!';
+                            this.title = 'Slider has been trashed successfully!';
                             this.showSuccessMsg(response);
                         })
                         .catch(() => {
@@ -1053,7 +1228,7 @@ export default {
                             var join_selected_values = allVals.join(',');
                             this.axios
                                 .get(
-                                    'api/staff/brand-management/soft-delete-multiple/ids=' +
+                                    'api/staff/sliders/soft-delete-multiple/ids=' +
                                         join_selected_values
                                 )
                                 .then((response) => {
@@ -1061,7 +1236,7 @@ export default {
                                     this.highlightChangedRecord();
                                     this.determineDefaultPage();
                                     this.loadSpecificPage();
-                                    this.title = 'Brand/s has been trashed successfully!';
+                                    this.title = 'Slider/s has been trashed successfully!';
                                     this.showSuccessMsg(response);
                                 })
                                 .catch((error) => {
@@ -1083,8 +1258,8 @@ export default {
     },
 
     created() {
-        // Call /GetBrands() function initially.
-        this.GetBrands();
+        // Call /getSliders() function initially.
+        this.getSliders();
     },
 
     mounted() {
@@ -1107,5 +1282,32 @@ export default {
 }
 .pagination {
     margin: auto !important;
+}
+.bootstrap-switch-small,
+.bootstrap-switch,
+.bootstrap-switch-wrapper,
+.bootstrap-switch-focused,
+.bootstrap-switch-animate,
+.bootstrap-switch-off {
+    width: 60.4063px;
+}
+
+.bootstrap-switch-container {
+    width: 85.2032px;
+    margin-left: -26.7969px;
+}
+
+.bootstrap-switch-handle-on,
+.bootstrap-switch-primary {
+    width: 42.8px;
+}
+
+.bootstrap-switch-label {
+    width: 46.6094px;
+}
+
+.bootstrap-switch-handle-off,
+.bootstrap-switch-danger {
+    width: 42.8px;
 }
 </style>

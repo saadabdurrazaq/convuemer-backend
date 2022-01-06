@@ -10,7 +10,9 @@ use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SubSubCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AddressController;
-
+use App\Http\Controllers\SliderController;
+use App\Http\Controllers\MegaMenuController;
+use App\Http\Controllers\ProductSliderController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,12 +31,22 @@ Route::get('json-regencies/{id}', [AddressController::class, 'regencies']);
 Route::get('json-districts/{id}', [AddressController::class, 'districts']);
 Route::get('json-village/{id}', [AddressController::class, 'villages']);
 
+// Product store and delete images
 Route::post('products/store-images', [ProductController::class, 'storeImages']);
 Route::post('products/delete-images/{id}', [ProductController::class, 'deleteImages']);
 Route::post('products/delete-selected-variant-product-images', [ProductController::class, 'deleteSelectedVarProdsImages']);
 Route::post('products/delete-all-new-added-variant-product-images', [ProductController::class, 'deleteAllNewAddedVarProdImages']);
 Route::post('products/delete-all-new-added-variant-product-images-in-create-page', [ProductController::class, 'deleteAllNewAddedVarProdImagesInCreatePage']);
 Route::post('products/delete-some-new-added-variant-product-images', [ProductController::class, 'deleteSomeNewAddedVarProdImages']);
+
+// Megamenu frontend
+Route::get('mega-menu/get-menu-data', [MegaMenuController::class, 'getMenuData']);
+
+// Sliders
+Route::get('sliders/show', [SliderController::class, 'show']);
+
+// Product sliders
+Route::get('product-sliders/show-featured-products', [ProductSliderController::class, 'showFeaturedProduct']);
 
 // To see the route url, use php artisan r:l
 Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:staff']], function () {
@@ -43,7 +55,7 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     Route::get('staff/home', [LoginController::class, 'staffDashboard']);
     Route::post('logout', [LoginController::class, 'logoutStaff']);
 
-    // CRUD staff. 
+    // CRUD staff.  
     Route::get('staff-management', [StaffController::class, 'index']);
     Route::post('staff-management', [StaffController::class, 'store']);
     Route::delete('staff-management/{id}', [StaffController::class, 'destroy']);
@@ -141,6 +153,21 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     Route::put('products/update-images/{id}', [ProductController::class, 'updateImages']);
     Route::put('products/update-variant-product-images/{id}', [ProductController::class, 'updateVarProdImages']);
     Route::put('products/update/{id}', [ProductController::class, 'update']);
+
+    // CRUD sliders
+    Route::get('sliders/index', [SliderController::class, 'index']);
+    Route::put('sliders/update-status/{id}', [SliderController::class, 'updateStatus']);
+    Route::post('sliders/store', [SliderController::class, 'store']);
+    Route::get('sliders/search/{keyword}', [SliderController::class, 'searchSlider']);
+    Route::put('sliders/update/{id}', [SliderController::class, 'update']);
+    Route::delete('sliders/soft-delete/{id}', [SliderController::class, 'softDelete']);
+    Route::get('sliders/soft-delete-multiple/ids={ids}', [SliderController::class, 'softDeleteMultiple']);
+    Route::delete('sliders/force-delete/{id}', [SliderController::class, 'forceDelete']);
+    Route::get('sliders/force-delete-multiple/ids={ids}', [SliderController::class, 'forceDeleteMultiple']);
+    Route::get('sliders/trash', [SliderController::class, 'trash']);
+    Route::get('sliders/trash/search/{keyword}', [SliderController::class, 'searchTrashSlider']);
+    Route::get('sliders/restore/{id}', [SliderController::class, 'restore']);
+    Route::get('sliders/restore-multiple/ids={ids}', [SliderController::class, 'restoreMultiple']);
 });
 
 Route::middleware(['auth:staff-api', 'scopes:staff'])->get('/staff', function (Request $request) {

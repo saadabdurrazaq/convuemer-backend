@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2021 at 05:20 AM
+-- Generation Time: Jan 06, 2022 at 12:35 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 7.4.21
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `brands` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `brand_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `brand_slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `brand_slug` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `brand_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -7452,6 +7452,7 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('816004d0a1501918c75224de1683bace4a07c7d9a6751aaa80676d3823581721e602d43bbc6cbbbe', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 16:00:43', '2021-07-01 16:00:43', '2022-07-01 23:00:43'),
 ('8a57ef0bb1c75e575e733f7f6396e36cf3d25a8d71cba25042e0afda252d59e18c6b67d50d32c299', 1, 3, 'MyApp', '[\"user\"]', 0, '2021-07-04 17:37:24', '2021-07-04 17:37:24', '2022-07-05 00:37:24'),
 ('8e14f59c501c0e4f43a05cdaf11ee30517b895f981315f560dde484282530d1040ae4e3a38a42e41', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 17:07:19', '2021-07-01 17:07:19', '2022-07-02 00:07:19'),
+('902385ba576bd08a0d0ae43c6f2efc707f6f82dc646d9313f18130b9573b9d504318afc93f68967b', 1, 3, 'MyApp', '[\"staff\"]', 0, '2022-01-04 00:08:19', '2022-01-04 00:08:19', '2023-01-04 07:08:19'),
 ('9da83d5a5ac8c71b4f1fc2d69a0c6760a42bc0158c26682605aa1cd51b0365149fba85729a4897c8', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-07-16 05:42:08', '2021-07-16 05:42:08', '2022-07-16 12:42:08'),
 ('9e52d2d5adcf894f4759b75c7a728ed76f7a24b051399ae5703fd646b828e00f605d7f4b5ddca686', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-08-01 01:24:54', '2021-08-01 01:24:54', '2022-08-01 08:24:54'),
 ('a61119f8530b374492b3d0eb6ceef4836ae14d68ba46b0cbceee69d9c5b07e4b6d848cb0ca7aa625', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 16:04:59', '2021-07-01 16:04:59', '2022-07-01 23:04:59'),
@@ -8421,6 +8422,36 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 ('xazG6mkygBzZf6uFnKdRd1QvKPJwF6j7jUDjyvE7', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibXZOMHJPRTY3MGY2ZFdDVkw3M1U2ellBOGlua2NHeUlpTGVxckswWiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631520073),
 ('xrnGmHD7ybKjKKgYizeYH4j2VF3MrT2eTWUQ0735', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibXBDWnJHWDJNeUppa3JWYjBKUHB6WTVVamxMNG9GdkthVENzZGFESSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1626928104),
 ('zUIipbIbpPAiQXt1SSxLq7HBiHIIhQSqJjfFntwu', NULL, '::1', 'PostmanRuntime/7.28.2', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiQjdjbDZZYWNzUzBuQW51WVRNd1QzUmI2WFo0a0U2ekRXQjNieFZ6aSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1626344838);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sliders`
+--
+
+CREATE TABLE `sliders` (
+  `id` int(11) NOT NULL,
+  `slider_image` longtext DEFAULT NULL,
+  `slider_header` varchar(255) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `button_text` varchar(255) DEFAULT NULL,
+  `link` longtext DEFAULT NULL,
+  `status` enum('Active','Inactive') DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sliders`
+--
+
+INSERT INTO `sliders` (`id`, `slider_image`, `slider_header`, `title`, `description`, `button_text`, `link`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, '1721038127344005.png', 'Top Brands', 'New Collections', 'Lorom ipsum dolor sit amet, consectetur adipiscing elit.', 'Shop Now!', 'http://localhost:8080/staff/sliders/index', 'Active', '2022-01-04 08:24:19', '2022-01-04 23:59:37', NULL),
+(2, '1721097160416835.jpg', 'Spring 2019', 'Best Sellers', 'Curabitur aliquet placerat felis vitae congue. Etiam id diam est.', 'Buy Now!', 'https://www.tokopedia.com/aksesorisgeek/lenovo-thinkpad-x240-core-i7-ssd-240gb-only', 'Active', '2022-01-05 00:02:38', '2022-01-05 00:02:42', NULL),
+(3, '1721097629482673.jpg', 'Phone & Tablets', 'iPhone 13 Pro', 'Aliquam tellus ex, ornare eget tristique eget, fermentum sit amet arcu.', 'Grab it Fast!', 'http://localhost:8080', 'Active', '2022-01-05 00:10:05', '2022-01-05 00:10:09', NULL),
+(4, '1721098222488741.png', 'Food Contest', 'Organic Foods', 'Proin nibh justo, venenatis quis nulla eu, semper elementum magna', 'Book Now!', 'http://localhost:8080', 'Active', '2022-01-05 00:19:31', '2022-01-05 00:19:35', NULL);
 
 -- --------------------------------------------------------
 
@@ -39935,6 +39966,12 @@ ALTER TABLE `sessions`
   ADD KEY `sessions_last_activity_index` (`last_activity`);
 
 --
+-- Indexes for table `sliders`
+--
+ALTER TABLE `sliders`
+  ADD UNIQUE KEY `id` (`id`);
+
+--
 -- Indexes for table `staffs`
 --
 ALTER TABLE `staffs`
@@ -40058,6 +40095,12 @@ ALTER TABLE `products_variants_options`
 --
 ALTER TABLE `products_variants_types`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+
+--
+-- AUTO_INCREMENT for table `sliders`
+--
+ALTER TABLE `sliders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `staffs`

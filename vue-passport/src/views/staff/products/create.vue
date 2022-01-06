@@ -1160,7 +1160,7 @@ export default {
             attrs = attrs.reduce((a, b) => a.flatMap((d) => b.map((e) => ({ ...d, ...e }))));
 
             // Add id to each row.
-            var last = this.form.variants_prod[this.form.variants_prod.length - 1];
+            var last = this.form.variants_prod[this.form.variants_prod.length - 1]; 
             attrs.forEach((item, i) => {
                 if (last) {
                     item.id = i + 1 + last.id;
@@ -2042,12 +2042,6 @@ export default {
     }, // methods:
     created() {},
     mounted() {
-        // bootstrap-switch.min.js is already attached in main.js
-        $('.status').bootstrapSwitch('state', $('.status').prop('checked'));
-        $('.hot_deals').bootstrapSwitch('state', $('.hot_deals').prop('checked'));
-        $('.special_offer').bootstrapSwitch('state', $('.special_offer').prop('checked'));
-        $('.special_deals').bootstrapSwitch('state', $('.special_deals').prop('checked'));
-        $('.featured').bootstrapSwitch('state', $('.featured').prop('checked'));
         this.tokenField();
         this.form.variants.splice(0, this.form.variants.length); // empty an array of dynamic variants field
         // prevent sweetalert error if user change the route when swal is still visible.
@@ -2064,6 +2058,12 @@ export default {
         this.disableRightClickAndLongPress('product_length');
         this.disableRightClickAndLongPress('product_width');
         this.disableRightClickAndLongPress('product_height');
+        // bootstrap-switch.min.js is already attached in main.js
+        $('.status').bootstrapSwitch('state', $('.status').prop('checked'));
+        $('.hot_deals').bootstrapSwitch('state', $('.hot_deals').prop('checked'));
+        $('.special_offer').bootstrapSwitch('state', $('.special_offer').prop('checked'));
+        $('.special_deals').bootstrapSwitch('state', $('.special_deals').prop('checked'));
+        $('.featured').bootstrapSwitch('state', $('.featured').prop('checked'));
     },
 };
 </script>

@@ -13,20 +13,16 @@ export default {
         document.body.className = 'app';
     },
     /*name: 'App', 
-
   components: {
     HelloWorld,
   },
-
   data: () => ({
     //
   }),*/
-
     mounted() {
         //  [App.vue specific] When App.vue is finish loading finish the progress bar
         this.$Progress.finish();
     },
-
     created() {
         //  [App.vue specific] When App.vue is first loaded start the progress bar
         this.$Progress.start();

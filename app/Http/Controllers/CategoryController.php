@@ -13,7 +13,7 @@ use App\Models\SubSubCategory;
 
 class CategoryController extends Controller
 {
-	public $request;
+	public $request; 
 
 	public function __construct(Request $request)
 	{

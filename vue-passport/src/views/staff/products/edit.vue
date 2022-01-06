@@ -1491,7 +1491,7 @@ export default {
         deleteAllNewAddedVarProdImages() {
             let formData = new FormData();
             formData.append('addedNewVarProds', this.form.addedNewVarProds);
-
+            console.log(this.form.addedNewVarProds);
             this.form
                 .post('api/products/delete-all-new-added-variant-product-images', {
                     data: formData,
@@ -1529,7 +1529,6 @@ export default {
                     variant_options: '',
                 });
             } else if (this.form.variants.length === 1) {
-                this.form.variantIsDeleted = 'Yes';
                 let existingTokens = $('.variant_options').tokenfield('getTokens');
                 const isEmpty = (str) => !str.trim().length;
 
@@ -1571,7 +1570,12 @@ export default {
                 this.form.variants_prod.splice(0, this.form.variants_prod.length);
 
                 // delete the related variant product images.
-                this.deleteAllNewAddedVarProdImages();
+                // Scenario: If user add the new variant products, and then he delete the variants
+                if (this.form.addedNewVarProds !== undefined) {
+                    this.deleteAllNewAddedVarProdImages();
+                }
+
+                // delete all images that already stored in database
 
                 // empty the new variant products.
                 this.form.addedNewVarProds = [];
@@ -1579,7 +1583,7 @@ export default {
 
             ///////////////////////////////////////////////////////////////////////////////////////////
 
-            // if there is another variant after one of variant is deleted.
+            // if another variant is exist after one variant deleted.
             $('.product_variants').find(':input').val('');
             this.form.variants_prod = [];
             this.generateVariantProducts();
@@ -1592,7 +1596,10 @@ export default {
             });
 
             // delete the related variant product images.
-            this.deleteAllNewAddedVarProdImages();
+            // Scenario: If user add the new variant products, and then he delete the variants
+            if (this.form.addedNewVarProds !== undefined) {
+                this.deleteAllNewAddedVarProdImages();
+            }
 
             // update the new added products list.
             this.form.addedNewVarProds = [];
@@ -1827,13 +1834,6 @@ export default {
             });
         },
         getSwitchValue() {
-            // bootstrap-switch.min.js is already attached in main.js
-            $('.status').bootstrapSwitch();
-            $('.hot_deals').bootstrapSwitch();
-            $('.special_offer').bootstrapSwitch();
-            $('.special_deals').bootstrapSwitch();
-            $('.featured').bootstrapSwitch();
-
             if ($('.status').is(':checked') === false) {
                 this.form.status = 'Inactive';
             } else {
@@ -1863,6 +1863,13 @@ export default {
             } else {
                 this.form.special_deals = 'Yes';
             }
+
+            // bootstrap-switch.min.js is already attached in main.js
+            $('.status').bootstrapSwitch();
+            $('.hot_deals').bootstrapSwitch();
+            $('.special_offer').bootstrapSwitch();
+            $('.special_deals').bootstrapSwitch();
+            $('.featured').bootstrapSwitch();
         },
         getSwitchValueVarProds() {
             var self = this;
@@ -2030,8 +2037,6 @@ export default {
         fileInputVariants(id) {
             var self = this;
 
-            $('.status_' + id).bootstrapSwitch('state', $('.status_' + id).prop('checked'));
-
             var varProdImgs = this.form.variants_prod.filter(function (x) {
                 return x.id == id;
             });
@@ -2155,6 +2160,8 @@ export default {
 
                     self.dataFiles = filteredArray;
                 });
+
+            $('.status_' + id).bootstrapSwitch('state', $('.status_' + id).prop('checked'));
         },
         tokenField(id) {
             // enter button is killed no current input data found. To activate again, open the bootstrap-tokenfield.js, and search "kill enter button", uncomment the rest of code, and delete e.preventDefault()
@@ -2384,8 +2391,6 @@ export default {
                     console.log(error);
                 })
                 .finally(() => {
-                    this.getSwitchValue();
-
                     let variantType = [];
                     this.form.variants.forEach((data) => {
                         variantType.push(data.variant_type);
@@ -2432,6 +2437,7 @@ export default {
                     });
 
                     this.form.variantIsDeleted = 'No';
+                    this.getSwitchValue();
                 }); // .finally
         },
         showSuccessMsg(response) {
@@ -2635,6 +2641,9 @@ export default {
             formData.append('varProdsToBeDeleted', this.form.varProdsToBeDeleted);
             formData.append('addedNewVarProds', this.form.addedNewVarProds);
             formData.append('varProdsBeenStoredInDb', this.form.varProdsBeenStoredInDb);
+
+            console.log(this.form.addedNewVarProds);
+            console.log(this.form.variantIsDeleted);
 
             this.form
                 .put('api/staff/products/update/' + this.form.id, { data: formData })

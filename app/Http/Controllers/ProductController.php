@@ -783,7 +783,7 @@ class ProductController extends Controller
 
             // update the single product
             if ($totalInputtedPicts > 0) { // if total input images of single product is more than 0
-                $this->updateProduct($id);
+                $this->updateProduct($id); // update single product
             } else {
                 return response()->json([
                     'success' => true,
@@ -833,7 +833,7 @@ class ProductController extends Controller
             }
 
             // If the new variant products exist, then insert it to database. 
-            if ($newVarProdIsExist !== null) {
+            if ($newVarProdIsExist !== null && $variantIsDeleted == 'No') {
                 if (sizeof($newVarProdIsExist) > 0) {
                     foreach ($newVarProdIsExist as $key) {
                         $productVariant = $key['product_variant'];
@@ -880,6 +880,7 @@ class ProductController extends Controller
                     $available_stocks = array();
                     $conditions = array();
                     $status = array();
+
                     for ($i = 0; $i < count($varProdsBeenStoredInDb); $i++) {
                         array_push($prices, $varProdsBeenStoredInDb[$i]['price']);
                         array_push($sku, $varProdsBeenStoredInDb[$i]['sku']);

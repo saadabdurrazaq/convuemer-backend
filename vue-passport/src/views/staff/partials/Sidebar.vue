@@ -86,6 +86,12 @@
                             <p>Products</p>
                         </router-link>
                     </li>
+                    <li class="nav-item">
+                        <router-link :to="{ name: 'sliders-index' }" class="nav-link" href="#">
+                            <i class="nav-icon fas fa-object-group"></i>
+                            <p>Sliders</p>
+                        </router-link>
+                    </li>
                     <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-school"></i>
@@ -154,7 +160,7 @@
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <router-link 
+                                <router-link
                                     :to="{ name: 'staff-address' }"
                                     class="nav-link"
                                     href="#"

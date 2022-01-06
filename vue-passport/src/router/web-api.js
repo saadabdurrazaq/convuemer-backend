@@ -351,6 +351,46 @@ const routes = [
             next();
         }
     },
+    {
+        path: '/staff/sliders/index',
+        name: 'sliders-index',
+        component: () => import('@/views/staff/sliders/index.vue'),
+        meta: {
+            requiresAuth: true,
+            breadcrumb: [
+                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Sliders' },
+                //{ name: 'index', active: 'active' }
+            ],
+            pageTitle: "Sliders"
+        },
+        beforeEnter: (to, from, next) => {
+            if (!localStorage.getItem('token-staff')) {
+                next('/staff/login');
+            }
+            next();
+        }
+    },
+    {
+        path: '/staff/sliders/trash',
+        name: 'sliders-trash',
+        component: () => import('@/views/staff/sliders/trash.vue'),
+        meta: {
+            requiresAuth: true,
+            breadcrumb: [
+                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'sliders', link: 'index', home: 'index' },
+                { name: 'trash', active: 'active' }
+            ],
+            pageTitle: "sliders"
+        },
+        beforeEnter: (to, from, next) => {
+            if (!localStorage.getItem('token-staff')) {
+                next('/staff/login');
+            }
+            next();
+        }
+    },
 ]
 
 //create router

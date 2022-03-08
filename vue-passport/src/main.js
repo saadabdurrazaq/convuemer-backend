@@ -1,3 +1,4 @@
+import store from './store'
 import { createApp } from 'vue'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
@@ -7,6 +8,8 @@ import VueAxios from 'vue-axios'
 import Pagination from 'v-pagination-3';
 import VueProgressBar from "@aacassandra/vue3-progressbar";
 import CKEditor from '@ckeditor/ckeditor5-vue';
+import alert from '@/components/Alert.vue';
+import VueNumberInput from '@chenfengyuan/vue-number-input';
 
 // import adminlte
 import 'admin-lte/plugins/fontawesome-free/css/all.min.css'
@@ -15,15 +18,6 @@ import '@/assets/js/bootstrap.js';
 import 'admin-lte/dist/js/adminlte.min.js'
 import '@/assets/js/bootstrap-switch.js';
 
-// Import frontend theme
-/*
-import '@/assets/frontend/js/echo.min.js';
-import '@/assets/frontend/js/jquery.rateit.min.js';
-import '@/assets/frontend/js/lightbox.min.js';
-import '@/assets/frontend/js/bootstrap-select.min.js';
-import '@/assets/frontend/js/wow.min.js';
-*/
-
 const options = {
     color: "#bffaf3",
     failedColor: "red",
@@ -31,14 +25,16 @@ const options = {
     transition: {
         speed: "0.2s",
         opacity: "0.6s",
-        termination: 300,
+        termination: 300, 
     },
     autoRevert: true,
     location: "top",
     inverse: false,
 };
 
-const app = createApp(App)
+const app = createApp(App) 
+app.use(store)
+app.use(alert)
 app.use(vuetify)
 app.use(router)
 app.use(VueProgressBar, options)
@@ -62,5 +58,6 @@ axios.interceptors.response.use(response => {
 });*/
 app.use(VueAxios, axios)
 app.component('pagination', Pagination);
-app.config.globalProperties.$log = console.log;
+app.component(VueNumberInput.name, VueNumberInput);
+app.config.globalProperties.$log = console.log; 
 app.mount('#app')

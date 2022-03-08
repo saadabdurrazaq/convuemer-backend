@@ -40,13 +40,16 @@ Route::post('products/delete-all-new-added-variant-product-images-in-create-page
 Route::post('products/delete-some-new-added-variant-product-images', [ProductController::class, 'deleteSomeNewAddedVarProdImages']);
 
 // Megamenu frontend
-Route::get('mega-menu/get-menu-data', [MegaMenuController::class, 'getMenuData']);
+Route::get('mega-menu/get-menu-data', [MegaMenuController::class, 'getMenuData']); 
 
 // Sliders
 Route::get('sliders/show', [SliderController::class, 'show']);
 
 // Product sliders
 Route::get('product-sliders/show-featured-products', [ProductSliderController::class, 'showFeaturedProduct']);
+
+// Show single product in frontend page
+Route::get('product/{id}/{slug}', [ProductController::class, 'show']); 
 
 // To see the route url, use php artisan r:l
 Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:staff']], function () {
@@ -149,7 +152,7 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     Route::delete('products/force-delete/{id}', [ProductController::class, 'forceDelete']);
     Route::get('products/force-delete-multiple/ids={ids}', [ProductController::class, 'forceDeleteMultiple']);
     Route::put('products/update-status/{id}', [ProductController::class, 'updateStatus']);
-    Route::get('products/show/{id}', [ProductController::class, 'show']);
+    Route::get('products/edit/{id}', [ProductController::class, 'edit']); // used in edit.vue
     Route::put('products/update-images/{id}', [ProductController::class, 'updateImages']);
     Route::put('products/update-variant-product-images/{id}', [ProductController::class, 'updateVarProdImages']);
     Route::put('products/update/{id}', [ProductController::class, 'update']);

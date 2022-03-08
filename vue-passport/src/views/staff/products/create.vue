@@ -52,7 +52,7 @@
                                                         class="form-control"
                                                         :class="{
                                                             'is-invalid':
-                                                                form.errors.has('brand_id'),
+                                                                form.errors.has('brand_id'), 
                                                         }"
                                                     >
                                                         <option value="default" selected="true">
@@ -76,7 +76,7 @@
                                                     <label for="nik">Category</label>
                                                     <select
                                                         v-bind:name="form.category_id"
-                                                        class="form-control"
+                                                        class="form-control"  
                                                         id="category_id"
                                                         :required="true"
                                                     >
@@ -590,23 +590,23 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4 job-info">
-                                                <label for="selling_price">Product Price </label>
+                                                <label for="price">Product Price </label>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-append">
                                                         <span class="input-group-text">Rp</span>
                                                     </div>
                                                     <input
-                                                        id="selling_price"
+                                                        id="price"
                                                         type="text"
-                                                        v-bind:name="form.selling_price"
-                                                        v-model="form.selling_price"
+                                                        v-bind:name="form.price"
+                                                        v-model="form.price"
                                                         :class="{
                                                             'is-invalid':
-                                                                form.errors.has('selling_price'),
+                                                                form.errors.has('price'),
                                                         }"
-                                                        class="form-control selling_price"
+                                                        class="form-control price"
                                                         required
-                                                        autocomplete="selling_price"
+                                                        autocomplete="price"
                                                         autofocus
                                                         aria-label="Amount (to the nearest dollar)"
                                                         placeholder="Price"
@@ -615,12 +615,12 @@
                                                 </div>
                                                 <span
                                                     class="text-danger"
-                                                    id="selling_price_error"
+                                                    id="price_error"
                                                 ></span>
                                                 <div
                                                     style="color: red"
-                                                    v-if="form.errors.has('selling_price')"
-                                                    v-html="form.errors.get('selling_price')"
+                                                    v-if="form.errors.has('price')"
+                                                    v-html="form.errors.get('price')"
                                                 />
                                             </div>
                                         </div>
@@ -635,31 +635,31 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="product_stock">Stock</label>
+                                                    <label for="available_stock">Stock</label>
                                                     <input
-                                                        id="product_stock"
-                                                        v-bind:name="form.product_stock"
-                                                        v-model="form.product_stock"
+                                                        id="available_stock"
+                                                        v-bind:name="form.available_stock"
+                                                        v-model="form.available_stock"
                                                         type="text"
                                                         :class="{
                                                             'is-invalid':
-                                                                form.errors.has('product_stock'),
+                                                                form.errors.has('available_stock'),
                                                         }"
-                                                        class="form-control product_stock"
+                                                        class="form-control available_stock"
                                                         required
-                                                        autocomplete="product_stock"
+                                                        autocomplete="available_stock"
                                                         autofocus
                                                         placeholder="Stock"
                                                         @keyup="allowOnlyNumberAndDot($event)"
                                                     />
                                                     <span
                                                         class="text-danger"
-                                                        id="product_stock_error"
+                                                        id="available_stock_error"
                                                     ></span>
                                                     <div
                                                         style="color: red"
-                                                        v-if="form.errors.has('product_stock')"
-                                                        v-html="form.errors.get('product_stock')"
+                                                        v-if="form.errors.has('available_stock')"
+                                                        v-html="form.errors.get('available_stock')"
                                                     />
                                                 </div>
                                             </div>
@@ -1068,8 +1068,8 @@ export default {
                 short_desc: '',
                 long_desc: '',
                 min_order: '',
-                selling_price: '',
-                product_stock: '',
+                price: '',
+                available_stock: '',
                 product_cond: '',
                 sku: '',
                 product_length: '',
@@ -1489,7 +1489,7 @@ export default {
                 item.condition = $('input[name="condition_' + item.id + '"]:checked').val();
             });
         },
-        disableRightClickAndLongPress(className) {
+        disableRightClickAndLongPress(className) { 
             // disable right click
             $('.' + className + '').on('contextmenu', function () {
                 return false;
@@ -1558,8 +1558,8 @@ export default {
 
                 let className = [
                     'min_order',
-                    'selling_price',
-                    'product_stock',
+                    'price',
+                    'available_stock',
                     'product_weight',
                     'product_length',
                     'product_width',
@@ -1580,8 +1580,8 @@ export default {
                     });
 
                     this.form.min_order = $('.min_order').val();
-                    this.form.selling_price = $('.selling_price').val();
-                    this.form.product_stock = $('.product_stock').val();
+                    this.form.price = $('.price').val();
+                    this.form.available_stock = $('.available_stock').val();
                     this.form.product_weight = $('.product_weight').val();
                     this.form.product_length = $('.product_length').val();
                     this.form.product_width = $('.product_width').val();
@@ -1967,7 +1967,7 @@ export default {
                 emptyInputImgs.length == 0 && // empty input images is not exist.
                 this.form.images.length > 0
             ) {
-                this.$router.push({ name: 'products-index' });
+                //this.$router.push({ name: 'products-index' });
                 this.showSuccessMsg(res);
             }
         },
@@ -1987,7 +1987,7 @@ export default {
             this.form.subsubcategory_id = $('#subsubcategory_id').find(':selected').attr('data-id');
 
             let formData = new FormData();
-            formData.append('isVariantExists', this.form.isVariantExists);
+            formData.append('isVariantExists', this.form.isVariantExists);  
             let variants = JSON.stringify(this.form.variants);
             formData.append('variants', variants);
             formData.append('variants_prod', this.form.variants_prod);
@@ -2052,8 +2052,8 @@ export default {
         this.loadCatSelectOption();
         this.fileInput();
         this.disableRightClickAndLongPress('min_order');
-        this.disableRightClickAndLongPress('selling_price');
-        this.disableRightClickAndLongPress('product_stock');
+        this.disableRightClickAndLongPress('price');
+        this.disableRightClickAndLongPress('available_stock');
         this.disableRightClickAndLongPress('product_weight');
         this.disableRightClickAndLongPress('product_length');
         this.disableRightClickAndLongPress('product_width');

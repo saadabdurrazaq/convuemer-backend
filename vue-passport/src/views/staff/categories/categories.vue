@@ -11,7 +11,7 @@
                     <div class="box-tools">
                         <p class="alert alert-success alert-dismissible">
                             {{ this.title }}
-                            <button
+                            <button 
                                 type="button"
                                 @click.prevent="closeMsg"
                                 class="close"

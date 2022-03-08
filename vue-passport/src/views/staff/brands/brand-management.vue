@@ -178,7 +178,7 @@
                                                     <div></div>
                                                     <div></div>
                                                     <div></div>
-                                                </div>
+                                                </div> 
                                             </div>
                                             <!-- Loop through each user record and display user details -->
                                             <tr

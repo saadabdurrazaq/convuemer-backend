@@ -12,6 +12,10 @@
                                     <div class="card-header">Dashboard</div>
                                     <div class="card-body">
                                         Selamat datang <strong>{{ staffData.data.name }}</strong>
+                                        <div class="speech-to-txt" @click="startSpeechToTxt">
+                                            Speech to txt
+                                        </div>
+                                        <p>{{ transcription_ }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -25,7 +29,6 @@
 </template>
 
 <script>
-import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import Nav from './partials/Nav.vue';
 import Sidebar from './partials/Sidebar.vue';
@@ -40,29 +43,59 @@ export default {
         Sidebar,
         Footer,
     },
-    setup() {
-        //state token
-        const token = localStorage.getItem('token-staff');
-        let staffData = JSON.parse(localStorage.getItem('staff-data'));
+    data() {
+        return {
+            staffData: '',
+            runtimeTranscription_: '',
+            transcription_: [],
+            lang_: 'en-EN',
+        };
+    },
+    methods: {
+        checkAuth() {  
+            // state token
+            const token = localStorage.getItem('token-staff');
+            let staffData = JSON.parse(localStorage.getItem('staff-data'));
+            this.staffData = staffData;
 
-        //inisialisasi vue router on Composition API
-        const router = useRouter();
+            //inisialisasi vue router on Composition API
+            const router = useRouter();
 
-        //mounted properti
-        onMounted(() => {
-            //check Token exist
             if (!token) {
                 return router.push({
                     name: 'staff-login',
                 });
             }
-        });
+        },
+        startSpeechToTxt() {
+            // initialisation of voicereco
+            window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new window.SpeechRecognition();
+            recognition.lang = this.lang_;
+            recognition.interimResults = true;
 
-        return {
-            token, // <-- state token
-            staffData,
-        };
+            // event current voice reco word
+            recognition.addEventListener('result', (event) => {
+                var text = Array.from(event.results)
+                    .map((result) => result[0])
+                    .map((result) => result.transcript)
+                    .join('');
+                this.runtimeTranscription_ = text;
+            });
+            
+            // end of transcription
+            recognition.addEventListener('end', () => {
+                this.transcription_.push(this.runtimeTranscription_);
+                this.runtimeTranscription_ = '';
+                recognition.stop();
+            });
+            recognition.start();
+        },
     },
+    created() {
+        this.checkAuth();
+    },
+    mounted() {},
 };
 </script>
 

@@ -10,7 +10,7 @@
                 <div style="display: none" id="errMsg" class="box no-border">
                     <div class="box-tools">
                         <p class="alert alert-success alert-dismissible">
-                            {{ this.title }}
+                            {{ this.title }} 
                             <button
                                 type="button"
                                 @click.prevent="closeMsg"
@@ -219,14 +219,21 @@
                                                 </td>
                                                 <td v-else>No images</td>
                                                 <td class="align-middle">
-                                                    {{ product.product_name }}
+                                                   <router-link
+                                                        :to="{
+                                                            name: 'product-show',
+                                                            params: { id: product.id, slug: product.product_slug },
+                                                        }"
+                                                        target="_blank"
+                                                        > {{ product.product_name }}
+                                                    </router-link>
                                                 </td>
                                                 <td class="align-middle">
                                                     Rp.
-                                                    {{ formatNumber(product.selling_price) }}
+                                                    {{ formatNumber(product.price) }}
                                                 </td>
                                                 <td class="align-middle">
-                                                    {{ formatNumber(product.product_stock) }}
+                                                    {{ formatNumber(product.available_stock) }}
                                                 </td>
                                                 <td
                                                     v-if="product.status === 'Active'"
@@ -261,7 +268,7 @@
                                                             data-off-text=""
                                                             data-size="small"
                                                             class="status"
-                                                            :value="product.id"
+                                                            :value="product.id" 
                                                         />
                                                     </div>
                                                 </td>
@@ -269,7 +276,7 @@
                                                     <router-link
                                                         :to="{
                                                             name: 'products-edit',
-                                                            params: { id: product.id },
+                                                            params: { id: product.id }, 
                                                         }"
                                                         class="btn btn-info"
                                                         style="margin-right: 7px"

@@ -67,13 +67,14 @@
             </div>
             <!-- /.container -->
         </div>
-        <!-- /.header-top -->
         <!-- ============================================== TOP MENU : END ============================================== -->
+        
+        <!-- ============================================== LOGO, SEARCH, CART ============================================== -->
         <div class="main-header">
             <div class="container">
                 <div class="row">
+                    <!-- ============================================================= LOGO ============================================================= -->
                     <div class="col-xs-12 col-sm-12 col-md-3 logo-holder">
-                        <!-- ============================================================= LOGO ============================================================= -->
                         <div class="logo">
                             <a href="home.html">
                                 <img
@@ -83,13 +84,11 @@
                             </a>
                         </div>
                         <!-- /.logo -->
-                        <!-- ============================================================= LOGO : END ============================================================= -->
                     </div>
-                    <!-- /.logo-holder -->
+                    <!-- ============================================================= LOGO : END ============================================================= -->
 
+                    <!-- ============================================================= SEARCH AREA ============================================================= -->
                     <div class="col-xs-12 col-sm-12 col-md-7 top-search-holder">
-                        <!-- /.contact-row -->
-                        <!-- ============================================================= SEARCH AREA ============================================================= -->
                         <div class="search-area">
                             <form>
                                 <div class="control-group">
@@ -143,65 +142,108 @@
                                 </div>
                             </form>
                         </div>
-                        <!-- /.search-area -->
-                        <!-- ============================================================= SEARCH AREA : END ============================================================= -->
                     </div>
-                    <!-- /.top-search-holder -->
+                    <!-- ============================================================= SEARCH AREA : END ============================================================= -->
 
-                    <div class="col-xs-12 col-sm-12 col-md-2 animate-dropdown top-cart-row">
-                        <!-- ============================================================= SHOPPING CART DROPDOWN ============================================================= -->
-
+                    <!-- ============================================================= SHOPPING CART DROPDOWN ============================================================= -->
+                    <div class="col-xs-12 col-sm-12 col-md-2 top-cart-row animate-dropdown">
                         <div class="dropdown dropdown-cart">
-                            <a href="#" class="dropdown-toggle lnk-cart" data-toggle="dropdown">
+                            <a
+                                href="#"
+                                class="dropdown-toggle lnk-cart dropdown dropdown-cart"
+                                data-toggle="dropdown"
+                            >
                                 <div class="items-cart-inner">
                                     <div class="basket">
                                         <i class="glyphicon glyphicon-shopping-cart"></i>
                                     </div>
                                     <div class="basket-item-count">
-                                        <span class="count">2</span>
+                                        <span class="count">{{ countCart }}</span>
                                     </div>
                                     <div class="total-price-basket">
-                                        <span class="lbl">cart -</span>
                                         <span class="total-price">
-                                            <span class="sign">$</span
-                                            ><span class="value">600.00</span>
+                                            <span class="sign">Rp. </span
+                                            ><span class="value">{{
+                                                totalPrice.toLocaleString('id-ID')
+                                            }}</span>
                                         </span>
                                     </div>
                                 </div>
                             </a>
+                            <!-- show products inside cart summary -->
                             <ul class="dropdown-menu">
-                                <li>
+                                <ul
+                                    style="
+                                        height: 220px;
+                                        width: 110%;
+                                        overflow: hidden;
+                                        overflow-y: scroll;
+                                    "
+                                >
                                     <div class="cart-item product-summary">
-                                        <div class="row">
-                                            <div class="col-xs-4">
-                                                <div class="image">
-                                                    <a href="detail.html"
-                                                        ><img src="assets/images/cart.jpg" alt=""
-                                                    /></a>
+                                        <template
+                                            v-for="(item, index) in carts"
+                                            :key="'cart' + index"
+                                        >
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <div class="col-xs-4">
+                                                    <div class="image">
+                                                        <img
+                                                            :src="`${BASE_URL}/storage/app/public/products/${item.cover}`"
+                                                            alt=""
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-7" style="margin-left: -15px">
+                                                    <h3 class="name">
+                                                        <router-link
+                                                            :to="{
+                                                                name: 'product-show',
+                                                                params: {
+                                                                    id: item.url_id,
+                                                                    slug: item.url,
+                                                                },
+                                                            }"
+                                                        >
+                                                            {{ item.product_name }}
+                                                        </router-link>
+                                                    </h3>
+                                                    <div class="price">
+                                                        Rp. {{ item.quantity }} x
+                                                        {{ item.price.toLocaleString() }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-1 action">
+                                                    <a
+                                                        href="#"
+                                                        @click.stop.prevent="removeCart(item)"
+                                                        ><i class="fa fa-trash"></i
+                                                    ></a>
                                                 </div>
                                             </div>
-                                            <div class="col-xs-7">
-                                                <h3 class="name">
-                                                    <a href="index.php?page-detail"
-                                                        >Simple Product</a
-                                                    >
-                                                </h3>
-                                                <div class="price">$600.00</div>
-                                            </div>
-                                            <div class="col-xs-1 action">
-                                                <a href="#"><i class="fa fa-trash"></i></a>
-                                            </div>
-                                        </div>
+                                        </template>
                                     </div>
+                                </ul>
+                                <li>
                                     <!-- /.cart-item -->
                                     <div class="clearfix"></div>
                                     <hr />
                                     <div class="clearfix cart-total">
                                         <div class="pull-right">
                                             <span class="text">Sub Total :</span
-                                            ><span class="price">$600.00</span>
+                                            ><span class="price"
+                                                >Rp. {{ totalPrice.toLocaleString('id-ID') }}</span
+                                            >
                                         </div>
                                         <div class="clearfix"></div>
+                                        <router-link
+                                            :to="{
+                                                name: 'cart',
+                                            }"
+                                            class="btn btn-upper btn-primary btn-block m-t-20"
+                                        >
+                                            Show All ({{ countCart }})
+                                        </router-link>
                                         <a
                                             href="checkout.html"
                                             class="btn btn-upper btn-primary btn-block m-t-20"
@@ -217,13 +259,14 @@
 
                         <!-- ============================================================= SHOPPING CART DROPDOWN : END============================================================= -->
                     </div>
-                    <!-- /.top-cart-row -->
+                    <!-- ============================================================= SHOPPING CART DROPDOWN : END ============================================================= -->
+
                 </div>
                 <!-- /.row -->
             </div>
             <!-- /.container -->
         </div>
-        <!-- /.main-header -->
+        <!-- ============================================== LOGO, SEARCH, CART : END ============================================== -->
 
         <!-- ============================================== NAVBAR ============================================== -->
         <div class="header-nav animate-dropdown">
@@ -246,13 +289,13 @@
                             <div class="nav-outer">
                                 <ul class="nav navbar-nav">
                                     <li class="active dropdown yamm-fw">
-                                        <a
-                                            href="home.html"
-                                            data-hover="dropdown"
-                                            class="dropdown-toggle"
-                                            data-toggle="dropdown"
-                                            >Home</a
+                                        <router-link
+                                            :to="{
+                                                name: 'welcome',
+                                            }"
                                         >
+                                            Home
+                                        </router-link>
                                     </li>
                                     <li
                                         class="dropdown yamm mega-menu"
@@ -334,25 +377,33 @@
             </div>
             <!-- /.container-class -->
         </div>
-        <!-- /.header-nav -->
         <!-- ============================================== NAVBAR : END ============================================== -->
     </header>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import jQuery from 'jquery';
 const $ = jQuery;
 window.$ = $;
 import 'jquery/dist/jquery.js';
 import 'bootstrap-hover-dropdown/bootstrap-hover-dropdown.js';
+import { BASE_URL } from '@/assets/js/base-url.js';
 
 export default {
     data() {
         return {
             data_menus: [],
+            BASE_URL: BASE_URL,
         };
     },
     methods: {
+        ...mapActions({
+            setAlert: 'alert/set',
+            addCart: 'cart/add',
+            removeCart: 'cart/remove',
+            setCart: 'cart/set',
+        }),
         showData() {
             this.axios
                 .get('api/mega-menu/get-menu-data', {})
@@ -366,6 +417,20 @@ export default {
                 .finally(() => {
                     $('.dropdown-toggle').dropdownHover();
                 });
+        },
+    },
+    computed: {
+        ...mapGetters({
+            carts: 'cart/carts',
+            countCart: 'cart/count',
+            totalPrice: 'cart/totalPrice',
+            totalQuantity: 'cart/totalQuantity',
+            totalWeight: 'cart/totalWeight',
+        }),
+    },
+    watch: {
+        $route() {
+            this.$router.go();
         },
     },
     created() {

@@ -10,7 +10,7 @@
                     >Laravue</router-link
                 >
             </li>
-        </ul>
+        </ul> 
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">

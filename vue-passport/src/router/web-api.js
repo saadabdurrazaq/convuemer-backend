@@ -9,7 +9,33 @@ const routes = [
         component: () => import( /* webpackChunkName: "login" */ '@/views/user/Welcome.vue') // This part is integrated with C:\xampp\htdocs\my-project\laravue\vue-passport\public\index.html
     },
     {
-        path: '/user/register',
+        path: '/product/:id/:slug',  
+        name: 'product-show',
+        component: () => import('@/views/user/products/show.vue'),
+        meta: {
+            breadcrumb: [
+                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Products', link: '/staff/products/index', home: 'index' },
+                { name: 'Show', active: 'active' }
+            ],
+            pageTitle: "Show Product"
+        }
+    },
+    {
+        path: '/cart',  
+        name: 'cart',
+        component: () => import('@/views/user/cart.vue'),
+        meta: {
+            breadcrumb: [
+                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Products', link: '/staff/products/index', home: 'index' },
+                { name: 'Show', active: 'active' }
+            ],
+            pageTitle: "Show Product"
+        }
+    },
+    {
+        path: '/user/register', 
         name: 'user-register',
         component: () => import( /* webpackChunkName: "register" */ '@/views/user/auth/register-user.vue')
     },

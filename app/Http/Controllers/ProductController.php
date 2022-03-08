@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Controller; 
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\VariantType;
@@ -21,11 +21,37 @@ use Symfony\Component\HttpFoundation\Response;
 class ProductController extends Controller
 {
     public $request;
-    protected $newProductId;
+    public $newProductId;
 
     public function __construct(Request $request)
     {
         $this->request = $request;
+    }
+
+    public function show($id, $slug)
+    {
+        $product =  Product::with('variants.variantOptions')->with('variantsProd')->where('id', $id)->where('product_slug', $slug)->first();
+        
+        // fix invalid unique_string that contains -
+        $invalidUnSId = DB::table('products_combinations')->select('id')->where('unique_string_id', 'like', '%-%')->get();
+        $invalidUnS = DB::table('products_combinations')->select('unique_string_id')->where('unique_string_id', 'like', '%-%')->pluck('unique_string_id')->toArray();
+        $totalInvalidUnSId = DB::table('products_combinations')->select('id')->where('unique_string_id', 'like', '%-%')->count();
+
+        $validStrings = array();
+        for ($i = 0; $i < $totalInvalidUnSId; $i++) {
+            array_push($validStrings, str_replace('-', '', $invalidUnS[$i]));
+		}
+
+        if ($totalInvalidUnSId > 0) {
+			foreach ($invalidUnSId as $index => $invUnSId) {
+				$data = json_decode(json_encode($invUnSId), true);
+				ProductCombination::findOrFail($data['id'])->update([
+					'unique_string_id' => $validStrings[$index], 
+				]);
+			}
+		}        
+        
+        return response()->json($product);
     }
 
     public function getBrands()
@@ -37,6 +63,7 @@ class ProductController extends Controller
         ], 200);
     }
 
+    // Store images file in a certain folder. While updateImages() used for update all atribute images texts for single product in database. And updateVarProdImages() used for update all atribute images texts for variant product in database
     public function storeImages()
     {
         $preview = $config = $errors = [];
@@ -118,8 +145,8 @@ class ProductController extends Controller
             'short_desc' => 'required',
             'long_desc' => 'required',
             'min_order' => 'required',
-            'selling_price' => 'required',
-            'product_stock' => 'required',
+            'price' => 'required',
+            'available_stock' => 'required',
             'sku' => 'required',
             'product_weight' => 'required',
             'product_length' => 'required',
@@ -143,8 +170,8 @@ class ProductController extends Controller
         $data['subcategory_id'] =  $this->request->get('subcategory_id');
         $data['subsubcategory_id'] =  $this->request->get('subsubcategory_id');
         $data['product_name'] =  $this->request->get('product_name');
-        $data['product_stock'] =  $this->request->get('product_stock');
-        $data['selling_price'] =  $this->request->get('selling_price');
+        $data['available_stock'] =  $this->request->get('available_stock');
+        $data['price'] =  $this->request->get('price');
         $data['short_desc'] =  $this->request->get('short_desc');
         $data['long_desc'] =  $this->request->get('long_desc');
         $data['product_cond'] =  $this->request->get('product_cond');
@@ -169,15 +196,24 @@ class ProductController extends Controller
     {
         $data_value = $this->inputData();
 
+        $JSONimgsStr = json_encode($data_value['images']);
+        $JSONimgsArr = json_decode($JSONimgsStr, TRUE);
+        $imagesCaption = array();
+        foreach ($JSONimgsArr as $image) {
+            $imagesCaption[] = $image['caption'];
+        }
+
         $this->newProductId = Product::insertGetId([
             'product_name' => $data_value['product_name'],
             'brand_id' => $data_value['brand_id'],
             'category_id' => $data_value['category_id'],
             'subcategory_id' => $data_value['subcategory_id'],
             'subsubcategory_id' => $data_value['subsubcategory_id'],
-            'product_name' => $data_value['product_name'],
-            'product_stock' => str_replace(".", "", $data_value['product_stock']),
-            'selling_price' => str_replace(".", "", $data_value['selling_price']),
+            'available_stock' => str_replace(".", "", $data_value['available_stock']),
+            'product_slug' => strtolower(str_replace(' ', '-', $data_value['product_name'])),
+            'product_key' => uniqid(),
+            'url' => strtolower(str_replace(' ', '-', $data_value['product_name'])),
+            'price' => str_replace(".", "", $data_value['price']),
             'short_desc' => $data_value['short_desc'],
             'long_desc' => $data_value['long_desc'],
             'product_cond' => $data_value['product_cond'],
@@ -194,12 +230,13 @@ class ProductController extends Controller
             'special_deals' => $data_value['special_deals'],
             'status' => $data_value['status'],
             'images' => json_encode($data_value['images']),
+            'cover' => $imagesCaption[0]
         ]);
     }
 
     public function updateProduct($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::findOrFail($id); 
         $data_value = $this->inputData();
 
         $this->newProductId = $product->update([
@@ -208,8 +245,11 @@ class ProductController extends Controller
             'category_id' => $data_value['category_id'],
             'subcategory_id' => $data_value['subcategory_id'],
             'subsubcategory_id' => $data_value['subsubcategory_id'],
-            'product_stock' => str_replace(".", "", $data_value['product_stock']),
-            'selling_price' => str_replace(".", "", $data_value['selling_price']),
+            'available_stock' => str_replace(".", "", $data_value['available_stock']),
+            'product_slug' => strtolower(str_replace(' ', '-', $data_value['product_name'])),
+            'url' => strtolower(str_replace(' ', '-', $data_value['product_name'])),
+            'url_id' => $id,
+            'price' => str_replace(".", "", $data_value['price']),
             'short_desc' => $data_value['short_desc'],
             'long_desc' => $data_value['long_desc'],
             'product_cond' => $data_value['product_cond'],
@@ -258,9 +298,13 @@ class ProductController extends Controller
     public function storeNewVarProds($id)
     {
         $variantsProd = $this->request->get('variants_prod');
+        $getProductSlug = DB::table('products')->select('product_slug')->where('id', $id)->get();
+        $productSlug = $getProductSlug[0]->product_slug;
 
         foreach ($variantsProd as $key) {
             $productVariant = $key['product_variant'];
+            $productCombinationSlug = strtolower(str_replace(' ', '-', $key['product_variant']));
+            $prodAndProdCombSlug = $productSlug . '-' . $productCombinationSlug;
             $price = $key['price'];
             $sku = $key['sku'];
             $images = $key['images'];
@@ -269,12 +313,26 @@ class ProductController extends Controller
             $stock = $key['available_stock'];
 
             $stringParts = str_split($productVariant);
-            sort($stringParts);
+            sort($stringParts, SORT_NATURAL | SORT_FLAG_CASE);
             $string = implode($stringParts);
+
+            $JSONimgsStr = json_encode($images);
+            $JSONimgsArr = json_decode($JSONimgsStr, TRUE);
+            $imagesCaption = array();
+            foreach ($JSONimgsArr as $image) {
+                $imagesCaption[] = $image['caption'];
+            }
+
+            $prodCombName = str_replace("-", " ", $prodAndProdCombSlug); 
 
             $newProductCombinationId = ProductCombination::insertGetId([
                 'product_id' => $id,
                 'product_variant' => $productVariant,
+                'product_slug' => $prodAndProdCombSlug, 
+                'product_key' => uniqid(),
+                'url' => $productSlug,
+                'url_id' => $id,
+                'product_name' => ucwords($prodCombName),
                 'unique_string_id' => Str::lower($string),
                 'price' => str_replace(".", "", $price),
                 'sku' => $sku,
@@ -282,6 +340,7 @@ class ProductController extends Controller
                 'condition' => $condition,
                 'status' => $status,
                 'images' => json_encode($images),
+                'cover' => $imagesCaption[0]
             ]);
         }
     }
@@ -350,8 +409,10 @@ class ProductController extends Controller
                 ]);
             }
 
-            $this->storeNewVarTypeAndVarOpt($this->newProductId);
+            $this->storeNewVarTypeAndVarOpt($this->newProductId); 
             $this->storeNewVarProds($this->newProductId);
+            $product = Product::findOrFail($this->newProductId);
+            $product->update([ 'url_id' => $this->newProductId]);
 
             return response()->json([
                 'success' => true,
@@ -360,6 +421,8 @@ class ProductController extends Controller
         } else {
             if ($totalInputtedPicts > 0) {
                 $this->storeProduct();
+                $product = Product::findOrFail($this->newProductId);
+                $product->update([ 'url_id' => $this->newProductId]);
 
                 return response()->json([
                     'success' => true,
@@ -557,7 +620,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function edit($id)
     {
         $product =  Product::with('variants.variantOptions')->with('variantsProd')->where('id', $id)->first();
         return response()->json($product);
@@ -567,8 +630,18 @@ class ProductController extends Controller
     {
         $images =  $this->request->get('images');
 
+        $JSONimgsStr = json_encode($images);
+        $JSONimgsArr = json_decode($JSONimgsStr, TRUE);
+        $imagesCaption = array();
+        foreach ($JSONimgsArr as $image) {
+            $imagesCaption[] = $image['caption'];
+        }
+
         $prod = Product::where('id', $id);
-        $prod->update(['images' => json_encode($images)]);
+        $prod->update([
+            'images' => json_encode($images),
+            'cover' => $imagesCaption[0]
+        ]);
 
         return response()->json([
             'success' => true,
@@ -580,8 +653,18 @@ class ProductController extends Controller
     {
         $imagesUpdated =  $this->request->get('imagesUpdated');
 
+        $JSONimgsStr = json_encode($imagesUpdated);
+        $JSONimgsArr = json_decode($JSONimgsStr, TRUE);
+        $imagesCaption = array();
+        foreach ($JSONimgsArr as $image) {
+            $imagesCaption[] = $image['caption'];
+        }
+
         $prod = ProductCombination::where('id', $id);
-        $prod->update(['images' => json_encode($imagesUpdated)]);
+        $prod->update([
+            'images' => json_encode($imagesUpdated),
+            'cover' => $imagesCaption[0]
+        ]);
 
         return response()->json([
             'success' => true,
@@ -832,11 +915,17 @@ class ProductController extends Controller
                 }
             }
 
+            $getProductSlug = DB::table('products')->select('product_slug')->where('id', $id)->get();
+            $productSlug = $getProductSlug[0]->product_slug;
+
             // If the new variant products exist, then insert it to database. 
             if ($newVarProdIsExist !== null && $variantIsDeleted == 'No') {
                 if (sizeof($newVarProdIsExist) > 0) {
                     foreach ($newVarProdIsExist as $key) {
                         $productVariant = $key['product_variant'];
+                        $productCombinationSlug = strtolower(str_replace(' ', '-', $key['product_variant']));
+                        $prodAndProdCombSlug = $productSlug . '-' . $productCombinationSlug;
+                        $prodCombName = str_replace("-", " ", $prodAndProdCombSlug);
                         $price = $key['price'];
                         $sku = $key['sku'];
                         $images = $key['images'];
@@ -845,13 +934,19 @@ class ProductController extends Controller
                         $stock = $key['available_stock'];
 
                         $stringParts = str_split($productVariant);
-                        sort($stringParts);
+                        sort($stringParts, SORT_NATURAL | SORT_FLAG_CASE);
                         $string = implode($stringParts);
+                        $strToLower = Str::lower($string);
+                        $trimmed_str = ltrim($strToLower);
 
                         $newProductCombinationId = ProductCombination::insertGetId([
                             'product_id' => $id,
                             'product_variant' => $productVariant,
-                            'unique_string_id' => Str::lower($string),
+                            'product_slug' => $prodAndProdCombSlug,
+                            'url' => $productSlug,
+                            'url_id' => $id,
+                            'product_name' => ucwords($prodCombName),
+                            'unique_string_id' => $trimmed_str,
                             'price' => str_replace(".", "", $price),
                             'sku' => $sku,
                             'available_stock' => str_replace(".", "", $stock),
@@ -889,12 +984,28 @@ class ProductController extends Controller
                         array_push($status, $varProdsBeenStoredInDb[$i]['status']);
                     }
 
-                    foreach ($varProdIds as $index => $varProdId) {
+                    foreach ($varProdIds as $index => $varProdId) { 
                         $prod = ProductCombination::where('id', $varProdId);
+                        $getProductVariant = DB::table('products_combinations')->select('product_variant')->where('id', $varProdId)->get();
+                        $productVariant = $getProductVariant[0]->product_variant;
+                        $productCombinationSlug = strtolower(str_replace(' ', '-', $productVariant));
+                        $prodAndProdCombSlug = $productSlug . '-' . $productCombinationSlug;
+                        $prodCombName = str_replace("-", " ", $prodAndProdCombSlug); 
+
+                        $stringParts = str_split($productVariant);
+                        sort($stringParts, SORT_NATURAL | SORT_FLAG_CASE);
+                        $string = implode($stringParts);
+                        $strToLower = Str::lower($string);
+                        $trimmed_str = ltrim($strToLower);
 
                         $prod->update([
                             'price' => str_replace(".", "", $prices[$index]),
                             'sku' => $sku[$index],
+                            'product_slug' => $prodAndProdCombSlug,
+                            'url' => $productSlug,
+                            'url_id' => $id,
+                            'product_name' => ucwords($prodCombName),
+                            'unique_string_id' => $trimmed_str,
                             'available_stock' => str_replace(".", "", $available_stocks[$index]),
                             'condition' => $conditions[$index],
                             'status' => $status[$index],
@@ -916,7 +1027,7 @@ class ProductController extends Controller
                     $this->deleteAllVarProds($id);
                 }
 
-                return response()->json([
+                return response()->json([ 
                     'success' => true,
                     'message' => 'Product successfully updated!',
                 ]);

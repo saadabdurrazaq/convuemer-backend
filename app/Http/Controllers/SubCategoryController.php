@@ -67,7 +67,7 @@ class SubCategoryController extends Controller
 			]);
 		}
 
-		// Fix invalid slug
+		// Fix invalid slug 
 		$invalidSlugsId = DB::table('sub_categories')->select('id')->where('subcategory_slug', 'like', '-%')->get();
 		$invalidSlugs = DB::table('sub_categories')->select('subcategory_slug')->where('subcategory_slug', 'like', '-%')->pluck('subcategory_slug')->toArray();
 		$totalInvalidSlugs = DB::table('sub_categories')->select('id')->where('subcategory_slug', 'like', '-%')->count();

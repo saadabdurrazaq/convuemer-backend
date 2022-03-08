@@ -23,7 +23,12 @@ class ProductCombination extends Model
     }
 
     protected $fillable = [
-        'combination_string',
+        'combination_string', 
+        'product_slug',
+        'url',
+        'url_id',
+        'unique_string_id',
+        'product_key'
     ];
 
     protected $table = "products_combinations";

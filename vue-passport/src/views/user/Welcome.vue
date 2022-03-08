@@ -1,9 +1,9 @@
 <template>
     <Nav />
-    <div class="body-content outer-top-xs" id="top-banner-and-menu">
+    <div class="body-content outer-top-xs" id="top-banner-and-menu"> 
         <div class="container">
             <div class="row">
-                <FrontSidebar />
+                <FrontSidebar /> 
                 <!-- ============================================== CONTENT ============================================== -->
                 <div class="col-xs-12 col-sm-12 col-md-9 homebanner-holder">
                     <!-- ========================================== SECTION – HERO ========================================= -->
@@ -14,7 +14,7 @@
                     <div class="info-boxes wow fadeInUp">
                         <div class="info-boxes-inner">
                             <div class="row">
-                                <div class="col-md-6 col-sm-4 col-lg-4">
+                                <div class="col-md-6 col-sm-4 col-lg-4"> 
                                     <div class="info-box">
                                         <div class="row">
                                             <div class="col-xs-12">

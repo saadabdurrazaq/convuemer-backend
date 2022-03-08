@@ -226,10 +226,10 @@
                                                 </td>
                                                 <td class="align-middle">
                                                     Rp.
-                                                    {{ formatNumber(product.selling_price) }}
+                                                    {{ formatNumber(product.price) }}
                                                 </td>
                                                 <td class="align-middle">
-                                                    {{ formatNumber(product.product_stock) }}
+                                                    {{ formatNumber(product.available_stock) }}
                                                 </td>
                                                 <td
                                                     v-if="product.status === 'Active'"

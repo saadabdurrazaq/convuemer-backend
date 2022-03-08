@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Models\SubCategory;
 use App\Models\SubSubCategory;
 
-class CategoryController extends Controller
+class CategoryController extends Controller 
 {
 	public $request; 
 

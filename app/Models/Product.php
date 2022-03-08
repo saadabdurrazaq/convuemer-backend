@@ -48,6 +48,7 @@ class Product extends Model
 
     protected $fillable = [
         'product_name',
+        'product_key',
         'brand_id',
         'category_id',
         'subcategory_id',
@@ -55,8 +56,11 @@ class Product extends Model
         'short_desc',
         'long_desc',
         'min_order',
-        'selling_price',
-        'product_stock',
+        'price',
+        'available_stock',
+        'product_slug', 
+        'url',
+        'url_id',
         'product_cond',
         'sku',
         'product_length',

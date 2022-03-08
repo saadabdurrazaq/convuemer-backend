@@ -45,7 +45,7 @@ export default {
     const router = useRouter();
 
     //state token
-    const token = localStorage.getItem('token-user');
+    const token = localStorage.getItem('token-user'); 
 
     //state user
     const user = ref('');
@@ -110,4 +110,15 @@ export default {
 <style>
 @import '~@/assets/frontend/css/bootstrap.min.css';
 @import '~@/assets/frontend/css/main.css';
+@import '~@/assets/frontend/css/animate.min.css';
+@import '~@/assets/frontend/css/blue.css';
+@import '~@/assets/frontend/css/bootstrap-select.min.css';
+@import '~@/assets/frontend/css/bootstrap.min.css';
+@import '~@/assets/frontend/css/font-awesome.css';
+@import '~@/assets/frontend/css/lightbox.css';
+@import '~@/assets/frontend/css/loading.css';
+@import '~@/assets/frontend/css/main.css';
+@import '~@/assets/frontend/css/owl.carousel.css';
+@import '~@/assets/frontend/css/owl.transitions.css';
+@import '~@/assets/frontend/css/rateit.css';
 </style>

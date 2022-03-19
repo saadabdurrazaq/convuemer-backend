@@ -417,6 +417,65 @@ const routes = [
             next();
         }
     },
+    {
+        path: '/staff/roles/index',
+        name: 'roles-index',
+        component: () => import('@/views/staff/roles/index.vue'),
+        meta: {
+            requiresAuth: true,
+            breadcrumb: [
+                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Roles', link: 'index', home: 'index' },
+            ],
+            pageTitle: "Roles"
+        },
+        beforeEnter: (to, from, next) => {
+            if (!localStorage.getItem('token-staff')) {
+                next('/staff/login');
+            }
+            next();
+        }
+    },
+    {
+        path: '/staff/roles/create',
+        name: 'roles-create',
+        component: () => import('@/views/staff/roles/create.vue'),
+        meta: {
+            requiresAuth: true,
+            breadcrumb: [
+                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Roles', link: '/staff/roles/index', home: 'index' },
+                { name: 'Create', active: 'active' }
+            ],
+            pageTitle: "Create Roles"
+        },
+        beforeEnter: (to, from, next) => {
+            if (!localStorage.getItem('token-staff')) {
+                next('/staff/login');
+            }
+            next();
+        }
+    },
+    {
+        path: '/staff/roles/edit/:id',
+        name: 'roles-edit',
+        component: () => import('@/views/staff/roles/edit.vue'),
+        meta: {
+            requiresAuth: true,
+            breadcrumb: [
+                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Roles', link: '/staff/roles/index', home: 'index' },
+                { name: 'Edit', active: 'active' }
+            ],
+            pageTitle: "Edit Role"
+        },
+        beforeEnter: (to, from, next) => {
+            if (!localStorage.getItem('token-staff')) {
+                next('/staff/login');
+            }
+            next();
+        }
+    },
 ]
 
 //create router

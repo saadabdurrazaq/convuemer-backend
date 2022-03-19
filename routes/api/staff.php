@@ -13,6 +13,8 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\MegaMenuController;
 use App\Http\Controllers\ProductSliderController;
+use App\Http\Controllers\RoleController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,7 +30,7 @@ Route::post('staff/login', [LoginController::class, 'staffLogin'])->name('staffL
 
 Route::get('json-provinces', [AddressController::class, 'provinces']); // api/json-provinces
 Route::get('json-regencies/{id}', [AddressController::class, 'regencies']);
-Route::get('json-districts/{id}', [AddressController::class, 'districts']);
+Route::get('json-districts/{id}', [AddressController::class, 'districts']); 
 Route::get('json-village/{id}', [AddressController::class, 'villages']);
 
 // Product store and delete images
@@ -171,6 +173,14 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     Route::get('sliders/trash/search/{keyword}', [SliderController::class, 'searchTrashSlider']);
     Route::get('sliders/restore/{id}', [SliderController::class, 'restore']);
     Route::get('sliders/restore-multiple/ids={ids}', [SliderController::class, 'restoreMultiple']);
+
+    // Manage Roles
+    Route::get('roles/index', [RoleController::class, 'index']); 
+    Route::get('roles/create', [RoleController::class, 'create']); 
+    Route::post('roles/store', [RoleController::class, 'store']);
+    Route::get('roles/edit/{id}', [RoleController::class, 'edit']);
+    Route::put('roles/update/{id}', [RoleController::class, 'update']);
+    Route::get('roles/permissions/{permissionName}', [RoleController::class, 'check']);
 });
 
 Route::middleware(['auth:staff-api', 'scopes:staff'])->get('/staff', function (Request $request) {

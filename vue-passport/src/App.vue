@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-    <alert/>
     <!-- it's used to render Vue Router -->
     <router-view />
     <!-- set progressbar -->
     <vue-progress-bar></vue-progress-bar>
   </div>
-</template>
+</template> 
 
 <script>
 export default {
@@ -16,7 +15,6 @@ export default {
   name: 'App',
   components: {
     //HelloWorld,
-    Alert: () => import(/* webpackChunkName: "alert" */ '@/components/Alert.vue'),
   },
   data: () => ({
     //

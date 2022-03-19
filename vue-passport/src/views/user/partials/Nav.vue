@@ -440,4 +440,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+/*
+  There is a collision between css default frontend theme and docs.md-iconic-font.min.css that called in public/index.html so, the navbar property must be reverted
+*/
+.navbar {
+  padding:0;
+}
+</style>

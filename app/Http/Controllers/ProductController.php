@@ -26,6 +26,7 @@ class ProductController extends Controller
     public function __construct(Request $request)
     {
         $this->request = $request;
+        $this->middleware('permission:View Products', ['only' => ['index']]);
     }
 
     public function show($id, $slug)
@@ -164,7 +165,7 @@ class ProductController extends Controller
     {
         $data = array();
 
-        $data['product_name'] =  $this->request->get('product_name');
+        $data['product_name'] =  $this->request->get('product_name'); 
         $data['brand_id'] =  $this->request->get('brand_id');
         $data['category_id'] =  $this->request->get('category_id');
         $data['subcategory_id'] =  $this->request->get('subcategory_id');
@@ -174,7 +175,7 @@ class ProductController extends Controller
         $data['price'] =  $this->request->get('price');
         $data['short_desc'] =  $this->request->get('short_desc');
         $data['long_desc'] =  $this->request->get('long_desc');
-        $data['product_cond'] =  $this->request->get('product_cond');
+        $data['product_cond'] =  $this->request->get('product_cond'); 
         $data['min_order'] =  $this->request->get('min_order');
         $data['sku'] =  $this->request->get('sku');
         $data['product_weight'] =  $this->request->get('product_weight');
@@ -452,7 +453,7 @@ class ProductController extends Controller
 
     public function softDelete($id)
     {
-        Product::findOrFail($id)->delete();
+        Product::findOrFail($id)->delete(); 
 
         return response()->json([
             'success' => true,

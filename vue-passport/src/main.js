@@ -8,7 +8,6 @@ import VueAxios from 'vue-axios'
 import Pagination from 'v-pagination-3';
 import VueProgressBar from "@aacassandra/vue3-progressbar";
 import CKEditor from '@ckeditor/ckeditor5-vue';
-import alert from '@/components/Alert.vue';
 import VueNumberInput from '@chenfengyuan/vue-number-input';
 
 // import adminlte
@@ -29,13 +28,12 @@ const options = {
     },
     autoRevert: true,
     location: "top",
-    inverse: false,
+    inverse: false, 
 };
 
-const app = createApp(App) 
+const app = createApp(App)  
 app.use(store)
-app.use(alert)
-app.use(vuetify)
+app.use(vuetify) 
 app.use(router)
 app.use(VueProgressBar, options)
 app.use(CKEditor).mount( /* DOM element */);

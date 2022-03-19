@@ -9,3 +9,9 @@
   </footer>
 </template>
 
+<style scoped>
+.main-footer {
+  text-align: left;
+}
+</style>
+

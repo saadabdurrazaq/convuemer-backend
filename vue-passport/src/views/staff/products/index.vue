@@ -225,7 +225,7 @@
                                                             params: { id: product.id, slug: product.product_slug },
                                                         }"
                                                         target="_blank"
-                                                        > {{ product.product_name }}
+                                                        > {{ product.product_name }} 
                                                     </router-link>
                                                 </td>
                                                 <td class="align-middle">

@@ -9,7 +9,7 @@ return [
     |
     | This value is the name of your application. This value is used when the
     | framework needs to place the application's name in a notification or
-    | any other location as required by the application or its packages.
+    | any other location as required by the application or its packages. 
     |
     */
 
@@ -163,6 +163,9 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class, //PDF
         Maatwebsite\Excel\ExcelServiceProvider::class, // Excel
+        //spatie
+        Spatie\Permission\PermissionServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -234,7 +237,10 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'PDF' => Barryvdh\DomPDF\Facade::class, // PDF
         'Excel' => Maatwebsite\Excel\Facades\Excel::class, // Excel
-        'Image' => Intervention\Image\Facades\Image::class
+        'Image' => Intervention\Image\Facades\Image::class,
+        //spatie
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
     ],
 
 ];

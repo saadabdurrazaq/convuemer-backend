@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'staff', // define the default guard for spatie permission 
         'passwords' => 'users',
     ],
 
@@ -36,28 +36,7 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-
-        'api' => [
-            'driver' => 'token',
-            'provider' => 'users',
-            'hash' => false,
-        ],
-
         // CREATE MULTIAUTH API (see doc)
-        'user' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-
-        'user-api' => [
-            'driver' => 'passport',
-            'provider' => 'users',
-        ],
-
         'staff' => [
             'driver' => 'session',
             'provider' => 'staffs',
@@ -67,7 +46,28 @@ return [
             'driver' => 'passport',
             'provider' => 'staffs',
         ],
+
+        'user' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'user-api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ],
         // END CREATE MULTIAUTH API (see doc)
+
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users', 
+        ],
+
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+            'hash' => false,
+        ],
     ],
 
     /*

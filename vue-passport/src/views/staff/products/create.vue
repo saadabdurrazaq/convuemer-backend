@@ -1097,7 +1097,7 @@ export default {
                 deletedVarProdsFromVariants: [],
             }),
             error: '',
-            attributes: [],
+            attributes: [], 
             title: '',
             dataFiles: [],
             varProdsImgsToBeDeleted: [],
@@ -1975,7 +1975,7 @@ export default {
             $('#loadingButton').html(
                 `<div class="proc-regis"><i class='fa fa-circle-o-notch fa-spin'></i> Storing data</div>`
             );
-            $('#loadingButton').attr('disabled', true);
+            $('#loadingButton').attr('disabled', true); 
 
             this.getSwitchValue();
             this.getSwitchValueVarProds();

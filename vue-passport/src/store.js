@@ -1,6 +1,5 @@
 import Vuex from 'vuex'
 import cart from '@/modules/cart' 
-import alert from '@/modules/alert'
 // import auth from '@/modules/auth'
 // import dialog from '@/modules/dialog'
 // import region from '@/modules/region'
@@ -39,7 +38,6 @@ export default new Vuex.Store({
   },
   modules: {
     cart,
-    alert,
     // auth,
     // dialog,
     // region

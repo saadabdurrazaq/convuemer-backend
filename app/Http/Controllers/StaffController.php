@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Staff;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 use PDF;
 use Auth;
+use DB;
 use App\Exports\StaffExport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -17,9 +19,10 @@ class StaffController extends Controller
 {
     public $request;
 
-    public function __construct(Request $request)
+    public function __construct(Request $request) 
     {
         $this->request = $request;
+        $this->middleware('permission:View Staffs', ['only' => ['index']]);
     }
 
     /**
@@ -27,16 +30,18 @@ class StaffController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request) 
     {
         $items = $request->items ?? 5;
-        $staffs = Staff::orderBy('id', 'desc')->paginate($items);
+        $staffs = Staff::with('roles')->orderBy('id', 'desc')->paginate($items);
         $trashedStaff = Staff::onlyTrashed()->count();
+        $roles = Role::all();
 
         return response()->json([
             'staffs' => $staffs,
             'total_trashed_staff' => $trashedStaff,
             'items' => $items,
+            'roles' => $roles
         ], 200);
     }
 
@@ -60,7 +65,7 @@ class StaffController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create() 
     {
         //
     }
@@ -81,13 +86,22 @@ class StaffController extends Controller
                 'name' => 'required|string|max:191',
                 'email' => 'required|string|email|unique:users|max:191',
                 'password' => 'required|string|min:6',
+                'role_id' => 'required|numeric'
+            ], [
+                'role_id.required' => 'Please select a role!',
+                'role_id.numeric' => 'Please select a role!',
             ]
         );
 
-        return Staff::create([
+        $staff = Staff::create([
             'name' => $request['name'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
+        ]);
+        $staff->assignRole($request->get('role_id'));
+
+        return response()->json([
+            'message' => 'User successfully created!',
         ]);
     }
 
@@ -122,18 +136,24 @@ class StaffController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = Staff::findOrFail($id);
+        $staff = Staff::findOrFail($id);
 
         $this->validate(
             $request,
             [
                 'name' => 'required|string|max:191',
-                'email' => 'required|string|email|max:191|unique:users,email,' . $user->id,
+                'email' => 'required|string|email|max:191|unique:users,email,' . $staff->id,
                 'password' => 'sometimes|min:6',
+                'role_id' => 'required|numeric'
+            ], [
+                'role_id.required' => 'Please select a role!',
+                'role_id.numeric' => 'Please select a role!',
             ]
         );
 
-        $user->update($request->all());
+        $staff->update($request->all());
+        DB::table("model_has_roles")->where('model_id', $id)->delete();
+        $staff->assignRole($request->get('role_id'));
 
         return response()->json([
             'success' => true,

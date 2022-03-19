@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2022 at 04:36 PM
+-- Generation Time: Mar 19, 2022 at 05:36 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -7402,7 +7402,40 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (40, '2014_10_12_000000_create_products_combinations', 12),
 (41, '2014_10_12_000000_create_total_stocks_variants_products', 13),
 (42, '2014_10_12_000000_create_image_galleries_table', 14),
-(43, '2014_10_12_000000_create_image_galleries_products_combinations_table', 15);
+(43, '2014_10_12_000000_create_image_galleries_products_combinations_table', 15),
+(44, '2022_03_11_131452_create_permission_tables', 16);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `model_has_permissions`
+--
+
+CREATE TABLE `model_has_permissions` (
+  `permission_id` bigint(20) UNSIGNED NOT NULL,
+  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `model_has_roles`
+--
+
+CREATE TABLE `model_has_roles` (
+  `role_id` bigint(20) UNSIGNED NOT NULL,
+  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `model_has_roles`
+--
+
+INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
+(21, 'App\\Models\\Staff', 8),
+(23, 'App\\Models\\Staff', 1);
 
 -- --------------------------------------------------------
 
@@ -7437,6 +7470,7 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('1e67cd1eefb9e6e3cc8bb9e76c08c4da26cc25611e98a3412758acab254fff8edc30fc17703bad3b', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 00:22:37', '2021-07-01 00:22:37', '2022-07-01 07:22:37'),
 ('295286191804a742e15b6e50830c2b32301803bedb0401068550560c71ac8bdcd2526f338e229aee', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-06-30 23:21:32', '2021-06-30 23:21:32', '2022-07-01 06:21:32'),
 ('2c47871a6df309d1a2386e8789f9af4092f36b59a79d610f02edad95d5dd1decac5561661bc8e5d1', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-22 17:03:30', '2021-07-22 17:03:30', '2022-07-23 00:03:30'),
+('2dbf5a4b3a5aada4bd3b1204bc210a9dd35ae2645c4549b8c28eed73ccbcb1b44b4d66d97834a489', 8, 3, 'MyApp', '[\"staff\"]', 0, '2022-03-19 02:56:37', '2022-03-19 02:56:37', '2023-03-19 09:56:37'),
 ('33d94bdcb27379c5236f479e4b5f7cd4e863253797dfba83e2060afe6fa38fa5755c17d4eaeea3f8', 1, 3, 'MyApp', '[\"user\"]', 0, '2021-07-04 16:56:32', '2021-07-04 16:56:32', '2022-07-04 23:56:32'),
 ('37e57c955d308f839e0c72a593a38aa74af35a3c7262fc2a1d892fefadf3020c98607364a217a437', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 17:42:02', '2021-07-01 17:42:02', '2022-07-02 00:42:02'),
 ('3b6305336a7c0a4039ecb9581fc742c974acab8e17207ce1bd7e0360bba72610e922c83bf78ef6e5', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-02 15:20:05', '2021-07-02 15:20:05', '2022-07-02 22:20:05'),
@@ -7455,10 +7489,13 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('7fc9ebf145cdef5fb530bde63090a5274fb71e4f66ffb1f30be7077017849c9383ce042168491c7e', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-02 01:46:02', '2021-07-02 01:46:02', '2022-07-02 08:46:02'),
 ('8010c4b30e951ffc561a0202791f826d42e867c39114809c3a44880e7ab325aa4ebf06f08a78dadf', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-06-26 16:55:08', '2021-06-26 16:55:08', '2022-06-26 23:55:08'),
 ('816004d0a1501918c75224de1683bace4a07c7d9a6751aaa80676d3823581721e602d43bbc6cbbbe', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 16:00:43', '2021-07-01 16:00:43', '2022-07-01 23:00:43'),
+('83afb6a66a32f30953fb69c3586b82eb72aa4acb51b8edb6d6a3ce6ef5b1c6ac5952e9dc7e69a6b2', 1, 3, 'MyApp', '[\"staff\"]', 1, '2022-03-13 06:08:38', '2022-03-13 06:08:38', '2023-03-13 13:08:38'),
 ('8a57ef0bb1c75e575e733f7f6396e36cf3d25a8d71cba25042e0afda252d59e18c6b67d50d32c299', 1, 3, 'MyApp', '[\"user\"]', 0, '2021-07-04 17:37:24', '2021-07-04 17:37:24', '2022-07-05 00:37:24'),
 ('8e14f59c501c0e4f43a05cdaf11ee30517b895f981315f560dde484282530d1040ae4e3a38a42e41', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 17:07:19', '2021-07-01 17:07:19', '2022-07-02 00:07:19'),
 ('902385ba576bd08a0d0ae43c6f2efc707f6f82dc646d9313f18130b9573b9d504318afc93f68967b', 1, 3, 'MyApp', '[\"staff\"]', 0, '2022-01-04 00:08:19', '2022-01-04 00:08:19', '2023-01-04 07:08:19'),
+('947b6f50330832b1bc1ea78aa1407f69833ba10f3419a71d8e9ebe6bb8d4414faf9870d60ecd095c', 1, 3, 'MyApp', '[\"staff\"]', 1, '2022-03-12 03:29:14', '2022-03-12 03:29:14', '2023-03-12 10:29:14'),
 ('95086d3b5227a140c8ecb8a687896849b0fab20fe33197575e3a6e440d23839d7ddaf1ee7a9b8a3b', 1, 3, 'MyApp', '[\"staff\"]', 1, '2022-01-29 06:58:23', '2022-01-29 06:58:23', '2023-01-29 13:58:23'),
+('9aa5b22941a313dd53ea424b5340386cd219342c67d51f2021d4e699908175a51bfc5483e458edf6', 1, 3, 'MyApp', '[\"staff\"]', 0, '2022-03-14 09:25:55', '2022-03-14 09:25:55', '2023-03-14 16:25:55'),
 ('9da83d5a5ac8c71b4f1fc2d69a0c6760a42bc0158c26682605aa1cd51b0365149fba85729a4897c8', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-07-16 05:42:08', '2021-07-16 05:42:08', '2022-07-16 12:42:08'),
 ('9e52d2d5adcf894f4759b75c7a728ed76f7a24b051399ae5703fd646b828e00f605d7f4b5ddca686', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-08-01 01:24:54', '2021-08-01 01:24:54', '2022-08-01 08:24:54'),
 ('a61119f8530b374492b3d0eb6ceef4836ae14d68ba46b0cbceee69d9c5b07e4b6d848cb0ca7aa625', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 16:04:59', '2021-07-01 16:04:59', '2022-07-01 23:04:59'),
@@ -7469,6 +7506,7 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('bec5a77a83b828ecdc90460c6972e47f91d8e30dad3be6a926d6bcf2538fbc9d21540218b18e8707', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 15:56:56', '2021-07-01 15:56:56', '2022-07-01 22:56:56'),
 ('c34f41ad46c58565a0be73b6b43f0b359ae201cb29502610ba8e57acc5e15be02ed67ce6055f5899', 1, 3, 'MyApp', '[\"user\"]', 0, '2021-07-04 21:06:02', '2021-07-04 21:06:02', '2022-07-05 04:06:02'),
 ('c5002eb74da458e9b3572f9d130a393915e4a816cbeb426db566f8a0b4ce1b0a6450c0c38811f0dc', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-03-08 08:14:11', '2022-03-08 08:14:11', '2023-03-08 15:14:11'),
+('c7e33f44f7ef3e0d9a82c69ff12ebb4dcd64405623ed2b562a9f5927ff771d81e208babe16e859ea', 1, 3, 'MyApp', '[\"staff\"]', 1, '2022-03-11 00:49:25', '2022-03-11 00:49:25', '2023-03-11 07:49:25'),
 ('c90b1eaf6ffac269a2bd9abe8dbdaaf43a151783119d4f89449bd5bc9e9e9c26426c85030998efc2', 1, 3, 'MyApp', '[\"user\"]', 1, '2021-07-04 17:54:19', '2021-07-04 17:54:19', '2022-07-05 00:54:19'),
 ('c93962ddb9be1d51c6967d11f59370576b44811a247fec900bed3c56dd5434451dc6321a27538484', 1, 3, 'MyApp', '[\"user\"]', 1, '2021-07-05 04:28:19', '2021-07-05 04:28:19', '2022-07-05 11:28:19'),
 ('cd760fb809d17f6db381b7ffce9ec0cade2c3620f889672739241cbbb42917086d234e885e4290bc', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-06-26 23:28:24', '2021-06-26 23:28:24', '2022-06-27 06:28:24'),
@@ -7485,6 +7523,8 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('ea25b5972ea77935f845a67e821d1b86114b25c51d5bdd41878dd114a4a17717eec27f51090c5467', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-09-13 00:11:38', '2021-09-13 00:11:38', '2022-09-13 07:11:38'),
 ('ef35ec7fb0b483b894b5d19024d0727c1a88b765dbfe16fea986b81fa0f1c3005e6726561d014247', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 22:41:07', '2021-07-01 22:41:07', '2022-07-02 05:41:07'),
 ('f06cef4a293600abdc9d90fa773d02339015cb47948aab18216d68c8904693f4def38c71812aedce', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-15 03:19:19', '2021-07-15 03:19:19', '2022-07-15 10:19:19'),
+('f42b00457a76dba8a7a493eaa1cd7f09ce5f6ede67d439f4c821ff3833d73be4e6e27b84e30df0f3', 1, 3, 'MyApp', '[\"staff\"]', 0, '2022-03-19 01:38:13', '2022-03-19 01:38:13', '2023-03-19 08:38:13'),
+('fa5dd122e113f156f4e1679110e13a174d681fe0e4f7152c15bff6292313ab3e12fcabfb5e901895', 8, 3, 'MyApp', '[\"staff\"]', 1, '2022-03-19 01:37:33', '2022-03-19 01:37:33', '2023-03-19 08:37:33'),
 ('fb051491f0b287e7123d16e026380702aae5125c3e717c09b43188803a2b4267d37fe5182d823e8e', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-07-15 23:32:54', '2021-07-15 23:32:54', '2022-07-16 06:32:54');
 
 -- --------------------------------------------------------
@@ -7585,6 +7625,38 @@ CREATE TABLE `password_resets` (
 INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
 ('herbalvorastore@gmail.com', '$2y$10$Je6BkJCh892AAfNWryLp.uJE0dbLK.yACu4sifBRkbZ3C6bj1bJum', '2020-05-11 22:12:41'),
 ('seadclark@gmail.com', '$2y$10$GurrI9l6utcRMwEh05X8euKwG0sa9uAUz.Q6g0J2SEtfNZalIs9/a', '2020-05-14 07:41:51');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `permissions`
+--
+
+CREATE TABLE `permissions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `permissions`
+--
+
+INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
+(1, 'Create Product', 'staff-api', '2022-03-14 03:38:08', '2022-03-14 03:38:08'),
+(2, 'Edit Product', 'staff-api', '2022-03-14 03:38:50', '2022-03-14 03:38:50'),
+(3, 'View Products', 'staff-api', '2022-03-14 14:44:33', '2022-03-14 14:44:33'),
+(4, 'Delete Product', 'staff-api', '2022-03-14 14:45:29', '2022-03-14 14:45:29'),
+(5, 'Create Role', 'staff-api', '2022-03-14 15:21:02', '2022-03-14 15:21:02'),
+(6, 'Update Role', 'staff-api', '2022-03-14 15:22:00', '2022-03-14 15:22:00'),
+(7, 'Edit Role', 'staff-api', '2022-03-14 15:23:00', '2022-03-14 15:23:00'),
+(8, 'Delete Role', 'staff-api', '2022-03-15 03:10:13', '2022-03-15 03:10:13'),
+(9, 'View Staffs', 'staff-api', '2022-03-14 14:47:08', '2022-03-14 14:47:08'),
+(10, 'Create Staff', 'staff-api', '2022-03-14 14:47:31', '2022-03-14 14:47:31'),
+(11, 'Edit Staff', 'staff-api', '2022-03-14 14:48:06', '2022-03-14 14:48:06'),
+(12, 'Delete Staff', 'staff-api', '2022-03-14 14:48:25', '2022-03-14 14:48:25');
 
 -- --------------------------------------------------------
 
@@ -8410,6 +8482,54 @@ INSERT INTO `regencies` (`id`, `province_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
+(21, 'Admin', 'staff-api', '2022-03-16 04:47:42', '2022-03-16 04:47:42'),
+(23, 'Super User', 'staff-api', '2022-03-16 07:25:36', '2022-03-16 07:25:36');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `role_has_permissions`
+--
+
+CREATE TABLE `role_has_permissions` (
+  `permission_id` bigint(20) UNSIGNED NOT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `role_has_permissions`
+--
+
+INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
+(5, 23),
+(6, 23),
+(7, 23),
+(8, 23),
+(9, 21),
+(9, 23),
+(10, 23),
+(11, 23),
+(12, 23);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sessions`
 --
 
@@ -8440,12 +8560,14 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 ('g9SpRFKVsFJsB41TpLorchbFbnFOv51eU4A7wkAd', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiRVJOZ3A5bjhFZW1aSFR3VTNWV3dYYTd0WnZpaTQ2ZUtCSVplaDNZTiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631519084),
 ('I0Zka1MnHJvCjvO0wPZ42blwpAxsHq3Tg06alPwF', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNEF5TzN3aVNtTnhvamJ3VzgzTzZKd29QSDMwVU1LeVdkN0ZWemdvcCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631519027),
 ('KayPLP8d44PfLfXmnJMTp8wfmbuWKCjjN7E0PpMr', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiZDJIM3p5SklkUHVCVFd1WFFCdU5VSnBCSWhVVE1tRGlSVktHbVZFSSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631520239),
+('LijYdvTkxbWYzXWC7QkxYg66VBvB6IhGA5p8Zv8l', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiWlZQOVRwUEQxNXNkaXRhcDVza3ExWE5qYWp1QnUySmZZZjVmSGpNdyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1647265026),
 ('LqEpEWR8DLl7eACj4Qb6ZRLr208qW9wn8w55WxKC', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiVnF5aFBFNHY5RDJ0QlVzZ20waldHeUU5Uk9acHFQTTRwZW1iYUFybCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1626919708),
 ('NpUwoJhYrMNJjF6SOlRBJndjrfbCcfq3pbITEJFL', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiSUp0eFlPMlJha0dPaVJ2NFBaUFM5VDlXS2JNaXltWlhFRHl6R2tUQyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1624774400),
 ('OOP36KILz8uMD9sC5aGkCOMIlo0jdtA51Y0flHoC', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiWUozTFB3c2pFVjJMN1UwRHhHbnFiMHUxOEFBMlV5UkNPOXpXdWtTSyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631520085),
 ('pioLPvjrbufLSUcKLrP7CNENZbnmsvOrPkufjulv', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiODJMZUhYN0oybncwZmlIS1pwZ20yQnVrSVI1Y0lydENya0R1V3dkeCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631518751),
 ('rXrzLl7CvoW1wuHs5UwRAe2qjjLhQ0kBKqj045sS', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiMDdYWFlBZlZYdnNQbk5udm5Qam1JUFdQOXNiRm51d2xzVllJSXM0QyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631519182),
 ('swElmOhhzxDPFStMAz9hMQAujtH40c5OVcwnRj7C', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNlZrdHR2NzJlQWVhWTFkRU96djFKQmtERHJ0eTZ3c04wN01ESjVhMyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631518780),
+('W7O95cgQxJgvFTTK8q8nvJGNeAO8bEcEHotG5fMM', NULL, '::1', 'PostmanRuntime/7.29.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiZVZLajU3RHJxMlhPMVVRQ3FDYThUQ09Wd1hkT2Z5ZVZoeEJiYmdaUSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1647265273),
 ('xazG6mkygBzZf6uFnKdRd1QvKPJwF6j7jUDjyvE7', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibXZOMHJPRTY3MGY2ZFdDVkw3M1U2ellBOGlua2NHeUlpTGVxckswWiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1631520073),
 ('xrnGmHD7ybKjKKgYizeYH4j2VF3MrT2eTWUQ0735', NULL, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoibXBDWnJHWDJNeUppa3JWYjBKUHB6WTVVamxMNG9GdkthVENzZGFESSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1626928104),
 ('zUIipbIbpPAiQXt1SSxLq7HBiHIIhQSqJjfFntwu', NULL, '::1', 'PostmanRuntime/7.28.2', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiQjdjbDZZYWNzUzBuQW51WVRNd1QzUmI2WFo0a0U2ekRXQjNieFZ6aSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1626344838);
@@ -8504,17 +8626,17 @@ CREATE TABLE `staffs` (
 
 INSERT INTO `staffs` (`id`, `name`, `email`, `password`, `gender`, `avatar`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (1, 'Saad Abdurrazaq', 'seadclark@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Male', '', NULL, NULL, NULL),
-(3, 'Sit Amet', 'sitamet@mail.com', '$2y$10$yvoshOD.Js4/nugnGsjV3OfkxbVxPYeCpVmG0BI9qCY2r8951d76i', NULL, NULL, '2021-06-20 23:12:57', '2021-06-24 18:06:21', NULL),
-(5, 'Aliquam', 'aliquam@mail.com', '$2y$10$faKTD0HZYUdqrW2/D9kJvuBhMd/hvwruV3211w.N87OQI59BVSQRO', NULL, NULL, '2021-06-21 22:38:50', '2021-06-24 23:36:28', NULL),
-(6, 'General User', 'generaluser@gmail.com', '$2y$10$fFZ.NjIrNQIbDuqcrGUdd.1AK11l0lSYNkjuNJgVrxuKqAGk.baS6', NULL, NULL, '2021-06-21 22:39:19', '2021-06-24 18:06:21', NULL),
-(7, 'Adipiscing', 'adipiscing@gmail.com', '$2y$10$iPDMZRNirSxu1L5XTPugIeEL/YE9iwOHmLYFSM9BkaceNHaDrqYOS', NULL, NULL, '2021-06-21 22:39:46', '2021-06-24 23:35:53', NULL),
+(3, 'Sit Amet', 'sitamet@mail.com', '$2y$10$yvoshOD.Js4/nugnGsjV3OfkxbVxPYeCpVmG0BI9qCY2r8951d76i', NULL, NULL, '2021-06-20 23:12:57', '2022-03-18 23:22:45', '2022-03-18 23:22:45'),
+(5, 'Aliquam', 'aliquam@mail.com', '$2y$10$faKTD0HZYUdqrW2/D9kJvuBhMd/hvwruV3211w.N87OQI59BVSQRO', NULL, NULL, '2021-06-21 22:38:50', '2022-03-18 23:22:45', '2022-03-18 23:22:45'),
+(6, 'General User', 'generaluser@gmail.com', '$2y$10$fFZ.NjIrNQIbDuqcrGUdd.1AK11l0lSYNkjuNJgVrxuKqAGk.baS6', NULL, NULL, '2021-06-21 22:39:19', '2022-03-18 23:22:45', '2022-03-18 23:22:45'),
+(7, 'Adipiscing', 'adipiscing@gmail.com', '$2y$10$iPDMZRNirSxu1L5XTPugIeEL/YE9iwOHmLYFSM9BkaceNHaDrqYOS', NULL, NULL, '2021-06-21 22:39:46', '2022-03-18 23:22:45', '2022-03-18 23:22:45'),
 (8, 'Lorem', 'lorem@mail.com', '$2y$10$Naj9SL3Him5zhKtT6VNXnu0zhookjz7Q9BF8Us4FZSZhzS1uV/CfG', NULL, NULL, '2021-06-21 23:04:24', '2021-06-24 18:05:05', NULL),
-(9, 'Consectetur', 'consectetur@mail.com', '$2y$10$mGZtQloIJZo29VCStRtPt.2T14NGVYI5IwloFbdi.34kq7egKrjXe', NULL, NULL, '2021-06-23 06:07:50', '2021-06-24 23:35:21', NULL),
-(10, 'Ipsum', 'ipsum@mail.com', '$2y$10$tM7eLOZvI5u1Vtm3h2P9COGfwzOhRtfB4L3F8I1ra.lJ5eUa4LVTy', NULL, NULL, '2021-06-23 06:16:02', '2021-06-24 18:03:20', NULL),
-(11, 'Dolor', 'dolor@mail.com', '$2y$10$e7NIdBAIOerBU6wf/KvogenFOXVSwQoJ5j3MjdJvbNwuvrb1kEv5u', NULL, NULL, '2021-06-24 00:09:01', '2021-06-24 18:03:20', NULL),
-(12, 'porro', 'porro@mail.com', '$2y$10$/1ib9rdvzQ2rQmTyfpuZz.i/TWMOHzNSx9X2bMrH1r1lTuP/EjOCu', NULL, NULL, '2021-06-25 18:17:52', '2021-06-25 18:17:52', NULL),
-(13, 'Neque', 'Neque@mail.com', '$2y$10$vcOEhSWNDzTuGQTT0Vyx2e7YhUD8h0S1kMoLCq4mt8fOtbnh3n1ou', NULL, NULL, '2021-06-25 18:56:22', '2021-06-26 17:15:21', NULL),
-(14, 'quisquam', 'quisquam@mail.com', '$2y$10$iXHJ6Ayoh7O0hyf5jcJ3iuM/vytBgw5A9954eu2/bRqxcNMiQN0l6', NULL, NULL, '2021-06-25 18:57:30', '2021-06-26 17:15:21', NULL),
+(9, 'Consectetur', 'consectetur@mail.com', '$2y$10$mGZtQloIJZo29VCStRtPt.2T14NGVYI5IwloFbdi.34kq7egKrjXe', NULL, NULL, '2021-06-23 06:07:50', '2022-03-18 23:22:45', '2022-03-18 23:22:45'),
+(10, 'Ipsum', 'ipsum@mail.com', '$2y$10$tM7eLOZvI5u1Vtm3h2P9COGfwzOhRtfB4L3F8I1ra.lJ5eUa4LVTy', NULL, NULL, '2021-06-23 06:16:02', '2022-03-18 23:22:45', '2022-03-18 23:22:45'),
+(11, 'Dolor', 'dolor@mail.com', '$2y$10$e7NIdBAIOerBU6wf/KvogenFOXVSwQoJ5j3MjdJvbNwuvrb1kEv5u', NULL, NULL, '2021-06-24 00:09:01', '2022-03-18 23:22:45', '2022-03-18 23:22:45'),
+(12, 'porro', 'porro@mail.com', '$2y$10$/1ib9rdvzQ2rQmTyfpuZz.i/TWMOHzNSx9X2bMrH1r1lTuP/EjOCu', NULL, NULL, '2021-06-25 18:17:52', '2022-03-18 23:22:45', '2022-03-18 23:22:45'),
+(13, 'Neque', 'Neque@mail.com', '$2y$10$vcOEhSWNDzTuGQTT0Vyx2e7YhUD8h0S1kMoLCq4mt8fOtbnh3n1ou', NULL, NULL, '2021-06-25 18:56:22', '2022-03-18 23:22:45', '2022-03-18 23:22:45'),
+(14, 'quisquam', 'quisquam@mail.com', '$2y$10$iXHJ6Ayoh7O0hyf5jcJ3iuM/vytBgw5A9954eu2/bRqxcNMiQN0l6', NULL, NULL, '2021-06-25 18:57:30', '2022-03-18 23:22:45', '2022-03-18 23:22:45'),
 (17, 'veliti', 'velit@mail.com', '$2y$10$rL76Ojo6DJ679NdJxB73gOfayw8Ngj8MA/KnNtEDQLQ2.KGQw0Ckm', NULL, NULL, '2021-06-26 21:48:12', '2021-06-27 04:29:30', '2021-06-27 04:29:30'),
 (18, 'dogdog', 'dogdog@mail.com', '$2y$10$gIdrL1Me0mnL5hR6nxeHF.H1QgLvaXTquSAPCp2cibu4430YBFfgG', NULL, NULL, '2021-06-27 04:25:40', '2021-06-27 04:29:30', '2021-06-27 04:29:30'),
 (19, 'dum', 'dum@mail.com', '$2y$10$69yX85DW2oueI.gRV7KutuT6cne3IVZkSke5BJxqyarncoUqM2ME.', NULL, NULL, '2021-06-27 04:28:04', '2021-06-27 04:28:59', '2021-06-27 04:28:59');
@@ -39896,6 +40018,20 @@ ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `model_has_permissions`
+--
+ALTER TABLE `model_has_permissions`
+  ADD PRIMARY KEY (`permission_id`,`model_id`,`model_type`),
+  ADD KEY `model_has_permissions_model_id_model_type_index` (`model_id`,`model_type`);
+
+--
+-- Indexes for table `model_has_roles`
+--
+ALTER TABLE `model_has_roles`
+  ADD PRIMARY KEY (`role_id`,`model_id`,`model_type`),
+  ADD KEY `model_has_roles_model_id_model_type_index` (`model_id`,`model_type`);
+
+--
 -- Indexes for table `oauth_access_tokens`
 --
 ALTER TABLE `oauth_access_tokens`
@@ -39934,6 +40070,13 @@ ALTER TABLE `oauth_refresh_tokens`
 --
 ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`);
+
+--
+-- Indexes for table `permissions`
+--
+ALTER TABLE `permissions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `permissions_name_guard_name_unique` (`name`,`guard_name`);
 
 --
 -- Indexes for table `personal_access_tokens`
@@ -39987,6 +40130,20 @@ ALTER TABLE `provinces`
 ALTER TABLE `regencies`
   ADD PRIMARY KEY (`id`),
   ADD KEY `province_id` (`province_id`);
+
+--
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `roles_name_guard_name_unique` (`name`,`guard_name`);
+
+--
+-- Indexes for table `role_has_permissions`
+--
+ALTER TABLE `role_has_permissions`
+  ADD PRIMARY KEY (`permission_id`,`role_id`),
+  ADD KEY `role_has_permissions_role_id_foreign` (`role_id`);
 
 --
 -- Indexes for table `sessions`
@@ -40083,7 +40240,7 @@ ALTER TABLE `image_galleries_products_combinations`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `oauth_clients`
@@ -40096,6 +40253,12 @@ ALTER TABLE `oauth_clients`
 --
 ALTER TABLE `oauth_personal_access_clients`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `permissions`
+--
+ALTER TABLE `permissions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -40128,6 +40291,12 @@ ALTER TABLE `products_variants_types`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
 
 --
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
 -- AUTO_INCREMENT for table `sliders`
 --
 ALTER TABLE `sliders`
@@ -40137,7 +40306,7 @@ ALTER TABLE `sliders`
 -- AUTO_INCREMENT for table `staffs`
 --
 ALTER TABLE `staffs`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `sub_categories`
@@ -40181,6 +40350,18 @@ ALTER TABLE `image_galleries_products_combinations`
   ADD CONSTRAINT `image_galleries_products_combinations_prod_comb_id_foreign` FOREIGN KEY (`prod_comb_id`) REFERENCES `products_combinations` (`id`);
 
 --
+-- Constraints for table `model_has_permissions`
+--
+ALTER TABLE `model_has_permissions`
+  ADD CONSTRAINT `model_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `model_has_roles`
+--
+ALTER TABLE `model_has_roles`
+  ADD CONSTRAINT `model_has_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `products`
 --
 ALTER TABLE `products`
@@ -40213,6 +40394,13 @@ ALTER TABLE `products_variants_types`
 --
 ALTER TABLE `regencies`
   ADD CONSTRAINT `regencies_ibfk_1` FOREIGN KEY (`province_id`) REFERENCES `provinces` (`id`);
+
+--
+-- Constraints for table `role_has_permissions`
+--
+ALTER TABLE `role_has_permissions`
+  ADD CONSTRAINT `role_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `role_has_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `sub_categories`

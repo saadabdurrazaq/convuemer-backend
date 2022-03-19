@@ -173,7 +173,7 @@
                         {{ variant.variant_name }}
                         <br />
                         <select
-                          class="form-control"
+                          class="form-control" 
                           :required="true"
                           @change="getSelectVal($event)"
                         >

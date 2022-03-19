@@ -1,3 +1,6 @@
+UPGARADE OR DOWNGRADE VUE:
+npm i vue@expectedversion --save
+
 INSTALL THE LATEST LARAVEL: 
 composer create-project --prefer-dist laravel/laravel convuemer
 
@@ -223,6 +226,30 @@ src/modules/cart.js
 src/store.js
 src/views/user/products/show.vue (for usage)
 
+1. ROLE PERMISSIONS: 
+Tutorial from https://www.itsolutionstuff.com/post/laravel-58-user-roles-and-permissions-tutorialexample.html
+a. composer require spatie/laravel-permission
+   composer require "laravelcollective/html":"^5.8.4" / composer require laravelcollective/html
+b. config/app.php
+c. Spatie tables (permissions, roles, model_has_permissions, model_has_roles, role_has_permissions)
+   To create that tables, we can use php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider"
+   Now you can see config/permission.php file and one migrations in database/migrations. so you can run migration using php artisan migrate --path=/database/migrations/name_of_file
+d. app/Http/Kernel.php
+e. app/Exceptions/Handler.php
+f. config/auth.php (https://www.editcode.net/thread-291755-1-1.html)
+g. routes/web.php
+h. app/Http/Controllers/RoleController.php
+i. src\views\staff\roles
+j. php artisan make:seeder PermissionTableSeeder (https://collectednotes.com/lsfiege/create-an-admin-middleware-for-laravel-with-spatie-laravel-permission)
+    it will generate database/seeds/PermissionTableSeeder.php
+    php artisan db:seed --class=PermissionTableSeeder
+k. php artisan make:auth (it will generate single login, forgot password)
+l. app\Models\Staff.php
+m. app/Http/Controllers/StaffController.php
+n. src\views\staff\users
+o. Example to apply permission: src\views\staff\partials\Sidebar.vue 
+   then run php artisan permission:cache-reset 
+
 =====================================================================
 
 php artisan make:migration name_table table
@@ -280,5 +307,24 @@ Featured:
 Special Offer: 
 Special Deals:
 
+https://codepen.io/saadabdurrazaq/pen/WNdeGeq
+
 ================================================================
 
+PROBLEMS:
+1. Home > Show single product (takes too long time)
+2. Edit product > any menu
+
+users
+roles
+permissions
+user_has_roles
+role_has_pemissions
+
+https://stackoverflow.com/questions/53312875/vue-js-with-laravel-permission
+
+/vue-choropleth
+
+https://doc.laravue.dev/guide/development/work-with-permission.html#roles
+
+https://www.npmjs.com/package/chart.js?activeTab=readme

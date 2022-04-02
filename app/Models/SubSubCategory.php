@@ -13,7 +13,7 @@ class SubSubCategory extends Model
     public function product()
     {
         // one sub sub category has many products
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class); 
     }
 
     public function category()

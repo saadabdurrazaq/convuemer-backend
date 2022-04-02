@@ -9,7 +9,7 @@
             <div class="content">
                 <div style="display: none" id="errMsg" class="box no-border">
                     <div class="box-tools">
-                        <p class="alert alert-success alert-dismissible">
+                        <p class="alert alert-success alert-dismissible"> 
                             {{ this.title }}
                             <button
                                 type="button"
@@ -1422,7 +1422,7 @@ export default {
             this.isFormEdit = false;
             this.isFormCreate = false;
             this.clearAndResetForm(); // v form reset and clear
-            this.form.fill(sub_sub_category);
+            this.form.fill(sub_sub_category); 
 
             this.clearAllCatSubCatSelectOption();
             $('input[name="unassign"]').prop('checked', false);

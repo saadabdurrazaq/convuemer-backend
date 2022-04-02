@@ -1013,7 +1013,6 @@ export default {
       BASE_URL: BASE_URL,
       nextId: 1,
       variantProductId: 0,
-      long_desc: '',
       form: new Form({
         id: '',
         product_name: '',
@@ -1634,7 +1633,6 @@ export default {
     },
     fileInput() {
       var self = this;
-
       var images = [];
       var imagesInfo = [];
       if (this.form.images !== null) {
@@ -2121,11 +2119,8 @@ export default {
         .then((response) => {
           this.form.reset(); // v form reset inputs
           this.form.clear(); // v form clear errors
-          // this.long_desc = response.data.long_desc;
-          // response.data.long_desc = '';
           this.form.fill(response.data);
-          // this.form.long_desc = this.long_desc ;          
-          // console.log(this.form.long_desc);
+         
           this.form.images = JSON.parse(this.form.images);
           if (this.form.images === null) {
             this.form.images = [];

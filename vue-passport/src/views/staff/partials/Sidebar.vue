@@ -189,7 +189,7 @@ export default {
       viewStaffs: null
     };
   },
-  methods: {
+  methods: { 
     checkAuth() {
       //state token
       const token = localStorage.getItem('token-staff');

@@ -1,40 +1,19 @@
 <template>
   <div class="col-md-2">
     <br />
-    <template v-if="userData.data.profile_photo_path != null">
+    <div class="container" style="background-color:white; width:200px; margin-bottom:25px; margin-top:2px;">
+      <div style="margin-top:15px;">
       <img
         class="card-img-top"
         style="border-radius:50%;margin-left:30px;"
         height="100"
         width="100"
+
         :src="require('@/assets/avatar/fb-male.jpg')"
         alt="User Image"
       />
-    </template>
-    <template v-if="userData.data.profile_photo_path == null">
-      <template v-if="userData.data.gender == 'Male'">
-        <img
-          class="card-img-top"
-          style="border-radius:50%;margin-left:30px;"
-          height="100"
-          width="100"
-          :src="require('@/assets/avatar/fb-male.jpg')"
-          alt="User Image"
-        />
-      </template>
-      <template v-else>
-        <img
-          class="card-img-top"
-          style="border-radius:50%;margin-left:30px;"
-          height="100"
-          width="100"
-          :src="require('@/assets/avatar/female-fb.jpg')"
-          alt="User Image"
-        />
-      </template>
-    </template>
-    <br /><br />
-
+    </div>
+    <br />
     <ul class="list-group list-group-flush">
       <a href="" class="btn btn-primary btn-sm btn-block">Home</a>
       <a href="" class="btn btn-primary btn-sm btn-block">Profile Update</a> 
@@ -44,6 +23,8 @@
       <a href="" class="btn btn-primary btn-sm btn-block">Cancel Orders</a>
       <a @click.prevent="logout" href="" class="btn btn-danger btn-sm btn-block">Logout</a>
     </ul>
+    </div>
+    
   </div>
   <!-- // end col md 2 -->
 </template>

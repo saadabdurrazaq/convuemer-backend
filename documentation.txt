@@ -1,5 +1,7 @@
 UPGARADE OR DOWNGRADE VUE:
-npm i vue@expectedversion --save
+npm i vue@expectedversion --save (version 3.2.21 so far is more stable)
+FYI:
+there is a bug reflected in ckeditor and fileinput in version 3.2.30 and version 3.2.21
 
 INSTALL THE LATEST LARAVEL: 
 composer create-project --prefer-dist laravel/laravel convuemer
@@ -253,7 +255,7 @@ o. Example to apply permission: src\views\staff\partials\Sidebar.vue
 =====================================================================
 
 php artisan make:migration name_table table
-php artisan migrate --path=/database/migrations/2014_10_12_000000_create_image_galleries_products_combinations_table.php
+php artisan migrate --path=/database/migrations/2020_12_15_032159_create_product_order_table.php
 
 php artisan cache:clear
 php artisan config:clear
@@ -262,69 +264,35 @@ php artisan route:clear
 php artisan route:cache
 php artisan view:clear
 
+VUE DEPLOYMENT: 
+npm run build
+upload the zip file
+extract the zip file
+create .htaccess file
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
 =======================================================================
-
-Informasi Produk
-Kode Produk: 
-Nama Produk:
-Brand: 
-Kategori: 
-Sub Kategori: 
-Sub Sub Kategori: 
-Product Tags:
-
-Detail Produk
-Kondisi: 
-Short Deskripsi:
-Long Deskripsi: 
-
-Varian Produk (warna, ukuran, kemasan)
-Warna: 
-Ukuran (XS, S, M, L XL, XXL, All Size):
-Kemasan (pak, pcs, cover): 
-Stock:
-Harga Satuan: 
-Product Discount Price: 
-Pict:
-Minimum Pemesanan: 
-
-Product Price
-Minimum Order:
-Unit Price:
-Product Discount Price:
-
-Bentuk Produk
-Berat Produk (gram, kg): 
-Ukuran Produk (Panjang, lebar, tinggi):
-
-Foto Produk
-Thumbnail:
-Foto: 
- 
-Pemasaran Produk
-Hot Deals:
-Featured: 
-Special Offer: 
-Special Deals:
-
-https://codepen.io/saadabdurrazaq/pen/WNdeGeq
-
-================================================================
 
 PROBLEMS:
 1. Home > Show single product (takes too long time)
-2. Edit product > any menu
 
-users
-roles
-permissions
-user_has_roles
-role_has_pemissions
+NEXT FEATURES: 
+1. Change password
+2. Order products
 
-https://stackoverflow.com/questions/53312875/vue-js-with-laravel-permission
+-status order
+-actions
+-tanggal pembelian
+-invoice
+-total
 
-/vue-choropleth
+https://tutorialzine.com/2018/02/freebie-4-beautiful-checkout-forms
 
-https://doc.laravue.dev/guide/development/work-with-permission.html#roles
-
-https://www.npmjs.com/package/chart.js?activeTab=readme
+this.$router.back();

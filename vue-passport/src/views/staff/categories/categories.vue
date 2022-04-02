@@ -1141,7 +1141,7 @@ export default {
 
             // request put
             this.form
-                .put('api/staff/categories/update/' + this.form.id, {})
+                .put('api/staff/categories/update/' + this.form.id, {}) 
                 .then((response) => {
                     $('#exampleModal').modal('hide'); // hide modal
                     this.detectUpdate = true;
@@ -1502,26 +1502,6 @@ export default {
     created() {
         // Call /GetCategories() function initially.
         this.GetCategories();
-
-        /*this.$Progress.start();
-    //  hook the progress bar to start before we move router-view
-    this.$router.beforeEach((to, from, next) => {
-      //  does the page we want to go to have a meta.progress object
-      if (to.meta.progress !== undefined) {
-        let meta = to.meta.progress;
-        // parse meta tags
-        this.$Progress.parseMeta(meta);
-      }
-      //  start the progress bar
-      this.$Progress.start();
-      //  continue to next page
-      next();
-    });
-    //  hook the progress bar to finish after we've finished moving router-view
-    this.$router.afterEach(() => {
-      //  finish the progress bar
-      this.$Progress.finish();
-    });*/
     },
 
     mounted() {

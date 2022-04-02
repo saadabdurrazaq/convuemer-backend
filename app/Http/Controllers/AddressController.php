@@ -54,6 +54,7 @@ class AddressController extends Controller
     public function villages($id)
     {
         $villages = Villages::where('district_id', '=', $id)->get();
+       
         return response()->json($villages);
-    }
+    }    
 }

@@ -413,7 +413,7 @@ export default {
             }),
             imagePreview: null,
             showPreview: false,
-            isFormCreateSubCategoryMode: true,
+            isFormCreateSubCategoryMode: true, 
             isInAllData: true,
             loading: false,
             loadingForm: false,

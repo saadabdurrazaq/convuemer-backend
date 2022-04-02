@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use DB;
 use Illuminate\Support\Str;
 
-class SubSubCategoryController extends Controller
+class SubSubCategoryController extends Controller 
 {
 	public $request;
 

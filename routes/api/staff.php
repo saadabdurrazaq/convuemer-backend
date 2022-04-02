@@ -8,12 +8,12 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SubSubCategoryController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\AddressController;
-use App\Http\Controllers\SliderController;
-use App\Http\Controllers\MegaMenuController;
-use App\Http\Controllers\ProductSliderController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\MegaMenuController;
+use App\Http\Controllers\SliderController;
+use App\Http\Controllers\ProductSliderController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,11 +28,6 @@ use App\Http\Controllers\RoleController;
 
 Route::post('staff/login', [LoginController::class, 'staffLogin'])->name('staffLogin');
 
-Route::get('json-provinces', [AddressController::class, 'provinces']); // api/json-provinces
-Route::get('json-regencies/{id}', [AddressController::class, 'regencies']);
-Route::get('json-districts/{id}', [AddressController::class, 'districts']); 
-Route::get('json-village/{id}', [AddressController::class, 'villages']);
-
 // Product store and delete images
 Route::post('products/store-images', [ProductController::class, 'storeImages']);
 Route::post('products/delete-images/{id}', [ProductController::class, 'deleteImages']);
@@ -40,18 +35,6 @@ Route::post('products/delete-selected-variant-product-images', [ProductControlle
 Route::post('products/delete-all-new-added-variant-product-images', [ProductController::class, 'deleteAllNewAddedVarProdImages']);
 Route::post('products/delete-all-new-added-variant-product-images-in-create-page', [ProductController::class, 'deleteAllNewAddedVarProdImagesInCreatePage']);
 Route::post('products/delete-some-new-added-variant-product-images', [ProductController::class, 'deleteSomeNewAddedVarProdImages']);
-
-// Megamenu frontend
-Route::get('mega-menu/get-menu-data', [MegaMenuController::class, 'getMenuData']); 
-
-// Sliders
-Route::get('sliders/show', [SliderController::class, 'show']);
-
-// Product sliders
-Route::get('product-sliders/show-featured-products', [ProductSliderController::class, 'showFeaturedProduct']);
-
-// Show single product in frontend page
-Route::get('product/{id}/{slug}', [ProductController::class, 'show']); 
 
 // To see the route url, use php artisan r:l
 Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:staff']], function () {

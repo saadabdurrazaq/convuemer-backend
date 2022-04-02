@@ -1,65 +1,26 @@
 <template v-if="isLoggedIn">
     <Nav />
-    <div class="body-content">
+    <div class="body-content outer-top-xs">
         <div class="container">
-            <div class="row">
-                <ProfileSidebar />
+            <div class="x-page inner-bottom-sm">
                 <div class="row">
-                    <div class="col-md-6">
-                        <div
-                            class="container card"
-                            style="
-                                background-color: white;
-                                margin-top: 20px;
-                                margin-left: 20px;
-                                width: 930px;
-                                margin-bottom:20px
-                            "
-                        >
-                            <br />
-                            <ul class="nav nav-tabs">
-                                <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-                                <li><a data-toggle="tab" href="#menu1">Profile</a></li>
-                                <li><a data-toggle="tab" href="#menu2">List Addresses</a></li>
-                                <li><a data-toggle="tab" href="#menu3">Menu 3</a></li>
-                            </ul>
-
-                            <div class="tab-content">
-                                <div id="home" class="tab-pane fade in active">
-                                    <h3>Home</h3>
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                        sed do eiusmod tempor incididunt ut labore et dolore magna
-                                        aliqua.
-                                    </p>
-                                </div>
-                                <div id="menu1" class="tab-pane fade">
-                                    <h3>Profile</h3>
-                                    <p>
-                                        Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                        laboris nisi ut aliquip ex ea commodo consequat.
-                                    </p>
-                                </div>
-                                <div id="menu2" class="tab-pane fade">
-                                    <h3></h3>
-                                    <ShippingAddresses/>
-                                </div>
-                                <div id="menu3" class="tab-pane fade">
-                                    <h3>Menu 3</h3>
-                                    <p>
-                                        Eaque ipsa quae ab illo inventore veritatis et quasi
-                                        architecto beatae vitae dicta sunt explicabo.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-md-12 x-text text-center">
+                        <h1>404</h1>
+                        <p>We are sorry, the page you've requested is not available.</p>
+                        <form role="form" class="outer-top-vs outer-bottom-xs">
+                            <input placeholder="Search" autocomplete="off" />
+                            <button class="btn-default le-button">Go</button>
+                        </form>
+                        <a href="home.html"><i class="fa fa-home"></i> Go To Homepage</a>
                     </div>
                 </div>
+                <!-- /.row -->
             </div>
-            <!-- /.row -->
+            <!-- /.sigin-in-->
         </div>
         <!-- /.container -->
     </div>
+    <!-- /.body-content -->
     <Footer />
 </template>
 
@@ -69,10 +30,8 @@ const $ = jQuery;
 window.$ = $;
 import { useRouter } from 'vue-router';
 import axios from 'axios';
-import ProfileSidebar from './partials/ProfileSidebar.vue';
 import Nav from './partials/Nav.vue';
 import Footer from './partials/Footer.vue';
-import ShippingAddresses from './partials/ShippingAddresses.vue';
 
 export default {
     beforeCreate: function () {
@@ -80,9 +39,7 @@ export default {
     },
     components: {
         Nav,
-        ProfileSidebar,
         Footer,
-        ShippingAddresses
     },
     data() {
         return {
@@ -143,9 +100,7 @@ export default {
     },
     beforeMount() {},
     created() {},
-    mounted() {
-        this.checkAuth();
-    },
+    mounted() {},
 };
 </script>
 

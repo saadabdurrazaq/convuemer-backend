@@ -358,7 +358,7 @@
                               id="role_id"
                               class="form-control"
                               :class="{
-                                'is-invalid': form.errors.has('role_id'),
+                                'is-invalid': form.errors.has('role_id'), 
                               }"
                             >
                               <option :value="null" disabled selected>Select Role</option> 

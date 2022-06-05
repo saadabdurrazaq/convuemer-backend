@@ -6,8 +6,8 @@ import cart from '@/modules/cart'
 import VuexPersist from 'vuex-persist'
 
 const vuexPersist = new VuexPersist({ 
-  key: 'my-app',
-  storage: localStorage
+  key: 'product-cart',
+  storage: localStorage 
 })
 
 export default new Vuex.Store({

@@ -11,10 +11,10 @@ import CKEditor from '@ckeditor/ckeditor5-vue';
 import VueNumberInput from '@chenfengyuan/vue-number-input';
 
 // import adminlte
-import 'admin-lte/plugins/fontawesome-free/css/all.min.css'
+import 'admin-lte/plugins/fontawesome-free/css/all.min.css' 
 import 'admin-lte/plugins/jquery/jquery.min.js'
 import '@/assets/js/bootstrap.js';
-import 'admin-lte/dist/js/adminlte.min.js'
+import 'admin-lte/dist/js/adminlte.min.js' 
 import '@/assets/js/bootstrap-switch.js';
 
 const options = {
@@ -55,7 +55,7 @@ axios.interceptors.response.use(response => {
     return Promise.reject(error);
 });*/
 app.use(VueAxios, axios)
-app.component('pagination', Pagination);
+app.component('pagination', Pagination); 
 app.component(VueNumberInput.name, VueNumberInput);
 app.config.globalProperties.$log = console.log; 
 app.mount('#app')

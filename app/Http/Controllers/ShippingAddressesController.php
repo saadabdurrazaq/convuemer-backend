@@ -28,14 +28,16 @@ class ShippingAddressesController extends Controller
     public function index($id) {
         $usersAddr = ShippingAddress::where('address_id', $id)->get()->toArray();
         $dataAddresses = [];
-        foreach($usersAddr as $index => $userAddr) {
+        foreach($usersAddr as $index => $userAddr) { 
             $provinceName = Provinces::where('id', $userAddr['province_residence'])->pluck('name');
             $regencyName = Regencies::where('id', $userAddr['regency_residence'])->pluck('name');
             $districtName = Districts::where('id', $userAddr['district_residence'])->pluck('name');
             $villageName = Villages::where('id', $userAddr['village_residence'])->pluck('name');
+            $cityId = Regencies::where('id', $userAddr['regency_residence'])->pluck('city_id');
+
             $dataAddresses[] = [
-                'id' => $userAddr['id'],
-                'label' => $userAddr['label'],
+                'id' => $userAddr['id'], 
+                'label' => $userAddr['label'], 
                 'address' => $userAddr['address'],
                 'province_residence_name' => $provinceName[0],
                 'province_residence' => $userAddr['province_residence'],
@@ -46,12 +48,13 @@ class ShippingAddressesController extends Controller
                 'village_residence_name' => $villageName[0],
                 'village_residence' => $userAddr['village_residence'],
                 'kode_pos' => $userAddr['kode_pos'],
+                'city_id' => $cityId,
             ];
         };
         
         return response()->json([
             'success' => true,
-            'data' => $dataAddresses,
+            'data' => $dataAddresses, 
         ]);
     }
 
@@ -111,7 +114,7 @@ class ShippingAddressesController extends Controller
 
 		return response()->json([
 			'success' => true,
-			'message' => 'Address succesfully updated!',
+			'message' => 'Address succesfully updated!', 
 		]);
 	}
 

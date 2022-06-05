@@ -32,14 +32,14 @@
                         class="slide"
                         v-for="(slide, index) in slides"
                         :key="index"
-                        :class="`slide--${index}`"
+                        :class="`slide--${index}`" 
                       >
                         <div class="single-product-gallery-item" id="slide1">
                           <div v-if="loadingPict" style="position: absolute; top: 35%; left: 35%">
                             <div class="lds-facebook">
                               <div></div>
                               <div></div>
-                              <div></div>
+                              <div></div> 
                             </div>
                           </div>
                           <img :src="slide" />
@@ -173,7 +173,7 @@
                         {{ variant.variant_name }}
                         <br />
                         <select
-                          class="form-control" 
+                          class="form-control"
                           :required="true"
                           @change="getSelectVal($event)"
                         >
@@ -198,11 +198,13 @@
                   <div class="quantity-container info-container">
                     <div class="row">
                       <div class="col-sm-3">
-                        <a href="#" class="btn btn-primary">Start Order</a>
+                        <a href="#" class="btn btn-primary" @click.stop.prevent="order()"
+                          >Start Order</a
+                        >
                       </div>
 
                       <div class="col-sm-4">
-                        <a href="#" class="btn btn-primary" @click.stop.prevent="buy()"
+                        <a href="#" class="btn btn-primary" @click.stop.prevent="addToCart()"
                           ><i class="fa fa-shopping-cart inner-right-vs"></i>Add To Cart</a
                         >
                       </div>
@@ -452,7 +454,7 @@
     </div>
   </div>
   <Footer />
-</template>
+</template> 
 
 <script>
 import jQuery from 'jquery';
@@ -466,6 +468,8 @@ import { VueAgile } from 'vue-agile'; // npm install vue-agile
 import { groupBy } from 'lodash';
 import { mapGetters, mapActions } from 'vuex';
 import swal from 'sweetalert2';
+import { useRouter } from 'vue-router';
+import { Form } from 'vform';
 
 export default {
   beforeCreate: function () {
@@ -526,6 +530,10 @@ export default {
       prodCombPrice: '',
       prodCombStock: '',
       prodComb: [],
+      form: new Form({
+        product_id: '',
+        product_combination_id: '',
+      }),
     };
   },
   computed: {
@@ -566,22 +574,22 @@ export default {
         footer: '<a href>Why do I have this issue?</a>',
       });
     },
-    buy() {
-      var self = this;
+    checkBeforeCart() {
+      var self = this; 
       if (this.product.variants.length > 0 && this.prodComb.length > 0) {
         var prodComb = Object.assign({}, this.prodComb[0]);
 
         var prodCombInCart = this.carts.filter(function (x) {
           return x.product_key === prodComb[0].product_key;
-        }); 
+        });
 
         if (this.prodCombStock > 0) {
-          if(prodCombInCart.length === 0) {
+          if (prodCombInCart.length === 0) {
             this.addCart(prodComb[0]);
             this.showSuccessMsg('Variant product already added to cart!');
-          } else if(prodCombInCart.length > 0) {
-            if(prodComb[0].available_stock === prodCombInCart[0].quantity) { 
-              this.showErrMsg('Oops... You got all the products!'); 
+          } else if (prodCombInCart.length > 0) {
+            if (prodComb[0].available_stock === prodCombInCart[0].quantity) {
+              this.showErrMsg('Oops... You got all the products!');
             } else {
               this.addCart(prodComb[0]);
               this.showSuccessMsg('Variant product already added to cart!');
@@ -593,16 +601,16 @@ export default {
       } else if (this.product.variants.length === 0 && this.prodComb.length === 0) {
         var prodInCart = this.carts.filter(function (x) {
           return x.product_key == self.product.product_key;
-        }); 
-        
-        if (this.product.available_stock > 0) { // check if the product stock in database is available
+        });
+
+        if (this.product.available_stock > 0) {
+          // check if the product stock in database is available
           // check if the product inside the cart is available or not
-          if(prodInCart.length === 0){ 
+          if (prodInCart.length === 0) {
             this.addCart(this.product);
             this.showSuccessMsg('Product already added to cart!');
-          } 
-          else if(prodInCart.length > 0) {
-            if(this.product.available_stock === prodInCart[0].quantity) {
+          } else if (prodInCart.length > 0) {
+            if (this.product.available_stock === prodInCart[0].quantity) {
               this.showErrMsg('Oops... You got all the products!');
             } else {
               this.addCart(this.product);
@@ -615,6 +623,63 @@ export default {
       } else {
         this.showErrMsg('Please select product!');
       }
+    },
+    addToCart() {
+      this.showData(); // update the data in case there is any change.
+
+      setTimeout(() => {
+        this.checkBeforeCart();
+      }, 500);
+    },
+    checkBeforeOrder() {
+      if (this.product.variants.length > 0 && this.prodComb.length > 0) {
+        var prodComb = Object.assign({}, this.prodComb[0]);
+
+        if (this.prodCombStock > 0) {
+          this.form.product_id = prodComb[0].product_id;
+          this.form.product_combination_id = prodComb[0].id;
+          this.insertData();
+        } else {
+          this.showErrMsg('Oops... product out of stock!');
+        }
+      } else if (this.product.variants.length === 0 && this.prodComb.length === 0) {
+        if (this.product.available_stock > 0) {
+          // check if the product stock in database is available
+          this.form.product_id = this.product.id;
+          this.insertData();
+        } else {
+          this.showErrMsg('Oops... product out of stock!');
+        }
+      } else {
+        this.showErrMsg('Please select the variant product!');
+      }
+    },
+    insertData() {
+      this.form
+        .post('api/user/buy-checkout/insert-data', {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token-user'),
+          },
+        })
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          const router = useRouter();
+          return router.push({
+            name: 'buy-checkout',
+          });
+        });
+    },
+    order() {
+      this.showData(); // update the data in case there is any change.
+
+      setTimeout(() => {
+        this.checkBeforeOrder();
+      }, 500);
     },
     showData() {
       this.loadingPict = true;
@@ -719,15 +784,14 @@ export default {
 
 <style>
 @import '~@/assets/frontend/css/bootstrap.min.css';
-@import '~@/assets/frontend/css/main.css';
+@import '~@/assets/frontend/css/main-blue-green.css';
 @import '~@/assets/frontend/css/animate.min.css';
-@import '~@/assets/frontend/css/blue.css';
+@import '~@/assets/frontend/css/blue-green.css';
 @import '~@/assets/frontend/css/bootstrap-select.min.css';
 @import '~@/assets/frontend/css/bootstrap.min.css';
 @import '~@/assets/frontend/css/font-awesome.css';
 @import '~@/assets/frontend/css/lightbox.css';
 @import '~@/assets/frontend/css/loading.css';
-@import '~@/assets/frontend/css/main.css';
 @import '~@/assets/frontend/css/owl.carousel.css';
 @import '~@/assets/frontend/css/owl.transitions.css';
 @import '~@/assets/frontend/css/rateit.css';

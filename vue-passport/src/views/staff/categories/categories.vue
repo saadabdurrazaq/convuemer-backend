@@ -37,12 +37,12 @@
                                                         :to="{ name: 'categories' }"
                                                         :class="
                                                             isInAllData ? 'menu current' : 'menu'
-                                                        "
+                                                        " 
                                                         href="#"
                                                         >All ({{ totalRecords }})</router-link
                                                     >
                                                 </li>
-                                                <li>
+                                                <li> 
                                                     <router-link
                                                         :to="{ name: 'categories-trash' }"
                                                         class="menu"
@@ -1374,7 +1374,7 @@ export default {
             formData.append('id', this.form.id);
             formData.append('unassign_subsubcat', this.form.unassign_subsubcat);
             formData.append('category_id', this.form.category_id);
-            formData.append('sub_sub_categories', this.form.sub_sub_categories);
+            formData.append('sub_sub_categories', this.form.sub_sub_categories); 
 
             this.form
                 .post(`api/staff/categories/assign-sub-sub-cat`, {

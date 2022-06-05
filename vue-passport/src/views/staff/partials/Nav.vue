@@ -264,7 +264,7 @@ export default {
             axios
                 .post('http://localhost/my-project/laravue/api/staff/logout')
                 .then((response) => {
-                    if (response.data.success) {
+                    if (response.data.success) { 
                         //remove localStorage
                         localStorage.removeItem('token-staff');
                         localStorage.removeItem('staff-data');

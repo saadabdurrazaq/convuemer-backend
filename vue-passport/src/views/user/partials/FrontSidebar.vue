@@ -4,7 +4,7 @@
         <!-- ================================== TOP NAVIGATION ================================== -->
         <div class="side-menu animate-dropdown outer-bottom-xs">
             <div class="head"><i class="icon fa fa-align-justify fa-fw"></i> Categories</div>
-            <nav class="yamm megamenu-horizontal">
+            <nav class="yamm megamenu-horizontal"> 
                 <ul class="nav">
                     <li
                         class="dropdown menu-item"
@@ -59,7 +59,7 @@
             </nav>
             <!-- /.megamenu-horizontal -->
         </div>
-        <!-- /.side-menu -->
+        <!-- /.side-menu --> 
         <!-- ================================== TOP NAVIGATION : END ================================== -->
 
         <!-- ============================================== HOT DEALS ============================================== -->
@@ -285,7 +285,6 @@
         <!-- ============================================== HOT DEALS: END ============================================== -->
 
         <!-- ============================================== SPECIAL OFFER ============================================== -->
-
         <div class="sidebar-widget outer-bottom-small wow fadeInUp">
             <h3 class="section-title">Special Offer</h3>
             <div class="sidebar-widget-body outer-top-xs">
@@ -659,6 +658,7 @@
         </div>
         <!-- /.sidebar-widget -->
         <!-- ============================================== SPECIAL OFFER : END ============================================== -->
+        
         <!-- ============================================== PRODUCT TAGS ============================================== -->
         <div class="sidebar-widget product-tag wow fadeInUp">
             <h3 class="section-title">Product tags</h3>
@@ -680,8 +680,8 @@
         </div>
         <!-- /.sidebar-widget -->
         <!-- ============================================== PRODUCT TAGS : END ============================================== -->
+        
         <!-- ============================================== SPECIAL DEALS ============================================== -->
-
         <div class="sidebar-widget outer-bottom-small wow fadeInUp">
             <h3 class="section-title">Special Deals</h3>
             <div class="sidebar-widget-body outer-top-xs">
@@ -1057,6 +1057,7 @@
         </div>
         <!-- /.sidebar-widget -->
         <!-- ============================================== SPECIAL DEALS : END ============================================== -->
+        
         <!-- ============================================== NEWSLETTER ============================================== -->
         <div class="sidebar-widget newsletter wow fadeInUp outer-bottom-small">
             <h3 class="section-title">Newsletters</h3>
@@ -1132,7 +1133,6 @@
             </div>
             <!-- /.owl-carousel -->
         </div>
-
         <!-- ============================================== Testimonials: END ============================================== -->
 
         <div class="home-banner">

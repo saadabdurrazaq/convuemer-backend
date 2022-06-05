@@ -10,7 +10,7 @@ class ProductCombination extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public function product()
+    public function product()  
     {
         // one variant product () only belongs to one product
         return $this->belongsTo(Product::class, 'product_id', 'id');
@@ -21,6 +21,10 @@ class ProductCombination extends Model
         // one variant product has many stocks
         return $this->hasMany(TotalStockVariantProduct::class);
     }
+
+    public function orders() { 
+        return $this->belongsToMany('App\Models\Order');
+    } 
 
     protected $fillable = [
         'combination_string', 

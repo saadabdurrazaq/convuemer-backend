@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Models\SubCategory;
 use App\Models\SubSubCategory;
 
-class CategoryController extends Controller 
+class CategoryController extends Controller  
 {
 	public $request; 
 
@@ -159,7 +159,7 @@ class CategoryController extends Controller
 
 		if ($subCatHasCat) {
 			$subCategories = SubCategory::with('category')
-				->OrWhereHas('category', function ($q) use ($id) {
+				->OrWhereHas('category', function ($q) use ($id) { 
 					$q->where('id', $id);
 				})
 				->orWhereDoesntHave('category')

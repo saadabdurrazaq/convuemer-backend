@@ -1,30 +1,15 @@
 <template>
   <Nav />
-  <!-- Begin breadcrumb -->
-  <div class="breadcrumb">
-    <div class="container">
-      <div class="breadcrumb-inner">
-        <ul class="list-inline list-unstyled">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Clothing</a></li>
-          <li class="active">Floral Print Buttoned</li>
-        </ul>
-      </div>
-      <!-- /.breadcrumb-inner -->
-    </div>
-    <!-- /.container -->
-  </div>
-  <!-- /.breadcrumb -->
-
-  <div class="body-content outer-top-xs">
+  <Breadcrumbs />
+  <div class="body-content outer-top-xs" id="top-banner-and-menu">
     <div class="container">
       <div class="row">
-        <div class="shopping-cart" style="margin-bottom: 30px">
+        <div class="col-xs-12 col-sm-12 col-md-12 shopping-cart" style="margin-bottom: 30px">
           <div class="shopping-cart-table">
             <div class="table-responsive">
               <table class="table">
                 <thead>
-                  <tr style="background-color:rgba(0,0,0,.03);">
+                  <tr style="background-color: rgba(0, 0, 0, 0.03)">
                     <th class="cart-romove item">Remove</th>
                     <th class="cart-description item">Image</th>
                     <th class="cart-product-name item">Product Name</th>
@@ -35,17 +20,19 @@
                 <!-- /thead -->
                 <tfoot>
                   <tr>
-                    <th colspan="7" style="background-color:rgba(0,0,0,.03); font-size:16px">
+                    <th colspan="7" style="background-color: rgba(0, 0, 0, 0.03); font-size: 16px">
                       <span class="pull-right outer-right-xs">
-                           Subtotal: Rp.{{ totalPrice.toLocaleString() }}
-                        </span>
+                        Subtotal: Rp.{{ totalPrice.toLocaleString() }}
+                      </span>
                     </th>
                   </tr>
                   <tr>
                     <td colspan="7">
                       <div class="shopping-cart-btn">
-                        <span style="margin-right:-25px">
-                          <a href="#" class="btn btn-upper btn-primary pull-right outer-right-xs"
+                        <span style="margin-right: -25px">
+                          <a
+                            class="btn btn-upper btn-primary pull-right outer-right-xs"
+                            :href="$router.resolve({ name: 'checkout' }).href"
                             >Checkout</a
                           >
                         </span>
@@ -57,7 +44,9 @@
                 <tbody>
                   <tr v-for="(item, index) in carts" :key="'cart' + index">
                     <td class="romove-item">
-                      <a href="#" title="cancel" class="icon" @click.stop.prevent="deleteProd(item)"><i class="fa fa-trash-o"></i></a>
+                      <a href="#" title="cancel" class="icon" @click.stop.prevent="deleteProd(item)"
+                        ><i class="fa fa-trash-o"></i
+                      ></a>
                     </td>
                     <td class="cart-image">
                       <img
@@ -85,10 +74,21 @@
                       <!-- 
                           npm install vue@3 @chenfengyuan/vue-number-input@2 (https://github.com/fengyuanchen/vue-number-input)
                        -->
-                      <vue-number-input v-model="item.quantity" :min="1" :max="item.available_stock" inline controls></vue-number-input>
+                      <vue-number-input
+                        :model-value="item.quantity"
+                        @update:model-value="onUpdate"
+                        @click="getItem(item)"
+                        @change="changeItem(item)"
+                        :min="1"
+                        :max="item.available_stock"
+                        inline
+                        controls
+                      ></vue-number-input>
                     </td>
                     <td class="cart-product-sub-total">
-                      <span class="cart-sub-total-price">Rp.{{ (item.price * item.quantity).toLocaleString() }}</span>
+                      <span class="cart-sub-total-price"
+                        >Rp.{{ (item.price * item.quantity).toLocaleString() }}</span
+                      >
                     </td>
                   </tr>
                 </tbody>
@@ -113,6 +113,7 @@ import Footer from './partials/Footer.vue';
 import { mapGetters, mapActions } from 'vuex';
 // import swal from 'sweetalert2';
 import { BASE_URL } from '@/assets/js/base-url.js';
+import Breadcrumbs from './partials/Breadcrumbs.vue';
 
 export default {
   beforeCreate: function () {
@@ -124,42 +125,98 @@ export default {
   components: {
     Nav,
     Footer,
+    Breadcrumbs,
   },
 
   data() {
     return {
       BASE_URL: BASE_URL,
+      quantity: 1,
+      item: {},
+      newValue: 0,
+      oldValue: 0,
     };
   },
   computed: {
     ...mapGetters({
       carts: 'cart/carts',
+      countCart: 'cart/count',
       totalPrice: 'cart/totalPrice',
+      totalQuantity: 'cart/totalQuantity',
+      totalWeight: 'cart/totalWeight',
     }),
   },
   methods: {
     ...mapActions({
-      addCart: 'cart/add',
       deleteProd: 'cart/delete',
-      setAlert: 'alert/set',
+      addCart: 'cart/add',
+      removeCart: 'cart/remove',
+      setCart: 'cart/set',
     }),
+    addOrRemoveCart() {
+      if (this.newValue > this.oldValue) {
+        this.addCart(this.item);
+        this.newValue = 0;
+        this.oldValue = 0;
+      } else if (this.newValue < this.oldValue) {
+        this.removeCart(this.item);
+        this.newValue = 0;
+        this.oldValue = 0;
+      }
+    },
+    onUpdate(newValue, oldValue) {
+      this.newValue = newValue;
+      this.oldValue = oldValue;
+    },
+    onInput(event) {
+      console.log(event);
+    },
+    getItem(item) {
+      this.item = item;
+      var self = this;
+      setTimeout(function () {
+        self.addOrRemoveCart();
+      }, 300);
+    },
+    changeItem(item) {
+      if (this.newValue > this.oldValue) {
+        for (let i = this.oldValue; i < this.newValue; i++) { 
+          this.addCart(item);
+          if (i == this.newValue - 1) {
+            this.newValue = 0;
+            this.oldValue = 0;
+          }
+        }
+      } else if (this.newValue < this.oldValue) {
+        for (let i = this.newValue; i < this.oldValue; i++) {
+          this.removeCart(item);
+          if (i == this.oldValue - 1) {
+            this.newValue = 0;
+            this.oldValue = 0;
+          }
+        }
+      } else if (this.newValue == this.oldValue) {
+        console.log('same value');
+      }
+    },
   },
   created() {},
-  mounted() {},
+  mounted() {
+    //
+  },
 };
 </script>
 
 <style>
 @import '~@/assets/frontend/css/bootstrap.min.css';
-@import '~@/assets/frontend/css/main.css';
+@import '~@/assets/frontend/css/main-blue-green.css';
 @import '~@/assets/frontend/css/animate.min.css';
-@import '~@/assets/frontend/css/blue.css';
+@import '~@/assets/frontend/css/blue-green.css';
 @import '~@/assets/frontend/css/bootstrap-select.min.css';
 @import '~@/assets/frontend/css/bootstrap.min.css';
 @import '~@/assets/frontend/css/font-awesome.css';
 @import '~@/assets/frontend/css/lightbox.css';
 @import '~@/assets/frontend/css/loading.css';
-@import '~@/assets/frontend/css/main.css';
 @import '~@/assets/frontend/css/owl.carousel.css';
 @import '~@/assets/frontend/css/owl.transitions.css';
 @import '~@/assets/frontend/css/rateit.css';

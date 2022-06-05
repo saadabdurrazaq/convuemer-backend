@@ -10,7 +10,7 @@
 <script>
 export default {
   beforeCreate: function () {
-    document.body.className = 'app';
+    document.body.className = 'app'; 
   },
   name: 'App',
   components: {

@@ -1,16 +1,27 @@
-UPGARADE OR DOWNGRADE VUE:
-npm i vue@expectedversion --save (version 3.2.21 so far is more stable)
-FYI:
-there is a bug reflected in ckeditor and fileinput in version 3.2.30 and version 3.2.21
+CHECK PHP VERSION IN LOCALHOST:
+cd C:/Xampp/php
+php -v
+
+CHECK LARAVEL VERSION:
+php artisan --version
+
+CREATING DEFAULT API IN LARAVEL:
+If you want to create default api in Laravel, make sure: 
+- in \config\auth.php make sure defaults guard is api, and the fisrt list in guards is api. 
+- run php artisan serve
 
 INSTALL THE LATEST LARAVEL: 
 composer create-project --prefer-dist laravel/laravel convuemer
+
+INSTALL SPECIFIC LARAVEL VERSION: 
+composer create-project laravel/laravel="7.*" ptsp-backend
 
 Remove /public:
 Copy server.php and change server.php to index.php, and then copy .htaccess file from
 public folder to root project.
 
-STYLING THEME
+VUE INSTALATION:
+In your directory: 
 npm cache clean --force
 npm install -g @vue/cli
 vue --version
@@ -19,12 +30,29 @@ cd <your name of vue app>
 vue add vuetify
 Once prompted, choose v3 (alpha) (if only alpha is available)
 
+VUE FOR CRUD AND CREATING PAGE: 
+v-model is used to fill data.
+npm i vue-router@next
+npm install @aacassandra/vue3-progressbar
+npm install --save @ckeditor/ckeditor5-vue @ckeditor/ckeditor5-build-classic
+main.js
+App.vue
+web-api.js
+In case there is error related with multi-word: put lintOnSave: false, in vue.config.js then save the file and recompile
+
 INSTALL ADMINLTE IN NODE MODULES
 cd <your name of vue app>
 npm install admin-lte@^3.1 --save
 
 FRONTEND THEME INSTALATION
 <your name of vue app>\src\assets
+
+UPGARADE OR DOWNGRADE VUE:
+npm i vue@expectedversion --save (version 3.2.21 so far is more stable) 
+NOTE:
+there is a bug reflected in ckeditor and fileinput in version 3.2.30 and version 3.2.21
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 CREATE API ROUTE AND MULTIAUTH API WITH LARAVEL PASSPORT
 composer require laravel/passport (it will create token keys for security)
@@ -110,14 +138,6 @@ Also database/factories/UserFactory.php should be exist.
 And then: 
 php artisan db:seed
 
-FOR CRUD: 
-v-model is used to fill data.
-npm install @aacassandra/vue3-progressbar
-npm install --save @ckeditor/ckeditor5-vue @ckeditor/ckeditor5-build-classic
-main.js
-App.vue
-web-api.js
-
 CRUD STAFF API
 C:\xampp\htdocs\my-project\laravue\app\Http\Controllers\StaffController.php
 C:\xampp\htdocs\my-project\laravue\routes\api\staff.php
@@ -153,6 +173,8 @@ input data location: Headers
 input data key: Accept, Authorization
 input data value: application/json, Bearer<space><token generated when login>
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+
 CRUD STAFF WEB
 Make sure all the steps above has been done. 
 C:\xampp\htdocs\my-project\laravue\vue-passport\src\router\web-api.js
@@ -161,6 +183,7 @@ npm install vform
 npm install v-pagination-3
 npm install sweetalert2
 npm install jquery --save-dev
+C:\xampp\htdocs\my-project\laravue\vue-passport\public\index.html
 C:\xampp\htdocs\my-project\laravue\vue-passport\src\plugins\axios.js
 C:\xampp\htdocs\my-project\laravue\vue-passport\src\plugins\form.js
 C:\xampp\htdocs\my-project\laravue\vue-passport\src\plugins\swal.js
@@ -255,7 +278,7 @@ o. Example to apply permission: src\views\staff\partials\Sidebar.vue
 =====================================================================
 
 php artisan make:migration name_table table
-php artisan migrate --path=/database/migrations/2020_12_15_032159_create_product_order_table.php
+php artisan migrate --path=/database/migrations/2020_12_15_032159_create_order_product_combination_table.php
 
 php artisan cache:clear
 php artisan config:clear
@@ -269,6 +292,7 @@ npm run build
 upload the zip file
 extract the zip file
 create .htaccess file
+RewriteOptions inherit
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
@@ -280,19 +304,45 @@ create .htaccess file
 
 =======================================================================
 
-PROBLEMS:
-1. Home > Show single product (takes too long time)
+BUGS AND IMPROVEMENT:
+1. Disable reload in frontend page. 
+2. Remove padding right when modal is opened in backend.
+3. Product image slider problem when variant product is selected. 
+4. Fetured products slider arrow not responsive. 
+5. In edit product page > add variant product > upload image variant product > leave the new variant product field empty > hit upload button > delete image variant product. 
+6. In edit product page > add variant product > upload image variant product > leave the new variant product field empty > hit upload button > input all the variant product fields > hit upload button > Duplicate variant product image appear. 
+7. In create product page > add 2 variant type > fill of the variant options > remove one of variant type > fileinput image not loaded. 
+8. In sub sub categories page > add sub sub category > submit > all button cant be clicked. (Seems it happens almost in every backend page)
+9. cover in product and product combination not inserted into database both when input or edit data. 
+10. http://localhost:8080/user/buy-checkout not responsive
+11. city_id field in regencies table must be filled
+12. In http://localhost:8080/cart if we remove one of product. And in the previous page, if we hit add to cart button in condition cart data, the old cart data must be updated, before update the new one. 
+13. Trouble in slider product item when variant product changes.
+14. http://localhost:8080/user/checkout if cart is updated, the product cart in that page also must be updated if user select courier. The same in cart checkout. 
+15. in http://localhost:8080/staff/products/index field product name is over width after the new product is added. 
+16. There are many static route in certain page. Make it dynamic!
+17. If user dont have address, and want to checkout. There is warning to input an address, when the link clicked, the specific tab must be opened. 
+18. Implement RBAC in each feature. 
+19. Improvement features in all orders and user orders.
+20. Variant products weight validations. 
+21. Add the description about the shipping cost in checkout page 
+22. In checkout page > summary product > if title product too long, the view is not good. 
+23. Show success message when order successfully is not good. 
 
 NEXT FEATURES: 
 1. Change password
-2. Order products
+2. Wishlist
+3. Comment product features.
+4. List products in homepage.
+5. tracking orders.
+6. email.
+7. Pagination in list orders.
+8. Payment.
 
--status order
--actions
--tanggal pembelian
--invoice
--total
+ERROR: 
+ikea
+straw
+inisfree
+bolt
 
-https://tutorialzine.com/2018/02/freebie-4-beautiful-checkout-forms
-
-this.$router.back();
+input city id: start from 16 

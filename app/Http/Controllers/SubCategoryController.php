@@ -201,12 +201,12 @@ class SubCategoryController extends Controller
 	public function forceDeleteSubCategory($id)
 	{
 		$subCategory = SubCategory::withTrashed()->findOrFail($id);
-
+ 
 		$subCatId = $subCategory->id;
 
 		$subSubCat = SubSubCategory::with('subCategory')->withTrashed()
 			->WhereHas('subCategory', function ($q) {
-				$q->withTrashed();
+				$q->withTrashed(); 
 			})
 			->where('subcategory_id', $subCatId);
 

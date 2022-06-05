@@ -14,6 +14,7 @@ use App\Http\Controllers\MegaMenuController;
 use App\Http\Controllers\SliderController;
 use App\Http\Controllers\ProductSliderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AllOrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,7 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-Route::post('staff/login', [LoginController::class, 'staffLogin'])->name('staffLogin');
+Route::post('staff/login', [LoginController::class, 'staffLogin'])->name('staffLogin'); 
 
 // Product store and delete images
 Route::post('products/store-images', [ProductController::class, 'storeImages']);
@@ -41,7 +42,7 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     // authenticated staff routes here 
     Route::get('dashboard', [LoginController::class, 'staffDashboard']);
     Route::get('staff/home', [LoginController::class, 'staffDashboard']);
-    Route::post('logout', [LoginController::class, 'logoutStaff']);
+    Route::post('logout', [LoginController::class, 'logoutStaff']);  
 
     // CRUD staff.  
     Route::get('staff-management', [StaffController::class, 'index']);
@@ -164,6 +165,9 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     Route::get('roles/edit/{id}', [RoleController::class, 'edit']);
     Route::put('roles/update/{id}', [RoleController::class, 'update']);
     Route::get('roles/permissions/{permissionName}', [RoleController::class, 'check']);
+
+    // Manage orders
+    Route::get('orders/index', [AllOrderController::class, 'index']);
 });
 
 Route::middleware(['auth:staff-api', 'scopes:staff'])->get('/staff', function (Request $request) {

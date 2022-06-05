@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller; 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\VariantType;
@@ -32,7 +32,7 @@ class ProductController extends Controller
     public function show($id, $slug)
     {
         $product =  Product::with('variants.variantOptions')->with('variantsProd')->where('id', $id)->where('product_slug', $slug)->first();
-        
+
         // fix invalid unique_string that contains -
         $invalidUnSId = DB::table('products_combinations')->select('id')->where('unique_string_id', 'like', '%-%')->get();
         $invalidUnS = DB::table('products_combinations')->select('unique_string_id')->where('unique_string_id', 'like', '%-%')->pluck('unique_string_id')->toArray();
@@ -41,17 +41,17 @@ class ProductController extends Controller
         $validStrings = array();
         for ($i = 0; $i < $totalInvalidUnSId; $i++) {
             array_push($validStrings, str_replace('-', '', $invalidUnS[$i]));
-		}
+        }
 
         if ($totalInvalidUnSId > 0) {
-			foreach ($invalidUnSId as $index => $invUnSId) {
-				$data = json_decode(json_encode($invUnSId), true);
-				ProductCombination::findOrFail($data['id'])->update([
-					'unique_string_id' => $validStrings[$index], 
-				]);
-			}
-		}        
-        
+            foreach ($invalidUnSId as $index => $invUnSId) {
+                $data = json_decode(json_encode($invUnSId), true);
+                ProductCombination::findOrFail($data['id'])->update([
+                    'unique_string_id' => $validStrings[$index],
+                ]);
+            }
+        }
+
         return response()->json($product);
     }
 
@@ -150,6 +150,7 @@ class ProductController extends Controller
             'available_stock' => 'required',
             'sku' => 'required',
             'product_weight' => 'required',
+            'metric_mass' => 'required',
             'product_length' => 'required',
             'product_width' => 'required',
             'product_height' => 'required',
@@ -165,7 +166,7 @@ class ProductController extends Controller
     {
         $data = array();
 
-        $data['product_name'] =  $this->request->get('product_name'); 
+        $data['product_name'] =  $this->request->get('product_name');
         $data['brand_id'] =  $this->request->get('brand_id');
         $data['category_id'] =  $this->request->get('category_id');
         $data['subcategory_id'] =  $this->request->get('subcategory_id');
@@ -175,10 +176,11 @@ class ProductController extends Controller
         $data['price'] =  $this->request->get('price');
         $data['short_desc'] =  $this->request->get('short_desc');
         $data['long_desc'] =  $this->request->get('long_desc');
-        $data['product_cond'] =  $this->request->get('product_cond'); 
+        $data['product_cond'] =  $this->request->get('product_cond');
         $data['min_order'] =  $this->request->get('min_order');
         $data['sku'] =  $this->request->get('sku');
         $data['product_weight'] =  $this->request->get('product_weight');
+        $data['metric_mass'] =  $this->request->get('metric_mass');
         $data['product_length'] =  $this->request->get('product_length');
         $data['product_width'] =  $this->request->get('product_width');
         $data['product_height'] =  $this->request->get('product_height');
@@ -204,6 +206,14 @@ class ProductController extends Controller
             $imagesCaption[] = $image['caption'];
         }
 
+        $productWeight = str_replace(".", "", $data_value['product_weight']);
+        if ($data_value['metric_mass'] == 'G (Gram)') {
+            $weight = $productWeight / 1000; 
+            $weight = ceil($weight);
+        } else {
+            $weight = $productWeight;
+        }
+
         $this->newProductId = Product::insertGetId([
             'product_name' => $data_value['product_name'],
             'brand_id' => $data_value['brand_id'],
@@ -221,10 +231,12 @@ class ProductController extends Controller
             'min_order' => str_replace(".", "", $data_value['min_order']),
             'sku' => $data_value['sku'],
             'product_weight' => str_replace(".", "", $data_value['product_weight']),
+            'weight' => $weight,
             'metric_mass' => $data_value['metric_mass'],
             'product_length' => str_replace(".", "",  $data_value['product_length']),
             'product_width' => str_replace(".", "",  $data_value['product_width']),
             'product_height' => str_replace(".", "",  $data_value['product_height']),
+            'product_type' => 'prod',
             'hot_deals' => $data_value['hot_deals'],
             'featured' => $data_value['featured'],
             'special_offer' => $data_value['special_offer'],
@@ -237,8 +249,16 @@ class ProductController extends Controller
 
     public function updateProduct($id)
     {
-        $product = Product::findOrFail($id); 
+        $product = Product::findOrFail($id);
         $data_value = $this->inputData();
+
+        $productWeight = str_replace(".", "", $data_value['product_weight']); 
+        if ($data_value['metric_mass'] == 'G (Gram)') {
+            $weight = $productWeight / 1000;
+            $weight = ceil($weight);
+        } else {
+            $weight = $productWeight;
+        }
 
         $this->newProductId = $product->update([
             'product_name' => $data_value['product_name'],
@@ -257,10 +277,12 @@ class ProductController extends Controller
             'min_order' => str_replace(".", "", $data_value['min_order']),
             'sku' => $data_value['sku'],
             'product_weight' => str_replace(".", "", $data_value['product_weight']),
+            'weight' => $weight,
             'metric_mass' => $data_value['metric_mass'],
             'product_length' => str_replace(".", "",  $data_value['product_length']),
             'product_width' => str_replace(".", "",  $data_value['product_width']),
             'product_height' => str_replace(".", "",  $data_value['product_height']),
+            'product_type' => 'prod',
             'hot_deals' => $data_value['hot_deals'],
             'featured' => $data_value['featured'],
             'special_offer' => $data_value['special_offer'],
@@ -312,6 +334,14 @@ class ProductController extends Controller
             $condition = $key['condition'];
             $status = $key['status'];
             $stock = $key['available_stock'];
+            $productWeight = $key['product_weight'];
+            $metricMass = $key['metric_mass'];
+            if ($key['metric_mass'] == 'G (Gram)') {
+                $weight = $productWeight / 1000;
+                $weight = ceil($weight);
+            } else {
+                $weight = $productWeight;
+            }
 
             $stringParts = str_split($productVariant);
             sort($stringParts, SORT_NATURAL | SORT_FLAG_CASE);
@@ -324,12 +354,12 @@ class ProductController extends Controller
                 $imagesCaption[] = $image['caption'];
             }
 
-            $prodCombName = str_replace("-", " ", $prodAndProdCombSlug); 
+            $prodCombName = str_replace("-", " ", $prodAndProdCombSlug);
 
             $newProductCombinationId = ProductCombination::insertGetId([
                 'product_id' => $id,
                 'product_variant' => $productVariant,
-                'product_slug' => $prodAndProdCombSlug, 
+                'product_slug' => $prodAndProdCombSlug,
                 'product_key' => uniqid(),
                 'url' => $productSlug,
                 'url_id' => $id,
@@ -337,7 +367,11 @@ class ProductController extends Controller
                 'unique_string_id' => Str::lower($string),
                 'price' => str_replace(".", "", $price),
                 'sku' => $sku,
+                'product_weight' => $productWeight,
+                'metric_mass' => $metricMass,
+                'weight' => $weight,
                 'available_stock' => str_replace(".", "", $stock),
+                'product_type' => 'prod-comb',
                 'condition' => $condition,
                 'status' => $status,
                 'images' => json_encode($images),
@@ -346,7 +380,7 @@ class ProductController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request) 
     {
         $this->validateFields();
 
@@ -388,8 +422,10 @@ class ProductController extends Controller
                 $stock = $var['available_stock'];
                 $sku = $var['sku'];
                 $total_images = $var['total_images'];
+                $product_weight = $var['product_weight'];
+                $metric_mass = $var['metric_mass'];
 
-                if ($price == null || $stock == null || $sku == null || $total_images == 0) {
+                if ($price == null || $stock == null || $sku == null || $total_images == 0 || $product_weight == null || $metric_mass == null) {
                     return response()->json([
                         'success' => true,
                         'message' => 'Please fill the variant product input!',
@@ -410,10 +446,10 @@ class ProductController extends Controller
                 ]);
             }
 
-            $this->storeNewVarTypeAndVarOpt($this->newProductId); 
+            $this->storeNewVarTypeAndVarOpt($this->newProductId);
             $this->storeNewVarProds($this->newProductId);
             $product = Product::findOrFail($this->newProductId);
-            $product->update([ 'url_id' => $this->newProductId]);
+            $product->update(['url_id' => $this->newProductId]);
 
             return response()->json([
                 'success' => true,
@@ -423,7 +459,7 @@ class ProductController extends Controller
             if ($totalInputtedPicts > 0) {
                 $this->storeProduct();
                 $product = Product::findOrFail($this->newProductId);
-                $product->update([ 'url_id' => $this->newProductId]);
+                $product->update(['url_id' => $this->newProductId]);
 
                 return response()->json([
                     'success' => true,
@@ -453,7 +489,7 @@ class ProductController extends Controller
 
     public function softDelete($id)
     {
-        Product::findOrFail($id)->delete(); 
+        Product::findOrFail($id)->delete();
 
         return response()->json([
             'success' => true,
@@ -854,8 +890,10 @@ class ProductController extends Controller
                 $stock = $var['available_stock'];
                 $sku = $var['sku'];
                 $total_images = $var['total_images'];
+                $product_weight = $var['product_weight'];
+                $metric_mass = $var['metric_mass'];
 
-                if ($price == null || $stock == null || $sku == null || $total_images == 0) {
+                if ($price == null || $stock == null || $sku == null || $total_images == 0 || $product_weight == null || $metric_mass == null) {
                     return response()->json([
                         'success' => true,
                         'message' => 'Please fill the variant product input!',
@@ -933,6 +971,14 @@ class ProductController extends Controller
                         $condition = $key['condition'];
                         $status = $key['status'];
                         $stock = $key['available_stock'];
+                        $productWeight = $key['product_weight'];
+                        $metricMass = $key['metric_mass'];
+                        if ($key['metric_mass'] == 'G (Gram)') {
+                            $weight = $productWeight / 1000;
+                            $weight = ceil($weight);
+                        } else {
+                            $weight = $productWeight;
+                        }
 
                         $stringParts = str_split($productVariant);
                         sort($stringParts, SORT_NATURAL | SORT_FLAG_CASE);
@@ -950,7 +996,11 @@ class ProductController extends Controller
                             'unique_string_id' => $trimmed_str,
                             'price' => str_replace(".", "", $price),
                             'sku' => $sku,
+                            'product_weight' => $productWeight,
+                            'metric_mass' => $metricMass,
+                            'weight' => $weight,
                             'available_stock' => str_replace(".", "", $stock),
+                            'product_type' => 'prod-comb',
                             'condition' => $condition,
                             'status' => $status,
                             'images' => json_encode($images),
@@ -976,6 +1026,9 @@ class ProductController extends Controller
                     $available_stocks = array();
                     $conditions = array();
                     $status = array();
+                    $productWeight = array();
+                    $metricMass = array();
+                    $weight = array();
 
                     for ($i = 0; $i < count($varProdsBeenStoredInDb); $i++) {
                         array_push($prices, $varProdsBeenStoredInDb[$i]['price']);
@@ -983,15 +1036,24 @@ class ProductController extends Controller
                         array_push($available_stocks, $varProdsBeenStoredInDb[$i]['available_stock']);
                         array_push($conditions, $varProdsBeenStoredInDb[$i]['condition']);
                         array_push($status, $varProdsBeenStoredInDb[$i]['status']);
+                        array_push($productWeight, $varProdsBeenStoredInDb[$i]['product_weight']);
+                        array_push($metricMass, $varProdsBeenStoredInDb[$i]['metric_mass']);
+
+                        if ($varProdsBeenStoredInDb[$i]['metric_mass'] == 'G (Gram)') {
+                            $calcWeight = $varProdsBeenStoredInDb[$i]['product_weight'] / 1000;
+                            array_push($weight, ceil($calcWeight));
+                        } else {
+                            array_push($weight, $varProdsBeenStoredInDb[$i]['product_weight']);
+                        }
                     }
 
-                    foreach ($varProdIds as $index => $varProdId) { 
+                    foreach ($varProdIds as $index => $varProdId) {
                         $prod = ProductCombination::where('id', $varProdId);
                         $getProductVariant = DB::table('products_combinations')->select('product_variant')->where('id', $varProdId)->get();
                         $productVariant = $getProductVariant[0]->product_variant;
                         $productCombinationSlug = strtolower(str_replace(' ', '-', $productVariant));
                         $prodAndProdCombSlug = $productSlug . '-' . $productCombinationSlug;
-                        $prodCombName = str_replace("-", " ", $prodAndProdCombSlug); 
+                        $prodCombName = str_replace("-", " ", $prodAndProdCombSlug);
 
                         $stringParts = str_split($productVariant);
                         sort($stringParts, SORT_NATURAL | SORT_FLAG_CASE);
@@ -1000,13 +1062,17 @@ class ProductController extends Controller
                         $trimmed_str = ltrim($strToLower);
 
                         $prod->update([
-                            'price' => str_replace(".", "", $prices[$index]),
-                            'sku' => $sku[$index],
                             'product_slug' => $prodAndProdCombSlug,
                             'url' => $productSlug,
                             'url_id' => $id,
                             'product_name' => ucwords($prodCombName),
                             'unique_string_id' => $trimmed_str,
+                            'price' => str_replace(".", "", $prices[$index]),
+                            'sku' => $sku[$index],
+                            'product_type' => 'prod-comb',
+                            'product_weight' => $productWeight[$index],
+                            'metric_mass' => $metricMass[$index],
+                            'weight' => $weight[$index],
                             'available_stock' => str_replace(".", "", $available_stocks[$index]),
                             'condition' => $conditions[$index],
                             'status' => $status[$index],
@@ -1028,7 +1094,7 @@ class ProductController extends Controller
                     $this->deleteAllVarProds($id);
                 }
 
-                return response()->json([ 
+                return response()->json([
                     'success' => true,
                     'message' => 'Product successfully updated!',
                 ]);

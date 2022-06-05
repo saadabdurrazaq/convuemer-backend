@@ -17,7 +17,10 @@ export default {
             price: payload.price,
             product_key: payload.product_key,
             available_stock: payload.available_stock,
-            //weight: payload.weight,
+            weight: payload.weight,
+            product_weight: payload.product_weight,
+            metric_mass: payload.metric_mass,
+            product_type: payload.product_type,
             quantity: 1
         })
       }, 
@@ -25,17 +28,20 @@ export default {
         let idx = state.carts.indexOf(payload);
         state.carts.splice(idx, 1, { 
             id: payload.id,
+            url_id: payload.url_id,
             url: payload.url,
+            product_name: payload.product_name,
             cover: payload.cover,
             price: payload.price,
-            quantity: payload.quantity,
-            product_name: payload.product_name,
             product_key: payload.product_key,
             available_stock: payload.available_stock,
-            url_id: payload.url_id,
-            //weight: payload.weight,
+            weight: payload.weight, 
+            product_weight: payload.product_weight,
+            metric_mass: payload.metric_mass,
+            product_type: payload.product_type,
+            quantity: payload.quantity,
         });
-        if(payload.quantity<=0){
+        if(payload.quantity <= 0){
             state.carts.splice(idx,1) 
         }
       },
@@ -49,7 +55,7 @@ export default {
     },
     // actions is the only way to change state asynchronously
     actions: {
-      // In order to access mutation, we need to add methods below
+      // In order to access mutation, we need to add methods below 
       add: ({state, commit}, payload) => {
         let cartItem = state.carts.find(item => item.id === payload.id) // check if the inputted data is exist in the carts
         if(!cartItem){ // if data is not exist then run mutation insert
@@ -81,7 +87,7 @@ export default {
       // show indicator in cart header
       carts  : state => state.carts,
       count  : (state) => {
-        return state.carts.length
+        return state.carts.length 
       },
       totalPrice: (state) => {
         let total = 0

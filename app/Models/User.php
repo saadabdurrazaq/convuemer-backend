@@ -22,9 +22,13 @@ class User extends Authenticatable
     {
         // one user has many addresses 
         return $this->hasMany('App\Models\ShippingAddress'); 
+    } 
+
+    public function orders() {
+        return $this->hasMany('App\Models\Order');
     }
 
-    /**
+    /** 
      * The attributes that are mass assignable.
      *
      * @var array

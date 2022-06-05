@@ -3,7 +3,7 @@
     <div class="body-content outer-top-xs">
         <div class="container">
             <div class="x-page inner-bottom-sm">
-                <div class="row">
+                <div class="row"> 
                     <div class="col-md-12 x-text text-center">
                         <h1>404</h1>
                         <p>We are sorry, the page you've requested is not available.</p>

@@ -137,7 +137,7 @@ export default {
         const user = new Form({
             email: '',
             password: '',
-            error: '',
+            error: '',  
         });
 
         //state validation

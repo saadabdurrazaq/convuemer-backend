@@ -60,7 +60,7 @@
             <router-link :to="{ name: 'staff-home' }" class="nav-link" href="#">
               <i class="nav-icon fa fa-home"></i>
               <p>Home</p>
-            </router-link>
+            </router-link> 
           </li>
           <li class="nav-item">
             <router-link :to="{ name: 'roles-index' }" class="nav-link" href="#">
@@ -68,7 +68,7 @@
               <p>Roles</p>
             </router-link>
           </li>
-          <li class="nav-item"  v-if="viewStaffs !== null">
+          <li class="nav-item"  v-if="viewStaffs !== null"> 
             <router-link :to="{ name: 'staff-management' }" class="nav-link" href="#">
               <i class="nav-icon fas fa-user"></i>
               <p>Staffs</p>
@@ -98,6 +98,12 @@
               <p>Sliders</p>
             </router-link>
           </li>
+          <li class="nav-item">
+            <router-link :to="{ name: 'orders-index' }" class="nav-link" href="#">
+              <i class="nav-icon fas fa-object-group"></i>
+              <p>Orders</p>
+            </router-link>
+          </li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-school"></i>
@@ -109,7 +115,7 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="far fa-circle nav-icon"></i> 
                   <p>Another Child Menu</p>
                 </a>
               </li>

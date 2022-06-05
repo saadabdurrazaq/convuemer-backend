@@ -16,7 +16,7 @@
           </div>
           <!-- /.product-image --> 
 
-          <div class="description">
+          <div class="description"> 
             <h4>
               <router-link
                 :to="{
@@ -24,7 +24,9 @@
                   params: { id: slider.id, slug: slider.product_slug },
                 }"
                 ><span class="name">{{ slider.product_name.substring(0, 20) }}</span
-                ><br /><br /><span class="price"
+                >
+                <br /><br />
+                <span class="price"
                   >Rp. {{ slider.price.toLocaleString('id') }}</span
                 >
               </router-link>

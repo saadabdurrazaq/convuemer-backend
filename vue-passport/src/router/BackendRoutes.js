@@ -7,7 +7,7 @@ const routes = [
             if (localStorage.getItem('token-staff')) {
                 next('/staff/home');
             }
-            next();
+            next(); 
         }
     },
     {
@@ -50,7 +50,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Staff Management' },
                 //{ name: 'index', active: 'active' }
             ],
@@ -70,7 +70,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Brand Management' },
                 //{ name: 'index', active: 'active' }
             ],
@@ -90,7 +90,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Brand Management', link: 'index', home: 'index' },
                 { name: 'trash', active: 'active' }
             ],
@@ -110,7 +110,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Categories' },
                 //{ name: 'index', active: 'active' }
             ],
@@ -130,7 +130,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Categories', link: 'index', home: 'index' },
                 { name: 'trash', active: 'active' }
             ],
@@ -150,7 +150,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Sub Categories' },
                 //{ name: 'index', active: 'active' }
             ],
@@ -170,7 +170,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Sub Categories', link: 'index', home: 'index' },
                 { name: 'trash', active: 'active' }
             ],
@@ -190,7 +190,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Sub Sub Categories' },
                 //{ name: 'index', active: 'active' }
             ],
@@ -210,7 +210,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Sub Sub Categories', link: 'index', home: 'index' },
                 { name: 'trash', active: 'active' }
             ],
@@ -220,7 +220,7 @@ const routes = [
             if (!localStorage.getItem('token-staff')) {
                 next('/staff/login');
             }
-            next();
+            next(); 
         }
     },
     {
@@ -230,8 +230,8 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
-                { name: 'Products', link: 'index', home: 'index' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
+                { name: 'Products', link: 'index', home: 'index' },  
             ],
             pageTitle: "Products"
         },
@@ -249,7 +249,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Products', link: 'index', home: 'index' },
                 { name: 'Create', active: 'active' }
             ],
@@ -269,7 +269,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Products', link: '/staff/products/index', home: 'index' },
                 { name: 'Edit', active: 'active' }
             ],
@@ -289,7 +289,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Products', link: 'index', home: 'index' },
                 { name: 'trash', active: 'active' }
             ],
@@ -309,7 +309,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Sliders' },
                 //{ name: 'index', active: 'active' }
             ],
@@ -329,7 +329,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'sliders', link: 'index', home: 'index' },
                 { name: 'trash', active: 'active' }
             ],
@@ -349,7 +349,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Roles', link: 'index', home: 'index' },
             ],
             pageTitle: "Roles"
@@ -368,7 +368,7 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Roles', link: '/staff/roles/index', home: 'index' },
                 { name: 'Create', active: 'active' }
             ],
@@ -388,11 +388,30 @@ const routes = [
         meta: {
             requiresAuth: true,
             breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Roles', link: '/staff/roles/index', home: 'index' },
                 { name: 'Edit', active: 'active' }
             ],
             pageTitle: "Edit Role"
+        },
+        beforeEnter: (to, from, next) => {
+            if (!localStorage.getItem('token-staff')) {
+                next('/staff/login');
+            }
+            next();
+        }
+    },
+    {
+        path: '/staff/orders/index',
+        name: 'orders-index',
+        component: () => import('@/views/staff/orders/index.vue'),
+        meta: {
+            requiresAuth: true,
+            breadcrumb: [
+                { name: 'Home', link: '/staff/home', home: 'home' },
+                { name: 'Orders', link: 'index', home: 'index' },
+            ],
+            pageTitle: "Orders"
         },
         beforeEnter: (to, from, next) => {
             if (!localStorage.getItem('token-staff')) {

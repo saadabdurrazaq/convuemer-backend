@@ -14,4 +14,4 @@ class StaffExport implements FromCollection
     {
         return Staff::all();
     }
-}
+} 

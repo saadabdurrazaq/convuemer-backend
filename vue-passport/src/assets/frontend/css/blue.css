@@ -35,7 +35,7 @@ a {
 }
 .top-cart-row .dropdown-cart .dropdown-menu .cart-item.product-summary .name a:hover,
 .top-cart-row .dropdown-cart .dropdown-menu .cart-item.product-summary .name a:focus {
-  color: #0f6cb2;
+  color: #0f6cb2; 
 }
 .top-cart-row .dropdown-cart .dropdown-menu .cart-item.product-summary .price {
   color: #0f6cb2;

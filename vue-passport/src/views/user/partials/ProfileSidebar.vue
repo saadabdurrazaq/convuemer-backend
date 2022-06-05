@@ -1,30 +1,36 @@
 <template>
-  <div class="col-md-2">
+  <div class="col-xs-12 col-sm-12 col-md-3 sidebar">
     <br />
-    <div class="container" style="background-color:white; width:200px; margin-bottom:25px; margin-top:2px;">
-      <div style="margin-top:15px;">
-      <img
-        class="card-img-top"
-        style="border-radius:50%;margin-left:30px;"
-        height="100"
-        width="100"
-
-        :src="require('@/assets/avatar/fb-male.jpg')"
-        alt="User Image"
-      />
+    <div class="side-menu animate-dropdown outer-bottom-xs">
+      <div style="display:flex; justify-content:center;">
+        <img
+          class="card-img-top"
+          style="border-radius: 50%; margin-top:10px;"
+          height="100"
+          width="100"
+          :src="require('@/assets/avatar/fb-male.jpg')"
+          alt="User Image"
+        />
+      </div> 
+      <br />
+      <div style="margin-left: 10px; margin-right: 10px; height:250px">
+        <ul class="list-group list-group-flush">
+          <router-link :to="{ name: 'user-home' }" class="btn btn-sm btn-block" href="#"
+            >Home</router-link
+          >
+          <a href="" class="btn btn-sm btn-block">Profile Update</a>
+          <router-link :to="{ name: 'user-change-password' }" class="btn btn-sm btn-block" href="#"
+            >Change Password</router-link
+          >
+          <router-link :to="{ name: 'orders' }" class="btn btn-sm btn-block" href="#"
+            >Orders</router-link
+          >
+          <a href="" class="btn btn-sm btn-block">Return Orders</a>
+          <a href="" class="btn btn-sm btn-block">Cancel Orders</a>
+          <a @click.prevent="logout" href="" class="btn btn-danger btn-sm btn-block">Logout</a>
+        </ul>
+      </div>
     </div>
-    <br />
-    <ul class="list-group list-group-flush">
-      <a href="" class="btn btn-primary btn-sm btn-block">Home</a>
-      <a href="" class="btn btn-primary btn-sm btn-block">Profile Update</a> 
-      <router-link :to="{name: 'user-change-password'}" class="btn btn-primary btn-sm btn-block" href="#">Change Password</router-link>
-      <a href="" class="btn btn-primary btn-sm btn-block">My Orders</a>
-      <a href="" class="btn btn-primary btn-sm btn-block">Return Orders</a>
-      <a href="" class="btn btn-primary btn-sm btn-block">Cancel Orders</a>
-      <a @click.prevent="logout" href="" class="btn btn-danger btn-sm btn-block">Logout</a>
-    </ul>
-    </div>
-    
   </div>
   <!-- // end col md 2 -->
 </template>

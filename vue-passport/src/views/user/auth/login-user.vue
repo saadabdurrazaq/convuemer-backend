@@ -19,7 +19,7 @@
                                 >
                             </div>
                             <br />
-                            <div style="display: none" id="errMsg" class="box no-border">
+                            <div style="display: none" id="errMsg" class="box no-border errMsg">
                                 <div class="box-tools">
                                     <p class="alert alert-warning alert-dismissible">
                                         {{ user.error }}
@@ -92,7 +92,7 @@
                                     >
                                 </div>
                                 <button
-                                    type="submit"
+                                    type="submit" 
                                     @click="submit"
                                     class="btn-upper btn btn-primary checkout-page-button"
                                 >
@@ -212,7 +212,7 @@ import Footer from '../partials/Footer.vue';
 import Breadcrumbs from '../partials/Breadcrumbs.vue';
 import { reactive, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
+import axios from 'axios'; 
 import '@/assets/frontend/css/loading.css';
 import jQuery from 'jquery';
 const $ = jQuery;
@@ -245,14 +245,19 @@ export default {
 
         //state loginFailed
         const loginFailed = ref(null);
-
         const token = localStorage.getItem('token-user');
-
         const body = document.body;
 
         onMounted(() => {
+            let searchParams = new URLSearchParams(window.location.search);
+            if (searchParams.has('redirect')) {
+                $('#errMsg').show('fast');
+                loginFailed.value = true;
+                user.error = 'You must login to access the page!';
+            } 
+
             //get data user
-            axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+            axios.defaults.headers.common.Authorization = `Bearer ${token}`; 
             axios
                 .get('http://localhost/my-project/laravue/api/user')
                 .then((response) => {
@@ -307,15 +312,22 @@ export default {
                     password,
                 })
                 .then((response) => {
-                    if (response.data.success) {
+                    if (response.data.success) { 
                         //set token
                         localStorage.setItem('token-user', response.data.token);
                         localStorage.setItem('user-data', JSON.stringify(response.data));
 
-                        //redirect ke halaman dashboard
-                        return router.push({
-                            name: 'user-home',
-                        });
+                        let searchParams = new URLSearchParams(window.location.search);
+                        if (searchParams.has('redirect')) {
+                            return router.push({
+                                path: searchParams.get('redirect'),
+                            });
+                        } else {
+                            //redirect ke halaman dashboard
+                            return router.push({
+                                name: 'user-home',
+                            });
+                        }
                     } else {
                         $('#loadingCircle').hide();
                         $('#loginButtonText').show();
@@ -330,6 +342,7 @@ export default {
                 })
                 .catch((error) => {
                     //set validation dari error response
+                    console.log(error);
                     validation.value = error.response.data;
                 });
         }
@@ -348,5 +361,6 @@ export default {
 
 <style>
 @import '~@/assets/frontend/css/bootstrap.min.css';
-@import '~@/assets/frontend/css/main.css';
+@import '~@/assets/frontend/css/main-blue-green.css';
+@import '~@/assets/frontend/css/blue-green.css';
 </style>

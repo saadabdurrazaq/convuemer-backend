@@ -19,7 +19,7 @@
                         <div class="button-holder fadeInDown-3">
                             <a
                                 :href="slider.link"
-                                class="btn-lg btn btn-uppercase btn-primary shop-now-button"
+                                class="btn-lg btn btn-uppercase shop-now-button"
                                 >{{ slider.button_text }}</a
                             > 
                         </div>

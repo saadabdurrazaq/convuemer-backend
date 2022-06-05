@@ -20,7 +20,7 @@ class CreateSubSubCategoriesTable extends Migration
             $table->foreign('category_id')->references('id')->on('categories');
             $table->foreign('subcategory_id')->references('id')->on('sub_categories');
             $table->string('subsubcategory_name');
-            $table->string('subsubcategory_slug');
+            $table->string('subsubcategory_slug');  
             $table->timestamps();
         });
     }

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Storage;
 use DB;
 
-class SliderController extends Controller 
+class SliderController extends Controller  
 {
 	public $request;
 

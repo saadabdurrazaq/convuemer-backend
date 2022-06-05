@@ -7,7 +7,7 @@ const frontendRoutes = [
     {
         path: '/product/:id/:slug',  
         name: 'product-show',
-        component: () => import('@/views/user/products/show.vue'),
+        component: () => import('@/views/user/products/show.vue'), 
         meta: {
             breadcrumb: [
                 { name: 'Home', link: 'home', home: 'home' },
@@ -16,20 +16,7 @@ const frontendRoutes = [
             ],
             pageTitle: "Show Product"
         }
-    },
-    {
-        path: '/cart',  
-        name: 'cart',
-        component: () => import('@/views/user/cart.vue'),
-        meta: {
-            breadcrumb: [
-                { name: 'Home', link: 'home', home: 'home' },
-                { name: 'Products', link: '/staff/products/index', home: 'index' },
-                { name: 'Show', active: 'active' }
-            ],
-            pageTitle: "Show Product"
-        }
-    },
+    }, 
     {
         path: '/user/register', 
         name: 'user-register',
@@ -39,9 +26,16 @@ const frontendRoutes = [
         path: '/user/login',
         name: 'user-login',
         component: () => import( /* webpackChunkName: "login" */ '@/views/user/auth/login-user.vue'),
+        meta: {
+            breadcrumb: [ 
+                { name: 'Home', link: '/', home: 'home' },
+                { name: 'Login' }
+            ],
+            pageTitle: "Login"
+        },
         beforeEnter: (to, from, next) => {
             if (localStorage.getItem('token-user')) {
-                next('/user/home');
+                next('/user/home'); // when user already login and trying to access login page. 
             }
             next();
         }
@@ -65,9 +59,100 @@ const frontendRoutes = [
             if (localStorage.getItem('token-user')) {
                 next();
             } else {
-                next('/user/login');
+                next({
+                    path: '/user/login',
+                    query: { redirect: to.fullPath }
+                })
             }
-            next();
+        }
+    },
+    {
+        path: '/cart',  
+        name: 'cart',
+        component: () => import('@/views/user/cart.vue'),
+        meta: {
+            breadcrumb: [ 
+                { name: 'Home', link: '/', home: 'home' },
+                { name: 'Cart' }
+            ],
+            pageTitle: "Cart"
+        },
+        beforeEnter: (to, from, next) => {
+            if (localStorage.getItem('token-user')) {
+                next();
+            } else {
+                next({
+                    path: '/user/login',
+                    query: { redirect: to.fullPath }
+                })
+            }
+        }
+    },
+    {
+        path: '/user/checkout',  
+        name: 'checkout',
+        component: () => import('@/views/user/checkout.vue'),
+        meta: {
+            breadcrumb: [
+                { name: 'Home', link: '/', home: 'home' },
+                { name: 'Checkout' }
+            ],
+            pageTitle: "Checkout"
+        },
+        beforeEnter: (to, from, next) => {
+            if (localStorage.getItem('token-user')) {
+                next();
+            } else {
+                next({
+                    path: '/user/login',
+                    query: { redirect: to.fullPath }
+                })
+            }
+        }
+    },
+    {
+        path: '/user/buy-checkout',  
+        name: 'buy-checkout',
+        component: () => import('@/views/user/buy-checkout.vue'),
+        meta: {
+            breadcrumb: [
+                { name: 'Home', link: '/', home: 'home' },
+                { name: 'Checkout' }
+            ],
+            pageTitle: "Checkout"
+        },
+        beforeEnter: (to, from, next) => {
+            if (localStorage.getItem('token-user')) {
+                next();
+            } else {
+                next({
+                    path: '/user/login',
+                    query: { redirect: to.fullPath }
+                })
+            }
+        }
+    },
+    {
+        path: '/user/orders',  
+        name: 'orders',
+        component: () => import('@/views/user/orders.vue'),
+        meta: {
+            breadcrumb: [
+                { name: 'Home', link: 'home', home: 'home' },
+                { name: 'Products', link: '/staff/products/index', home: 'index' },
+                { name: 'Show', active: 'active' }
+            ],
+            pageTitle: "Show Product"
+        },
+        beforeEnter: (to, from, next) => {
+            if (localStorage.getItem('token-user')) {
+                next();
+            } else {
+                next({
+                    path: '/user/login',
+                    query: { redirect: to.fullPath }
+                })
+            }
         }
     },
 ]

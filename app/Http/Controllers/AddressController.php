@@ -33,7 +33,7 @@ class AddressController extends Controller
      */
     public function provinces()
     {
-        $provinces = Provinces::all();
+        $provinces = Provinces::all(); 
         return response()->json([
             'provinces' => $provinces,
         ], 200);

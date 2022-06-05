@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Staff;
+use App\Models\FacebookStatistic;
 use Hash;
 use Validator;
 use Auth;
@@ -15,7 +16,7 @@ class LoginController extends Controller
     {
         $users = User::all();
         $success =  $users;
-        return response()->json($success, 200);
+        return response()->json($success, 200); 
     }
 
     public function staffDashboard()

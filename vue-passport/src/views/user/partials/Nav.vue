@@ -3,25 +3,26 @@
         <!-- ============================================== TOP MENU ============================================== -->
         <div class="top-bar animate-dropdown">
             <div class="container">
-                <div class="header-top-inner">
+                <div class="header-top-inner"> 
                     <div class="cnt-account">
                         <ul class="list-unstyled">
                             <li>
-                                <a href="#"><i class="icon fa fa-user"></i>My Account</a>
+                                <a href="#"><i class="icon fa fa-heart"></i>Wishlist</a> 
                             </li>
                             <li>
-                                <a href="#"><i class="icon fa fa-heart"></i>Wishlist</a>
+                                <router-link :to="{ name: 'cart' }" href="#"><i class="icon fa fa-shopping-cart"></i>My Cart</router-link>
                             </li>
                             <li>
-                                <a href="#"><i class="icon fa fa-shopping-cart"></i>My Cart</a>
+                                <router-link :to="{ name: 'checkout' }" href="#"><i class="icon fa fa-check"></i>Checkout</router-link>
                             </li>
                             <li>
-                                <a href="#"><i class="icon fa fa-check"></i>Checkout</a>
-                            </li>
-                            <li>
-                                <router-link :to="{ name: 'user-login' }" class="nav-link" href="#"
-                                    ><i class="icon fa fa-lock"></i>Login</router-link
-                                >
+                                <template v-if="token === null"> 
+                                    <router-link :to="{ name: 'user-login' }" class="nav-link" href="#"
+                                    ><i class="icon fa fa-lock"></i>Login</router-link>
+                                </template>
+                                <template v-else>
+                                    <router-link :to="{ name: 'user-home' }" href="#"><i class="icon fa fa-home"></i>My Account</router-link>
+                                </template>
                             </li>
                         </ul>
                     </div>
@@ -240,15 +241,11 @@
                                             :to="{
                                                 name: 'cart',
                                             }"
-                                            class="btn btn-upper btn-primary btn-block m-t-20"
+                                            class="btn btn-upper btn-block m-t-20"
                                         >
                                             Show All ({{ countCart }})
                                         </router-link>
-                                        <a
-                                            href="checkout.html"
-                                            class="btn btn-upper btn-primary btn-block m-t-20"
-                                            >Checkout</a
-                                        >
+                                        <a class="btn btn-upper btn-block m-t-20" :href="$router.resolve({name: 'checkout'}).href">Checkout</a>
                                     </div>
                                     <!-- /.cart-total-->
                                 </li>
@@ -387,7 +384,7 @@ import jQuery from 'jquery';
 const $ = jQuery;
 window.$ = $;
 import 'jquery/dist/jquery.js';
-import 'bootstrap-hover-dropdown/bootstrap-hover-dropdown.js';
+import 'bootstrap-hover-dropdown/bootstrap-hover-dropdown.js'; 
 import { BASE_URL } from '@/assets/js/base-url.js';
 
 export default {
@@ -395,6 +392,7 @@ export default {
         return {
             data_menus: [],
             BASE_URL: BASE_URL,
+            token: '',
         };
     },
     methods: {
@@ -405,6 +403,8 @@ export default {
             setCart: 'cart/set',
         }),
         showData() {
+            const token = localStorage.getItem('token-user');
+            this.token = token;
             this.axios
                 .get('api/mega-menu/get-menu-data', {})
                 .then((response) => {

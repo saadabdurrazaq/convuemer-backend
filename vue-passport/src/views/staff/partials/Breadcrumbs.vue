@@ -21,7 +21,7 @@
           </div> <!-- /.row -->
         </div>
       </div>
-</template>
+</template> 
 <script>
 export default {
     name: 'Breadcrumb',

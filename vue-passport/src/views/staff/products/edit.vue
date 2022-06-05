@@ -298,10 +298,11 @@
                         <thead>
                           <tr>
                             <th style="width: 7%">Product Variant</th>
-                            <th style="width: 13%">Price</th>
-                            <th style="width: 7%">Stock</th>
-                            <th style="width: 9%">Condition</th>
-                            <th style="width: 7%">SKU</th>
+                            <th style="width: 10%">Price</th>
+                            <th style="width: 5%">Stock</th>
+                            <th style="width: 6%">Condition</th>
+                            <th style="width: 6%">SKU</th>
+                            <th style="width: 10%">Weight</th>
                             <th>Status</th>
                             <th style="width: 100%">Images</th>
                           </tr>
@@ -330,6 +331,8 @@
                                       key !== 'price' &&
                                       key !== 'available_stock' &&
                                       key !== 'sku' &&
+                                      key !== 'product_weight' &&
+                                      key !== 'metric_mass' &&
                                       key !== 'images' &&
                                       key !== 'total_images' &&
                                       key !== 'status' &&
@@ -419,6 +422,45 @@
                                 autocomplete="variant_sku"
                                 autofocus
                               />
+                            </td>
+                            <td>
+                              <input
+                                style="float: left; width: 100%"
+                                id="product_weight_variant"
+                                v-model="variantVal.product_weight"
+                                :class="'product_weight_variant_' + variantVal.id"
+                                type="text"
+                                class="form-control product_weight_variant"
+                                required
+                                autocomplete="product_weight"
+                                placeholder="Weight"
+                                autofocus
+                                @keyup="allowOnlyNumberAndDot($event)"
+                              />
+                              <select
+                                style="float: left; width: 100%; margin-top:5px;"
+                                v-model="variantVal.metric_mass"
+                                :id="'metric_mass_variant_' + variantVal.id"
+                                :class="'metric_mass_variant_' + variantVal.id"
+                                class="form-control"
+                                required
+                              >
+                                <template v-if="variantVal.metric_mass === ''">
+                                  <option :value="''" disabled selected>Select Metric Mass</option>
+                                </template>
+                                <option
+                                    value="G (Gram)"
+                                    :selected="variantVal.metric_mass === 'G (Gram)'"
+                                  >
+                                   G (Gram)
+                                </option>
+                                <option
+                                  value="Kg (Kilogram)"
+                                  :selected="variantVal.metric_mass === 'Kg (Kilogram)'"
+                                >
+                                  Kg (Kilogram)
+                                </option>
+                              </select>
                             </td>
                             <td v-if="variantVal.status === 'Active'">
                               <input
@@ -683,35 +725,20 @@
                           />
                         </div>
                       </div>
-                      <div v-if="form.metric_mass === 'Gram (g)'" class="col-md-7">
+                      <div class="col-md-7">
                         <div class="form-group">
                           <select
-                            v-bind:name="form.metric_mass"
+                            v-model="form.metric_mass"
                             id="metric_mass"
                             :class="{
                               'is-invalid': form.errors.has('metric_mass'),
                             }"
                             class="form-control metric_mass"
                             style="width: 120px"
+                            @change="getMass()"
                           >
-                            <option selected value="Gram (g)">Gram (g)</option>
-                            <option value="Kilogram (kg)">Kilogram (kg)</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div v-else class="col-md-7">
-                        <div class="form-group">
-                          <select
-                            v-bind:name="form.metric_mass"
-                            id="metric_mass"
-                            :class="{
-                              'is-invalid': form.errors.has('metric_mass'),
-                            }"
-                            class="form-control metric_mass"
-                            style="width: 120px"
-                          >
-                            <option value="Gram (g)">Gram (g)</option>
-                            <option selected value="Kilogram (kg)">Kilogram (kg)</option>
+                            <option :selected="form.metric_mass === 'G (Gram)'" value="G (Gram)">G (Gram)</option>
+                            <option :selected="form.metric_mass === 'Kg (Kilogram)'" value="Kg (Kilogram)">Kilogram (kg)</option>
                           </select>
                         </div>
                       </div>
@@ -1066,6 +1093,9 @@ export default {
     };
   },
   methods: {
+    getMass() {
+      console.log(this.form.metric_mass);
+    },
     disableRightClickAndLongPress(className) {
       // disable right click
       $('.' + className + '').on('contextmenu', function () {
@@ -1230,10 +1260,12 @@ export default {
         }, 100);
         item.price = '';
         item.available_stock = '';
-        item.sku = '';
         item.condition = '';
-        item.images = [];
+        item.sku = '';
+        item.product_weight = '';
+        item.metric_mass = '';
         item.status = '';
+        item.images = [];
         item.total_images = item.images.length;
       });
 
@@ -1752,7 +1784,6 @@ export default {
                       $.alert('File deletion was aborted! ');
                     },
                   },
-                  
                 },
               });
             });
@@ -1760,35 +1791,35 @@ export default {
         })
         .on('filedeleted', function (event, key) {
           if (self.form.images.length === 1) {
-             self.form.images = null;
+            self.form.images = null;
           } else {
             var singleRemoveFileInfo = self.form.images.filter(function (x) {
               return x.key !== key;
             });
 
             self.form.images = singleRemoveFileInfo;
-            self.form.totalInputtedPicts = self.form.images.length;            
+            self.form.totalInputtedPicts = self.form.images.length;
           }
 
-            let formData = new FormData();
-            formData.append('images', self.form.images);
-            formData.append('_method', 'PUT');
+          let formData = new FormData();
+          formData.append('images', self.form.images);
+          formData.append('_method', 'PUT');
 
-            self.form
-              .put('api/staff/products/update-images/' + self.form.id, {
-                data: formData,
-              })
-              .then((response) => {
-                console.log(response);
-              })
-              .catch((err) => {
-                console.log(err);
-              })
-              .finally(() => {
-                if (self.form.images === null) {
-                  self.form.images = [];
-                }
-              });         
+          self.form
+            .put('api/staff/products/update-images/' + self.form.id, {
+              data: formData,
+            })
+            .then((response) => {
+              console.log(response);
+            })
+            .catch((err) => {
+              console.log(err);
+            })
+            .finally(() => {
+              if (self.form.images === null) {
+                self.form.images = [];
+              }
+            });
         });
     },
     fileInputVariants(id) {
@@ -1899,7 +1930,6 @@ export default {
                       $.alert('File deletion was aborted! ');
                     },
                   },
-                  
                 },
               });
             });
@@ -2112,15 +2142,15 @@ export default {
     showData() {
       const token = localStorage.getItem('token-staff');
       this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-      let id = this.$route.params.id; 
+      let id = this.$route.params.id;
 
       this.axios
-        .get('api/staff/products/edit/' + id) 
+        .get('api/staff/products/edit/' + id)
         .then((response) => {
           this.form.reset(); // v form reset inputs
           this.form.clear(); // v form clear errors
           this.form.fill(response.data);
-         
+
           this.form.images = JSON.parse(this.form.images);
           if (this.form.images === null) {
             this.form.images = [];
@@ -2338,14 +2368,13 @@ export default {
       }
     },
     validateVariantsProd(res) {
-      var emptyInputImgs = this.form.variants_prod.filter(function (x) {
-        return x.total_images == 0;
-      });
-
+      console.log(this.form.variants_prod);
       this.form.variants_prod.forEach((data) => {
         let inputPrice = $('.variant_price_' + data.id).val();
         let inputStock = $('.variant_stock_' + data.id).val();
         let inputSku = $('.variant_sku_' + data.id).val();
+        let inputMetricMass = $('.metric_mass_variant_' + data.id).val();
+        let inputWeight = $('.product_weight_variant_' + data.id).val();
         let images = data.images;
 
         if (images.length > 0) {
@@ -2357,6 +2386,8 @@ export default {
         $('.variant_price_' + data.id).removeClass('is-invalid');
         $('.variant_stock_' + data.id).removeClass('is-invalid');
         $('.variant_sku_' + data.id).removeClass('is-invalid');
+        $('.metric_mass_variant_' + data.id).removeClass('is-invalid');
+        $('.product_weight_variant_' + data.id).removeClass('is-invalid');
 
         if (inputPrice == '') {
           $('.variant_price_' + data.id).addClass('is-invalid');
@@ -2373,10 +2404,25 @@ export default {
           this.showVariantFieldsErr(res);
         }
 
+        if (inputWeight == '') {
+          $('.product_weight_variant_' + data.id).addClass('is-invalid');
+          this.showVariantFieldsErr(res);
+        }
+
+        if (inputMetricMass == null) {
+          $('.metric_mass_variant_' + data.id).addClass('is-invalid');
+          this.showVariantFieldsErr(res);
+        }
+
         if (uploadedImages == 0 || inputImages == '') {
           this.showVariantFieldsErr(res);
           $('.images' + data.id).fileinput('upload');
         }
+      });
+
+      // Filter the empty fields
+      var emptyInputImgs = this.form.variants_prod.filter(function (x) {
+        return x.total_images == 0;
       });
 
       var price = this.form.variants_prod.filter(function (x) {
@@ -2391,10 +2437,21 @@ export default {
         return x.available_stock == '';
       });
 
+      var weight = this.form.variants_prod.filter(function (x) {
+        return x.product_weight == '';
+      });
+
+      var metricMass = this.form.variants_prod.filter(function (x) {
+        return x.metric_mass == null;
+      });
+
+      // If all those empty fields is not exist
       if (
         price.length === 0 &&
         sku.length === 0 &&
         stock.length === 0 &&
+        weight.length === 0 &&
+        metricMass.length === 0 &&
         emptyInputImgs.length == 0 && // empty input images is not exist.
         this.form.images.length > 0
       ) {
@@ -2457,19 +2514,20 @@ export default {
 
           $('#loadingButton').attr('disabled', false);
           $('.proc-regis').remove();
-          $('#loadingButton').html(`Save`);
+          $('#loadingButton').html(`Update`);
         })
         .catch((err) => {
           console.log(err);
+          console.log(this.form.variants_prod);
           this.showErrMsg(err);
           $('#loadingButton').attr('disabled', false);
           $('.proc-regis').remove();
-          $('#loadingButton').html(`Save`);
+          $('#loadingButton').html(`Update`);
         })
         .finally(() => {
           $('#loadingButton').attr('disabled', false);
           $('.proc-regis').remove();
-          $('#loadingButton').html(`Save`);
+          $('#loadingButton').html(`Update`);
         });
     },
   }, // methods:

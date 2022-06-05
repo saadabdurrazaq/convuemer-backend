@@ -1,9 +1,9 @@
 <template>
     <Nav />
-    <div class="body-content outer-top-xs" id="top-banner-and-menu"> 
+    <div class="body-content outer-top-xs" id="top-banner-and-menu">  
         <div class="container">
-            <div class="row">
-                <FrontSidebar /> 
+            <div class="row"> 
+                <FrontSidebar />  
                 <!-- ============================================== CONTENT ============================================== -->
                 <div class="col-xs-12 col-sm-12 col-md-9 homebanner-holder">
                     <!-- ========================================== SECTION – HERO ========================================= -->
@@ -144,7 +144,7 @@
                             <a href="#" class="image">
                                 <img
                                     data-echo="assets/images/brands/brand1.png"
-                                    src="assets/images/blank.gif"
+                                    src=""
                                     alt=""
                                 />
                             </a>
@@ -155,7 +155,7 @@
                             <a href="#" class="image">
                                 <img
                                     data-echo="assets/images/brands/brand2.png"
-                                    src="assets/images/blank.gif"
+                                    src=""
                                     alt=""
                                 />
                             </a>
@@ -166,7 +166,7 @@
                             <a href="#" class="image">
                                 <img
                                     data-echo="assets/images/brands/brand3.png"
-                                    src="assets/images/blank.gif"
+                                    src=""
                                     alt=""
                                 />
                             </a>
@@ -177,7 +177,7 @@
                             <a href="#" class="image">
                                 <img
                                     data-echo="assets/images/brands/brand4.png"
-                                    src="assets/images/blank.gif"
+                                    src=""
                                     alt=""
                                 />
                             </a>
@@ -188,7 +188,7 @@
                             <a href="#" class="image">
                                 <img
                                     data-echo="assets/images/brands/brand5.png"
-                                    src="assets/images/blank.gif"
+                                    src=""
                                     alt=""
                                 />
                             </a>
@@ -199,7 +199,7 @@
                             <a href="#" class="image">
                                 <img
                                     data-echo="assets/images/brands/brand6.png"
-                                    src="assets/images/blank.gif"
+                                    src=""
                                     alt=""
                                 />
                             </a>
@@ -210,7 +210,7 @@
                             <a href="#" class="image">
                                 <img
                                     data-echo="assets/images/brands/brand2.png"
-                                    src="assets/images/blank.gif"
+                                    src=""
                                     alt=""
                                 />
                             </a>
@@ -221,7 +221,7 @@
                             <a href="#" class="image">
                                 <img
                                     data-echo="assets/images/brands/brand4.png"
-                                    src="assets/images/blank.gif"
+                                    src=""
                                     alt=""
                                 />
                             </a>
@@ -232,7 +232,7 @@
                             <a href="#" class="image">
                                 <img
                                     data-echo="assets/images/brands/brand1.png"
-                                    src="assets/images/blank.gif"
+                                    src=""
                                     alt=""
                                 />
                             </a>
@@ -243,7 +243,7 @@
                             <a href="#" class="image">
                                 <img
                                     data-echo="assets/images/brands/brand5.png"
-                                    src="assets/images/blank.gif"
+                                    src=""
                                     alt=""
                                 />
                             </a>
@@ -306,15 +306,14 @@ export default {
 
 <style lang="scss" scoped>
 @import '~@/assets/frontend/css/bootstrap.min.css';
-@import '~@/assets/frontend/css/main.css';
+@import '~@/assets/frontend/css/main-blue-green.css';
 @import '~@/assets/frontend/css/animate.min.css';
-@import '~@/assets/frontend/css/blue.css';
+@import '~@/assets/frontend/css/blue-green.css';
 @import '~@/assets/frontend/css/bootstrap-select.min.css';
 @import '~@/assets/frontend/css/bootstrap.min.css';
 @import '~@/assets/frontend/css/font-awesome.css';
 @import '~@/assets/frontend/css/lightbox.css';
 @import '~@/assets/frontend/css/loading.css';
-@import '~@/assets/frontend/css/main.css';
 @import '~@/assets/frontend/css/owl.carousel.css';
 @import '~@/assets/frontend/css/owl.transitions.css';
 @import '~@/assets/frontend/css/rateit.css';

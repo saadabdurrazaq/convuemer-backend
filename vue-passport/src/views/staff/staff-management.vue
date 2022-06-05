@@ -100,7 +100,7 @@
                 <div style="float: left; margin-left: 20px">
                   <select
                     v-on:change="exportFiles()"
-                    class="form-control select2bs4 select2-hidden-accessible export-files"
+                    class="form-control select2bs4 select2-accessible export-files"
                     style="width: 115px"
                     data-select2-id=" 17"
                     tabindex="-1"

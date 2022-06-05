@@ -199,7 +199,7 @@ class StaffController extends Controller
     public function downloadPDF()
     {
         $staffs = Staff::all();
-        $pdf = PDF::loadview('staffs.pdf', ['staffs' => $staffs]);
+        $pdf = PDF::loadview('staffs.pdf', ['staffs' => $staffs]); 
         return $pdf->stream();
     }
 

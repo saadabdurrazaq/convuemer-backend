@@ -245,7 +245,14 @@
                                         >
                                             Show All ({{ countCart }})
                                         </router-link>
-                                        <a class="btn btn-upper btn-block m-t-20" :href="$router.resolve({name: 'checkout'}).href">Checkout</a>
+                                        <router-link
+                                            :to="{
+                                                name: 'checkout',
+                                            }"
+                                            class="btn btn-upper btn-block m-t-20"
+                                        >
+                                            Checkout
+                                        </router-link>
                                     </div>
                                     <!-- /.cart-total-->
                                 </li>
@@ -288,10 +295,10 @@
                                     <li class="active dropdown yamm-fw">
                                         <router-link
                                             :to="{
-                                                name: 'welcome',
+                                                name: 'welcome', 
                                             }"
                                         >
-                                            Home
+                                            Home  
                                         </router-link>
                                     </li>
                                     <li
@@ -428,10 +435,11 @@ export default {
             totalWeight: 'cart/totalWeight',
         }),
     },
-    watch: {
-        $route() {
-            this.$router.go();
-        },
+    watch: { 
+        // It will reload the request page. 
+        // $route() {
+        //     this.$router.go();
+        // },
     },
     created() {
         this.showData();
@@ -441,10 +449,5 @@ export default {
 </script>
 
 <style>
-/*
-  There is a collision between css default frontend theme and docs.md-iconic-font.min.css that called in public/index.html so, the navbar property must be reverted
-*/
-.navbar {
-  padding:0;
-}
+
 </style>

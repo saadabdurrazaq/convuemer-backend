@@ -152,7 +152,7 @@ export default {
             //get data user
             axios.defaults.headers.common.Authorization = `Bearer ${token}`;
             axios
-                .get('http://localhost/my-project/laravue/api/staff')
+                .get('api/staff')
                 .then((response) => {
                     console.log(response.data.name);
                     user.value = response.data;
@@ -195,9 +195,9 @@ export default {
 
         //method login
         function login() {
-            //define variable
+            //define variable 
             this.user
-                .post('http://localhost/my-project/laravue/api/staff/login', {})
+                .post('api/staff/login', {})
                 .then((response) => {
                     if (response.data.success) {
                         //set token

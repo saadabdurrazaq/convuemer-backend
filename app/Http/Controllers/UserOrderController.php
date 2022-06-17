@@ -15,7 +15,7 @@ use Auth;
 
 class UserOrderController extends Controller
 {
-    public function myOrder(Request $request) 
+    public function myOrder(Request $request)  
     {
         $user = Auth::user();
         $status = "error";
@@ -24,7 +24,7 @@ class UserOrderController extends Controller
         if($user){
             $orders = Order::with('products')->with('variantsProd')->where('user_id', '=', $user->id)
                 ->orderBy('id','DESC')
-                ->get();
+                ->get(); 
 
             $status = "success";
             $message = "data my order ";

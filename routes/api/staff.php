@@ -167,7 +167,9 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     Route::get('roles/permissions/{permissionName}', [RoleController::class, 'check']);
 
     // Manage orders
-    Route::get('orders/index', [AllOrderController::class, 'index']);
+    Route::get('orders/index', [AllOrderController::class, 'index']); 
+    Route::get('orders/edit/{id}', [AllOrderController::class, 'edit']);
+    Route::put('orders/update/{id}', [AllOrderController::class, 'update']);
 });
 
 Route::middleware(['auth:staff-api', 'scopes:staff'])->get('/staff', function (Request $request) {

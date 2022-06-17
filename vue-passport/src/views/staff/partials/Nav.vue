@@ -8,7 +8,7 @@
             <li class="nav-item d-none d-sm-inline-block">
                 <router-link :to="{ name: 'welcome' }" class="nav-link" href="#"
                     >Laravue</router-link
-                >
+                > 
             </li>
         </ul> 
 

@@ -1,9 +1,9 @@
 <template>
     <Nav />
-    <div class="body-content outer-top-xs" id="top-banner-and-menu">  
+    <div class="body-content outer-top-xs" id="top-banner-and-menu">
         <div class="container">
-            <div class="row"> 
-                <FrontSidebar />  
+            <div class="row">
+                <FrontSidebar />
                 <!-- ============================================== CONTENT ============================================== -->
                 <div class="col-xs-12 col-sm-12 col-md-9 homebanner-holder">
                     <!-- ========================================== SECTION – HERO ========================================= -->
@@ -14,7 +14,7 @@
                     <div class="info-boxes wow fadeInUp">
                         <div class="info-boxes-inner">
                             <div class="row">
-                                <div class="col-md-6 col-sm-4 col-lg-4"> 
+                                <div class="col-md-6 col-sm-4 col-lg-4">
                                     <div class="info-box">
                                         <div class="row">
                                             <div class="col-xs-12">
@@ -96,37 +96,6 @@
                         <!-- /.row -->
                     </div>
                     <!-- ============================================== WIDE PRODUCTS : END ============================================== -->
-
-                    <!-- ============================================== HALF SLIDER & PICTS ============================================== -->
-                    <div class="wide-banners wow fadeInUp outer-bottom-xs">
-                        <div class="row">
-                            <div class="col-md-6"></div>
-                            <div class="col-md-6">
-                                <div class="image">
-                                    <img
-                                        class="img-responsive"
-                                        :src="`${BASE_URL}/storage/app/public/banners/home-banner1.jpg`"
-                                        alt=""
-                                    />
-                                </div>
-                                <div class="image" style="margin-top: 10px">
-                                    <img
-                                        class="img-responsive"
-                                        :src="`${BASE_URL}/storage/app/public/banners/luxury-treading.jpg`"
-                                        alt=""
-                                    />
-                                </div>
-                                <div class="image" style="margin-top: 10px">
-                                    <img
-                                        class="img-responsive"
-                                        :src="`${BASE_URL}/storage/app/public/banners/handbag-fashion01.jpg`"
-                                        alt=""
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ============================================== HALF SLIDER & PICTS : END ============================================== -->
                 </div>
                 <!-- /.homebanner-holder -->
                 <!-- ============================================== CONTENT : END ============================================== -->
@@ -142,110 +111,70 @@
                     >
                         <div class="item m-t-15">
                             <a href="#" class="image">
-                                <img
-                                    data-echo="assets/images/brands/brand1.png"
-                                    src=""
-                                    alt=""
-                                />
+                                <img data-echo="assets/images/brands/brand1.png" src="" alt="" />
                             </a>
                         </div>
                         <!--/.item-->
 
                         <div class="item m-t-10">
                             <a href="#" class="image">
-                                <img
-                                    data-echo="assets/images/brands/brand2.png"
-                                    src=""
-                                    alt=""
-                                />
+                                <img data-echo="assets/images/brands/brand2.png" src="" alt="" />
                             </a>
                         </div>
                         <!--/.item-->
 
                         <div class="item">
                             <a href="#" class="image">
-                                <img
-                                    data-echo="assets/images/brands/brand3.png"
-                                    src=""
-                                    alt=""
-                                />
+                                <img data-echo="assets/images/brands/brand3.png" src="" alt="" />
                             </a>
                         </div>
                         <!--/.item-->
 
                         <div class="item">
                             <a href="#" class="image">
-                                <img
-                                    data-echo="assets/images/brands/brand4.png"
-                                    src=""
-                                    alt=""
-                                />
+                                <img data-echo="assets/images/brands/brand4.png" src="" alt="" />
                             </a>
                         </div>
                         <!--/.item-->
 
                         <div class="item">
                             <a href="#" class="image">
-                                <img
-                                    data-echo="assets/images/brands/brand5.png"
-                                    src=""
-                                    alt=""
-                                />
+                                <img data-echo="assets/images/brands/brand5.png" src="" alt="" />
                             </a>
                         </div>
                         <!--/.item-->
 
                         <div class="item">
                             <a href="#" class="image">
-                                <img
-                                    data-echo="assets/images/brands/brand6.png"
-                                    src=""
-                                    alt=""
-                                />
+                                <img data-echo="assets/images/brands/brand6.png" src="" alt="" />
                             </a>
                         </div>
                         <!--/.item-->
 
                         <div class="item">
                             <a href="#" class="image">
-                                <img
-                                    data-echo="assets/images/brands/brand2.png"
-                                    src=""
-                                    alt=""
-                                />
+                                <img data-echo="assets/images/brands/brand2.png" src="" alt="" />
                             </a>
                         </div>
                         <!--/.item-->
 
                         <div class="item">
                             <a href="#" class="image">
-                                <img
-                                    data-echo="assets/images/brands/brand4.png"
-                                    src=""
-                                    alt=""
-                                />
+                                <img data-echo="assets/images/brands/brand4.png" src="" alt="" />
                             </a>
                         </div>
                         <!--/.item-->
 
                         <div class="item">
                             <a href="#" class="image">
-                                <img
-                                    data-echo="assets/images/brands/brand1.png"
-                                    src=""
-                                    alt=""
-                                />
+                                <img data-echo="assets/images/brands/brand1.png" src="" alt="" />
                             </a>
                         </div>
                         <!--/.item-->
 
                         <div class="item">
                             <a href="#" class="image">
-                                <img
-                                    data-echo="assets/images/brands/brand5.png"
-                                    src=""
-                                    alt=""
-                                />
+                                <img data-echo="assets/images/brands/brand5.png" src="" alt="" />
                             </a>
                         </div>
                         <!--/.item-->
@@ -295,16 +224,15 @@ export default {
     },
 
     methods: {
-        //
+        
     },
     created() {
-        //
     },
     mounted() {},
 };
 </script>
 
-<style lang="scss" scoped>
+<style>
 @import '~@/assets/frontend/css/bootstrap.min.css';
 @import '~@/assets/frontend/css/main-blue-green.css';
 @import '~@/assets/frontend/css/animate.min.css';
@@ -317,4 +245,40 @@ export default {
 @import '~@/assets/frontend/css/owl.carousel.css';
 @import '~@/assets/frontend/css/owl.transitions.css';
 @import '~@/assets/frontend/css/rateit.css';
+
+/* .agile__nav-button {
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 14px;
+  top: -45px;
+  transition-duration: 0.3s;
+}
+.thumbnails .agile__nav-button {
+  position: absolute;
+  transform: translateY(-50%);
+}
+.thumbnails .agile__nav-button--prev {
+  right: 35px;
+}
+.thumbnails .agile__nav-button--next {
+  right: 5px;
+}
+.thumbnails .fa-chevron-right {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 7px;
+  padding-right: 7px;
+  background: #dddddd;
+}
+.thumbnails .fa-chevron-left {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 7px;
+  padding-right: 7px;
+  background: #dddddd;
+}
+.agile__nav-button:hover {
+  color: #888;
+} */
 </style>

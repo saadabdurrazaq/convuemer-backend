@@ -94,7 +94,7 @@
           </li>
           <li class="nav-item">
             <router-link :to="{ name: 'sliders-index' }" class="nav-link" href="#">
-              <i class="nav-icon fas fa-object-group"></i>
+              <i class="nav-icon fas fa-object-group"></i> 
               <p>Sliders</p>
             </router-link>
           </li>

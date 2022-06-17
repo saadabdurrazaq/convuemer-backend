@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <!-- begin the element -->
-                <div class="row">
+                <div class="row"> 
                     <div class="col-12">
                         <div class="card card-outline card-info">
                             <div class="card-body">
@@ -332,26 +332,6 @@
                                             </button>
                                         </div>
                                         <div
-                                            style="display: none"
-                                            id="errMsg"
-                                            class="box no-border"
-                                        >
-                                            <div class="box-tools">
-                                                <p class="alert alert-warning alert-dismissible">
-                                                    Only image file is allowed!
-                                                    <button
-                                                        type="button"
-                                                        @click.prevent="closeMsg"
-                                                        class="close"
-                                                        data-hide="alert"
-                                                        aria-label="Close"
-                                                    >
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div
                                             v-if="loadingForm"
                                             style="position: absolute; top: 20%; left: 40%"
                                         >
@@ -362,73 +342,73 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="slider_header">Slider Header</label>
+                                            <label for="invoice_number">Invoice Number</label>
                                             <input
-                                                v-model="form.slider_header"
+                                                v-model="form.invoice_number"
                                                 type="text"
-                                                name="slider_header"
-                                                id="slider_header"
-                                                placeholder="Slider Header"
+                                                name="invoice_number"
+                                                id="invoice_number"
+                                                placeholder="Invoice Number"
                                                 class="form-control"
                                                 :class="{
-                                                    'is-invalid': form.errors.has('slider_header'),
+                                                    'is-invalid': form.errors.has('invoice_number'),
                                                 }"
                                             />
                                             <span class="text-danger" id="codeError"></span>
                                             <div
                                                 style="color: red"
-                                                v-if="form.errors.has('slider_header')"
-                                                v-html="form.errors.get('slider_header')"
+                                                v-if="form.errors.has('invoice_number')"
+                                                v-html="form.errors.get('invoice_number')"
                                             />
                                         </div>
                                         <div class="form-group">
-                                            <label for="title">Title</label>
+                                            <label for="user">Buyer</label>
                                             <input
-                                                v-model="form.title"
+                                                v-model="form.user.name"
                                                 type="text"
-                                                name="title"
-                                                id="title"
-                                                placeholder="Slider Title"
+                                                name="user"
+                                                id="user"
+                                                placeholder="Buyer"
                                                 class="form-control"
                                                 :class="{
-                                                    'is-invalid': form.errors.has('title'),
+                                                    'is-invalid': form.errors.has('user'),
                                                 }"
                                             />
                                             <span class="text-danger" id="codeError"></span>
                                             <div
                                                 style="color: red"
-                                                v-if="form.errors.has('title')"
-                                                v-html="form.errors.get('title')"
+                                                v-if="form.errors.has('user')"
+                                                v-html="form.errors.get('user')"
                                             />
                                         </div>
-                                        <div class="form-group">
-                                            <label for="description">Description</label>
-                                            <textarea
-                                                v-model="form.description"
+                                        <div class="form-group"> 
+                                            <label for="created_at">Order Date</label>
+                                            <input
+                                                v-model="form.created_at"
                                                 :class="{
-                                                    'is-invalid': form.errors.has('description'),
+                                                    'is-invalid': form.errors.has('created_at'),
                                                 }"
-                                                id="description"
+                                                id="created_at"
                                                 class="form-control"
-                                                name="description"
+                                                name="created_at"
                                                 required
-                                                autocomplete="description"
+                                                autocomplete="created_at"
                                             />
-                                            <span class="text-danger" id="description_error"></span>
+                                            <span class="text-danger" id="created_at_error"></span>
                                             <div
                                                 style="color: red"
-                                                v-if="form.errors.has('description')"
-                                                v-html="form.errors.get('description')"
+                                                v-if="form.errors.has('created_at')"
+                                                v-html="form.errors.get('created_at')"
                                             />
                                         </div>
                                         <div class="form-group">
-                                            <label for="button_text">Button Text</label>
+                                            <label for="button_text">Status</label>
                                             <input
                                                 v-model="form.button_text"
                                                 type="text"
                                                 name="button_text"
                                                 id="button_text"
-                                                placeholder="Button Text"
+                                                placeholder="Status"
                                                 class="form-control"
                                                 :class="{
                                                     'is-invalid': form.errors.has('button_text'),
@@ -439,76 +419,6 @@
                                                 style="color: red"
                                                 v-if="form.errors.has('button_text')"
                                                 v-html="form.errors.get('button_text')"
-                                            />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="link">Link</label>
-                                            <input
-                                                v-model="form.link"
-                                                type="text"
-                                                name="link"
-                                                id="link"
-                                                placeholder="Button Text"
-                                                class="form-control"
-                                                :class="{
-                                                    'is-invalid': form.errors.has('link'),
-                                                }"
-                                            />
-                                            <span class="text-danger" id="codeError"></span>
-                                            <div
-                                                style="color: red"
-                                                v-if="form.errors.has('link')"
-                                                v-html="form.errors.get('link')"
-                                            />
-                                        </div>
-                                        <div class="form-group">
-                                            <input
-                                                type="file"
-                                                id="slider_image"
-                                                name="slider_image"
-                                                @change="handleFile"
-                                            />
-                                            <div
-                                                style="color: red"
-                                                v-if="form.errors.has('slider_image')"
-                                                v-html="form.errors.get('slider_image')"
-                                            />
-                                        </div>
-                                        <div
-                                            class="array-images-forEdit"
-                                            style="position: relative"
-                                        >
-                                            <button
-                                                type="submit"
-                                                @click.prevent="clearImage"
-                                                value=""
-                                                name="close-forEdit"
-                                                class="close-forEdit"
-                                                id="close-forEdit"
-                                                style="
-                                                    display: none;
-                                                    position: absolute;
-                                                    top: 0;
-                                                    left: 0;
-                                                    left: 5px;
-                                                    margin-left: 75px;
-                                                    border-style: none;
-                                                    font-size: 1.5rem;
-                                                    font-weight: 700;
-                                                    line-height: 1;
-                                                    color: #000;
-                                                    text-shadow: 0 1px 0 #fff;
-                                                    background-color: transparent;
-                                                "
-                                                aria-label="Close"
-                                            >
-                                                <span>&times;</span>
-                                            </button>
-                                            <img
-                                                v-bind:src="imagePreview"
-                                                width="100"
-                                                height="100"
-                                                v-show="showPreview"
                                             />
                                         </div>
                                     </div>
@@ -592,13 +502,12 @@ export default {
             orders: {},
             form: new Form({
                 id: '',
-                slider_image: [],
-                slider_header: '',
-                title: '',
-                description: '',
-                button_text: '',
-                link: '',
+                invoice_number: '',
+                created_at: '',
+                user: {},
                 status: '',
+                products: [],
+                variants_prod: [],
             }),
             msg: '',
             title: '',
@@ -886,13 +795,14 @@ export default {
         },
 
         // /editUser() function. Function we use to 1. Set /isFormCreateSliderMode to 'false', 2. Reset and clear form data, 3. Show modal containing dynamic form for adding/updating user details, 4. Fill form with user details.
-        editOrder(slider) {
+        editOrder(order) {
             this.isFormCreateSliderMode = false;
             this.form.reset(); // v form reset inputs
-            this.form.clear(); // v form clear errors
+            this.form.clear(); // v form clear errors 
             this.loadingForm = false;
             $('#exampleModal').modal('show'); // show modal
-            this.form.fill(slider);
+            this.form.fill(order);
+            this.form.created_at = new Intl.DateTimeFormat("en-GB", { year: "numeric", month: "long", day: "2-digit" }).format(new Date(this.form.created_at))
         },
 
         // /updateSlider() function. Function we use to update user details by calling api/orders/{id} method PUT (carrying form input data).

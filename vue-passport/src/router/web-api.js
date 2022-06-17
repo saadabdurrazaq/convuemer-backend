@@ -11,8 +11,8 @@ const route404 = [
             var urlPath = window.location.pathname;  
             if(urlPath.includes("staff")){
               return import( /* webpackChunkName: "dashboard" */ '@/views/staff/404.vue')
-            }
-            else{
+            } 
+            else {
               return import( /* webpackChunkName: "login" */ '@/views/user/404.vue') 
             }
         }  

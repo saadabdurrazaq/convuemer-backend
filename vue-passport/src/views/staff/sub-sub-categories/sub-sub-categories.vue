@@ -29,7 +29,7 @@
                         <div class="card card-outline card-info">
                             <div class="card-body">
                                 <div class="row" style="margin-top: -20px">
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <nav class="navecation">
                                             <ul id="navi" style="margin-top: 40px">
                                                 <li>
@@ -53,7 +53,7 @@
                                             </ul>
                                         </nav>
                                     </div>
-                                    <div class="col-md-9 text-right">
+                                    <div class="col-md-10 text-right">
                                         <button
                                             type="submit"
                                             class="btn btn-success"
@@ -1232,7 +1232,9 @@ export default {
             this.isFormSingleAssign = false;
             this.clearAndResetForm(); // v form reset and clear
             $('#subsubcategory_name').tokenfield('setTokens', []);
-            $('#exampleModal').modal('show'); // show modal
+            $('#exampleModal').on('shown.bs.modal', function () {
+                $('.modal').css('display', 'block');
+            });
         },
         // /create() function. Function we use to store user details by calling api/categories method POST (carrying form input data).
         create() {
@@ -1249,6 +1251,7 @@ export default {
                     this.total_sub_sub_cat = responseData.total_sub_sub_cat;
 
                     $('#exampleModal').modal('hide'); // hide modal
+                    $('.modal-backdrop').remove();
 
                     this.page = 1;
                     this.determineDefaultPage();
@@ -1258,7 +1261,6 @@ export default {
                 })
                 .catch((error) => {
                     console.log(error);
-                    console.log('sdfdsg');
                 })
                 .finally(() => {
                     this.loadingForm = false;
@@ -1599,6 +1601,7 @@ export default {
 </script>
 
 <style type="scss">
+body { padding-right: 0 !important }
 .highlight {
     background: #fff2e1;
 }

@@ -726,6 +726,7 @@ export default {
 </script>
 
 <style type="scss">
+body { padding-right: 0 !important }
 .highlight {
   background: #fff2e1;
 }

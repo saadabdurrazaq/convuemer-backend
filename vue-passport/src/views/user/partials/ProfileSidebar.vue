@@ -73,7 +73,7 @@ export default {
         .then((response) => {
           if (response.data.success) {
             //remove localStorage
-            localStorage.removeItem('token-user');
+            localStorage.removeItem('token-user'); 
             localStorage.removeItem('user-data');
 
             //redirect ke halaman login-staff

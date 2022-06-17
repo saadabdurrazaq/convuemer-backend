@@ -148,7 +148,7 @@
                                     </form>
                                 </div>
 
-                                <div class="panel-body table-responsive" style="overflow: hidden">
+                                <div class="panel-body table-responsive index">
                                     <!-- Data-table with pagination for user list. -->
                                     <table
                                         class="table table-bordered table-hover dataTable"
@@ -1282,6 +1282,10 @@ export default {
 }
 .pagination {
     margin: auto !important;
+}
+.index {
+  overflow-x: scroll;
+  white-space: nowrap;
 }
 .bootstrap-switch-small,
 .bootstrap-switch,

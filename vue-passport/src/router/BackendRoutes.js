@@ -212,9 +212,9 @@ const routes = [
             breadcrumb: [
                 { name: 'Home', link: '/staff/home', home: 'home' },
                 { name: 'Sub Sub Categories', link: 'index', home: 'index' },
-                { name: 'trash', active: 'active' }
+                { name: 'trash', active: 'active' } 
             ],
-            pageTitle: "Sub Sub Categories"
+            pageTitle: "Sub Sub Categories" 
         },
         beforeEnter: (to, from, next) => {
             if (!localStorage.getItem('token-staff')) {

@@ -1080,7 +1080,9 @@ export default {
             this.isFormAssignCategoryMode = false;
             this.isFormAssignSubSubCat = false;
             this.form.reset(); // v form reset
-            $('#exampleModal').modal('show'); // show modal
+            $('#exampleModal').on('shown.bs.modal', function () {
+                $('.modal').css('display', 'block');
+            });
         },
 
         // /createCategory() function. Function we use to store user details by calling api/categories method POST (carrying form input data).
@@ -1107,6 +1109,7 @@ export default {
                         $('.errorIcon').show();
                     } else {
                         $('#exampleModal').modal('hide'); // hide modal
+                        $('.modal-backdrop').remove();
 
                         this.page = 1;
                         this.determineDefaultPage();
@@ -1550,6 +1553,7 @@ export default {
 </script>
 
 <style type="scss">
+body { padding-right: 0 !important }
 .highlight {
     background: #fff2e1;
 }

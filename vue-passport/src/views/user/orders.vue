@@ -251,6 +251,7 @@ import ProfileSidebar from './partials/ProfileSidebar.vue';
 import Nav from './partials/Nav.vue';
 import Footer from './partials/Footer.vue';
 import { BASE_URL } from '@/assets/js/base-url.js';
+import swal from 'sweetalert2';
 
 export default {
   beforeCreate: function () {
@@ -276,7 +277,7 @@ export default {
       const token = localStorage.getItem('token-user');
 
       const router = useRouter();
-      if (!token) {
+      if (!token) { 
         return router.push({
           name: 'user-login',
         });
@@ -285,9 +286,9 @@ export default {
       //get data user
       axios.defaults.headers.common.Authorization = `Bearer ${token}`;
       axios
-        .get('http://localhost/my-project/laravue/api/user')
+        .get('api/user')
         .then((response) => {
-          this.user = response.data;
+          this.user = response.data; 
         })
         .catch((error) => {
           console.log(error.response.data);
@@ -322,15 +323,20 @@ export default {
         });
     },
   },
-  beforeMount() {},
+  beforeMount() {}, 
   created() {
     //
   },
   mounted() {
     this.checkAuth();
+    let data = this.$route.params.dataUser; 
+    console.log("data is", data); 
+    if (swal.isVisible()) {
+      document.querySelector('body').setAttribute('class', 'swal2-toast-shown swal2-shown');
+    }
   },
 };
-</script>
+</script> 
 
 <style>
 @import '~@/assets/frontend/css/bootstrap.min.css';

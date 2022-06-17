@@ -85,7 +85,7 @@
     </div>
 
     <!-- modal -->
-    <form @submit.prevent="isFormCreate ? store() : update()" novalidate>
+    <form @submit.prevent="isFormCreate ? store() : update()" novalidate> 
       <div
         class="modal animated fadeIn fade"
         id="modal_address"
@@ -492,6 +492,23 @@ export default {
         })
         .finally(() => {});
     },
+    showModalCreate() {
+      this.resetAndClearForm();
+      this.isFormCreate = true;
+      $('#modal_address').modal({ backdrop: 'static', keyboard: false });
+    },
+    showModalEdit(userAddress) {
+      $('#modal_address').modal({ backdrop: 'static', keyboard: false });
+      this.isFormCreate = false;
+      this.regencies = [];
+      this.districts = [];
+      this.villages = [];
+      this.resetAndClearForm();
+      this.form.fill(userAddress);
+      this.loadRegencies(this.form.province_residence);
+      this.loadDistricts(this.form.regency_residence);
+      this.loadVillages(this.form.district_residence);
+    },
     store() {
       this.loadingForm = true;
 
@@ -510,23 +527,6 @@ export default {
           this.loadingForm = false;
           this.loadStoredAddresses();
         });
-    },
-    showModalCreate() {
-      this.resetAndClearForm();
-      this.isFormCreate = true;
-      $('#modal_address').modal({ backdrop: 'static', keyboard: false });
-    },
-    showModalEdit(userAddress) {
-      $('#modal_address').modal({ backdrop: 'static', keyboard: false });
-      this.isFormCreate = false;
-      this.regencies = [];
-      this.districts = [];
-      this.villages = [];
-      this.resetAndClearForm();
-      this.form.fill(userAddress);
-      this.loadRegencies(this.form.province_residence);
-      this.loadDistricts(this.form.regency_residence);
-      this.loadVillages(this.form.district_residence);
     },
     showSuccessMsg(response) {
       var responseData = response.data;
@@ -627,6 +627,75 @@ export default {
 </script>
 
 <style type="scss">
+.modal-open {
+  padding-right: 0;
+}
+.modal-open .modal {
+  overflow: hidden;
+}
+.modal-dialog {
+  position: relative;
+  width: auto;
+  height: 100%;
+  margin: 48px;
+}
+.modal-content {
+  max-height: calc(100% - 96px);
+  overflow-y: auto;
+  padding: 8px;
+  background-color: #fff;
+  border: 0;
+  border-radius: 0;
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #000;
+}
+.modal-backdrop.in {
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+}
+.modal-header {
+  padding: 16px;
+  padding-bottom: 0;
+  border: 0;
+  min-height: inherit;
+}
+.modal-header .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  margin: 0;
+  padding: 0;
+  height: 56px;
+  width: 56px;
+  min-width: 56px;
+  font-size: 24px;
+  line-height: 56px;
+}
+.modal-title {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 500;
+  letter-spacing: 0.05px;
+  color: rgba(0, 0, 0, 0.87);
+  margin: 0;
+}
+.modal-body {
+  color: rgba(0, 0, 0, 0.87);
+  padding: 16px;
+}
+.modal-footer {
+  height: 48px;
+  padding: 8px 16px;
+  text-align: right;
+  border: 0;
+}
 body {
   overflow: auto;
   padding-right: 0 !important;

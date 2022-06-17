@@ -757,7 +757,9 @@ export default {
         showModalCreate() {
             this.isFormCreateSubCategoryMode = true;
             this.form.reset(); // v form reset
-            $('#exampleModal').modal('show'); // show modal
+            $('#exampleModal').on('shown.bs.modal', function () {
+                $('.modal').css('display', 'block');
+            });
         },
 
         // /createSubCategories() function. Function we use to store user details by calling api/categories method POST (carrying form input data).
@@ -777,6 +779,7 @@ export default {
                     this.total_sub_cat = responseData.total_sub_cat;
 
                     $('#exampleModal').modal('hide'); // hide modal
+                    $('.modal-backdrop').remove();
 
                     this.page = 1;
                     this.determineDefaultPage();
@@ -956,6 +959,7 @@ export default {
 </script>
 
 <style type="scss">
+body { padding-right: 0 !important }
 .highlight {
     background: #fff2e1;
 }

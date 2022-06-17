@@ -56,8 +56,7 @@
                                     <div class="col-md-8 text-right">
                                         <router-link
                                             :to="{ name: 'products-create' }"
-                                            class="btn btn-success"
-                                            data-toggle="modal"
+                                            class="btn btn-success" 
                                             style="margin-top: 25px; margin-right: 7px"
                                         >
                                             <i class="fas fa-plus"></i> Add New Product
@@ -163,7 +162,7 @@
                                                 </th>
                                                 <th>No</th>
                                                 <th>Image</th>
-                                                <th>Product Name</th>
+                                                <th width="45%">Product Name</th>
                                                 <th>Price</th>
                                                 <th>Stock</th>
                                                 <th>Status</th>
@@ -218,7 +217,7 @@
                                                     />
                                                 </td>
                                                 <td v-else>No images</td>
-                                                <td class="align-middle">
+                                                <td class="align-middle product-name"> 
                                                    <router-link
                                                         :to="{
                                                             name: 'product-show',
@@ -228,7 +227,7 @@
                                                         > {{ product.product_name }} 
                                                     </router-link>
                                                 </td>
-                                                <td class="align-middle">
+                                                <td class="align-middle product-price">
                                                     Rp.
                                                     {{ formatNumber(product.price) }}
                                                 </td>
@@ -802,8 +801,6 @@ export default {
     },
 
     mounted() {
-        console.log('Component mounted.');
-
         // prevent sweetalert error if user change the route when swal is still visible.
         if (swal.isVisible()) {
             document.querySelector('body').setAttribute('class', 'swal2-toast-shown swal2-shown');
@@ -813,6 +810,8 @@ export default {
 </script>
 
 <style type="scss">
+.product-name, .th_product_name{width:45%;} 
+.product-price{width:15%}
 .highlight {
     background: #fff2e1;
 }

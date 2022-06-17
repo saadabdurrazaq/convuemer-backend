@@ -248,8 +248,8 @@ export default {
         const token = localStorage.getItem('token-user');
         const body = document.body;
 
-        onMounted(() => {
-            let searchParams = new URLSearchParams(window.location.search);
+        onMounted(() => { 
+            let searchParams = new URLSearchParams(window.location.search); 
             if (searchParams.has('redirect')) {
                 $('#errMsg').show('fast');
                 loginFailed.value = true;
@@ -259,7 +259,7 @@ export default {
             //get data user
             axios.defaults.headers.common.Authorization = `Bearer ${token}`; 
             axios
-                .get('http://localhost/my-project/laravue/api/user')
+                .get('api/user')
                 .then((response) => {
                     console.log(response.data.name);
                     user.value = response.data;
@@ -307,7 +307,7 @@ export default {
 
             //send server with axios
             axios
-                .post('http://localhost/my-project/laravue/api/user/login', {
+                .post('api/user/login', {
                     email,
                     password,
                 })

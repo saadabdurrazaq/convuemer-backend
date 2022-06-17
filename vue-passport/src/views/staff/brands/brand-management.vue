@@ -178,7 +178,7 @@
                                                     <div></div>
                                                     <div></div>
                                                     <div></div>
-                                                </div> 
+                                                </div>
                                             </div>
                                             <!-- Loop through each user record and display user details -->
                                             <tr
@@ -299,7 +299,7 @@
                         </div>
                     </div>
 
-                    <!-- Modal containing dynamic form for adding/updating user details. -->
+                    <!-- Modal containing dynamic form for adding/updating user details. --> 
                     <div
                         class="modal fade"
                         id="exampleModal"
@@ -846,7 +846,9 @@ export default {
         showModal() {
             this.isFormCreateBrandMode = true;
             this.form.reset(); // v form reset
-            $('#exampleModal').modal('show'); // show modal
+            $('#exampleModal').on('shown.bs.modal', function () {
+                $('.modal').css('display', 'block');
+            });
         },
 
         // /createBrand() function. Function we use to store user details by calling api/brands method POST (carrying form input data).
@@ -864,6 +866,7 @@ export default {
                 .post('api/staff/brand-management', formData)
                 .then((response) => {
                     $('#exampleModal').modal('hide'); // hide modal
+                    $('.modal-backdrop').remove();
 
                     this.detectNewRecord = true;
                     this.page = 1;
@@ -1083,7 +1086,6 @@ export default {
     },
 
     created() {
-        // Call /GetBrands() function initially.
         this.GetBrands();
     },
 
@@ -1098,6 +1100,9 @@ export default {
 </script>
 
 <style type="scss">
+body {
+    padding-right: 0 !important;
+}
 .highlight {
     background: #fff2e1;
 }

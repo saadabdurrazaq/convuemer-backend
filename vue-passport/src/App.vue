@@ -10,7 +10,7 @@
 <script>
 export default {
   beforeCreate: function () {
-    document.body.className = 'app'; 
+    document.body.className = 'app';  
   },
   name: 'App',
   components: {
@@ -21,7 +21,7 @@ export default {
   }),
   mounted() {
     //  [App.vue specific] When App.vue is finish loading finish the progress bar
-    this.$Progress.finish();
+    this.$Progress.finish(); 
   },
   created() {
     //  [App.vue specific] When App.vue is first loaded start the progress bar

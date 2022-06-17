@@ -383,7 +383,7 @@
                                 id="second"
                                 :name="'condition_' + variantVal.id"
                               />
-                              <label for="second">Second</label>
+                              <label for="second">Secondz</label>
                             </td>
                             <td>
                               <input
@@ -1098,6 +1098,14 @@ export default {
       }
       $('.product_variants').find(':input').val('');
       this.generateVariantProducts();
+
+      var self = this;
+      this.form.variants_prod.forEach((item) => {
+        setTimeout(function () {
+          self.fileInputVariants(item.id);
+        }, 100);
+      });
+      
     },
     tokenField(id) {
       // enter button is killed no current input data found. To activate again, open the bootstrap-tokenfield.js, and search "kill enter button", uncomment the rest of code, and delete e.preventDefault()
@@ -1367,31 +1375,44 @@ export default {
         evt.preventDefault();
       } else {
         this.form.variants_prod.forEach((data) => {
-          // limit input
+          // start variant price
           var txtVal = $('.variant_price_' + data.id).val();
           if (txtVal.length > 11) {
             $('.variant_price_' + data.id).val(txtVal.substring(0, 11));
             return false;
           }
-
           // add dot in numbers and only number is allowed (replace(/\D/g, '')).
           $('.variant_price_' + data.id).val(function (index, value) {
             return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
           });
+          // end variant price
 
+          // start variant weight
+          var txtValPrice = $('.product_weight_variant_' + data.id).val();
+          if (txtValPrice.length > 11) {
+            $('.product_weight_variant_' + data.id).val(txtVal.substring(0, 11));
+            return false;
+          }
+          $('.product_weight_variant_' + data.id).val(function (index, value) {
+            return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+          });
+          // end variant weight
+
+          // start variant stock
           var varStock = $('.variant_available_stock_' + data.id).val();
           if (varStock.length > 11) {
             $('.variant_available_stock_' + data.id).val(varStock.substring(0, 11));
             return false;
           }
-
           // add dot in numbers and only number is allowed (replace(/\D/g, '')).
           $('.variant_available_stock_' + data.id).val(function (index, value) {
             return value.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
           });
+          // end variant stock
 
-          data.price = $('.variant_price_' + data.id).val();
+          data.price = $('.variant_price_' + data.id).val(); 
           data.available_stock = $('.variant_available_stock_' + data.id).val();
+          data.product_weight = $('.product_weight_variant_' + data.id).val();
         });
 
         let className = [
@@ -1654,7 +1675,7 @@ export default {
       swal.fire({
         icon: 'error',
         title: 'Oopss...',
-        text: 'Make sure you have fill all the fields!', //this.msg,
+        text: 'Make sure you have fill all the fields! And no symbols in any fields!', //this.msg,
         footer: '<a href>Why do I have this issue?</a>',
       });
     },
@@ -1827,7 +1848,7 @@ export default {
         this.showSuccessMsg(res);
       }
     },
-    store() {
+    store() { 
       $('#loadingButton').html(
         `<div class="proc-regis"><i class='fa fa-circle-o-notch fa-spin'></i> Storing data</div>`
       );
@@ -1907,6 +1928,8 @@ export default {
     this.loadBrands();
     this.loadCatSelectOption();
     this.fileInput();
+    $("#kvFileinputModal").removeClass("modal"); // prevent collision between another modals
+    $(".fade").css("display", "none"); // if this class is not hidden, there will be space in bottom page
     this.disableRightClickAndLongPress('min_order');
     this.disableRightClickAndLongPress('price');
     this.disableRightClickAndLongPress('available_stock');
@@ -1934,9 +1957,9 @@ select.form-control {
   padding-bottom: 5px;
   margin-right: 50px;
 }
-td {
+/* td {
   white-space: nowrap;
-}
+} */
 .product_variants {
   overflow-x: scroll;
   white-space: nowrap;
@@ -1972,24 +1995,4 @@ td {
 .bootstrap-switch-danger {
   width: 42.8px;
 }
-/* adjust file input preview image. Place it in fileinput css file*/
-/*.file-thumbnail-footer {
-    width: 113;
-    height: 70;
-}
-.clearfix {
-    width: 113;
-    height: 31;
-}
-.kv-file-content {
-    width: 113; 
-    height: 100; 
-display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-.file-preview-frame {
-    width: 127;
-    height: 169;
-}*/ ;
 </style>

@@ -302,32 +302,20 @@ RewriteOptions inherit
   RewriteRule . /index.html [L]
 </IfModule>
 
+PREVENT 429 TOO MANY REQUESTS:
+C:\xampp\htdocs\my-project\laravue\app\Providers\RouteServiceProvider.php change 60 to 1000
+
 =======================================================================
 
 BUGS AND IMPROVEMENT:
-1. Disable reload in frontend page. 
-2. Remove padding right when modal is opened in backend.
-3. Product image slider problem when variant product is selected. 
-4. Fetured products slider arrow not responsive. 
+1. In frontend page, if the request page is not reloaded there is conflict style between featured product slider and show product slider
+2. http://localhost:8080/user/checkout if cart is updated, the product cart in that page also must be updated if user select courier. The same in cart checkout. 
+3. In http://localhost:8080/cart if we remove one of product. And in the previous page, if we hit add to cart button in condition cart data, the old cart data must be updated, before update the new one. 
+
+4. In edit product page > add variant product > upload image variant product > leave the new variant product field empty > hit upload button > input all the variant product fields > hit upload button > Duplicate variant product image appear. 
 5. In edit product page > add variant product > upload image variant product > leave the new variant product field empty > hit upload button > delete image variant product. 
-6. In edit product page > add variant product > upload image variant product > leave the new variant product field empty > hit upload button > input all the variant product fields > hit upload button > Duplicate variant product image appear. 
-7. In create product page > add 2 variant type > fill of the variant options > remove one of variant type > fileinput image not loaded. 
-8. In sub sub categories page > add sub sub category > submit > all button cant be clicked. (Seems it happens almost in every backend page)
-9. cover in product and product combination not inserted into database both when input or edit data. 
-10. http://localhost:8080/user/buy-checkout not responsive
-11. city_id field in regencies table must be filled
-12. In http://localhost:8080/cart if we remove one of product. And in the previous page, if we hit add to cart button in condition cart data, the old cart data must be updated, before update the new one. 
-13. Trouble in slider product item when variant product changes.
-14. http://localhost:8080/user/checkout if cart is updated, the product cart in that page also must be updated if user select courier. The same in cart checkout. 
-15. in http://localhost:8080/staff/products/index field product name is over width after the new product is added. 
-16. There are many static route in certain page. Make it dynamic!
-17. If user dont have address, and want to checkout. There is warning to input an address, when the link clicked, the specific tab must be opened. 
-18. Implement RBAC in each feature. 
-19. Improvement features in all orders and user orders.
-20. Variant products weight validations. 
-21. Add the description about the shipping cost in checkout page 
-22. In checkout page > summary product > if title product too long, the view is not good. 
-23. Show success message when order successfully is not good. 
+6. Improvement features in all orders and user orders
+7. Implement RBAC in each feature. 
 
 NEXT FEATURES: 
 1. Change password
@@ -336,8 +324,9 @@ NEXT FEATURES:
 4. List products in homepage.
 5. tracking orders.
 6. email.
-7. Pagination in list orders.
+7. Register
 8. Payment.
+9. Dynamic footer and header. 
 
 ERROR: 
 ikea
@@ -345,4 +334,10 @@ straw
 inisfree
 bolt
 
-input city id: start from 16 
+
+<a class="btn btn-upper btn-block m-t-20" :href="$router.resolve({name: 'checkout'}).href">Checkout</a>
+
+
+
+
+

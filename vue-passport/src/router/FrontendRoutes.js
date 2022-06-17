@@ -1,3 +1,5 @@
+const ShippingAddresses = () => import('../views/user/partials/ShippingAddresses.vue')
+
 const frontendRoutes = [
     {
         path: '/',
@@ -5,7 +7,7 @@ const frontendRoutes = [
         component: () => import( /* webpackChunkName: "login" */ '@/views/user/Welcome.vue') // This part is integrated with C:\xampp\htdocs\my-project\laravue\vue-passport\public\index.html
     },
     {
-        path: '/product/:id/:slug',  
+        path: '/product/:id/:slug',   
         name: 'product-show',
         component: () => import('@/views/user/products/show.vue'), 
         meta: {
@@ -31,7 +33,7 @@ const frontendRoutes = [
                 { name: 'Home', link: '/', home: 'home' },
                 { name: 'Login' }
             ],
-            pageTitle: "Login"
+            pageTitle: "Login" 
         },
         beforeEnter: (to, from, next) => {
             if (localStorage.getItem('token-user')) {
@@ -40,7 +42,7 @@ const frontendRoutes = [
             next();
         }
     },
-    {
+    { 
         path: '/user/change-password',
         name: 'user-change-password',
         component: () => import( /* webpackChunkName: "login" */ '@/views/user/ChangePassword.vue'),
@@ -64,7 +66,14 @@ const frontendRoutes = [
                     query: { redirect: to.fullPath }
                 })
             }
-        }
+        },
+        children: [
+            {
+              path: '/user/shipping-addresses',
+              name: 'user-shipping-addresses',
+              component: ShippingAddresses,
+            },
+        ]
     },
     {
         path: '/cart',  
@@ -135,7 +144,7 @@ const frontendRoutes = [
     {
         path: '/user/orders',  
         name: 'orders',
-        component: () => import('@/views/user/orders.vue'),
+        component: () => import('@/views/user/orders.vue'), 
         meta: {
             breadcrumb: [
                 { name: 'Home', link: 'home', home: 'home' },
@@ -146,7 +155,7 @@ const frontendRoutes = [
         },
         beforeEnter: (to, from, next) => {
             if (localStorage.getItem('token-user')) {
-                next();
+                next(); // if token-user is exist, then bring user to orders page
             } else {
                 next({
                     path: '/user/login',

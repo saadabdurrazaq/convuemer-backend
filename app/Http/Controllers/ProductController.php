@@ -208,7 +208,7 @@ class ProductController extends Controller
 
         $productWeight = str_replace(".", "", $data_value['product_weight']);
         if ($data_value['metric_mass'] == 'G (Gram)') {
-            $weight = $productWeight / 1000; 
+            $weight = $productWeight / 1000;
             $weight = ceil($weight);
         } else {
             $weight = $productWeight;
@@ -252,7 +252,14 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $data_value = $this->inputData();
 
-        $productWeight = str_replace(".", "", $data_value['product_weight']); 
+        $JSONimgsStr = json_encode($data_value['images']);
+        $JSONimgsArr = json_decode($JSONimgsStr, TRUE);
+        $imagesCaption = array();
+        foreach ($JSONimgsArr as $image) {
+            $imagesCaption[] = $image['caption'];
+        }
+
+        $productWeight = str_replace(".", "", $data_value['product_weight']);
         if ($data_value['metric_mass'] == 'G (Gram)') {
             $weight = $productWeight / 1000;
             $weight = ceil($weight);
@@ -288,6 +295,7 @@ class ProductController extends Controller
             'special_offer' => $data_value['special_offer'],
             'special_deals' => $data_value['special_deals'],
             'status' => $data_value['status'],
+            'cover' => $imagesCaption[0]
         ]);
     }
 
@@ -380,7 +388,7 @@ class ProductController extends Controller
         }
     }
 
-    public function store(Request $request) 
+    public function store(Request $request)
     {
         $this->validateFields();
 
@@ -903,6 +911,19 @@ class ProductController extends Controller
 
             ///////////////////////////////////////////////////////////////////////////////////////
 
+            // Update the variant type product
+            $variants = $this->request->get('variants');
+
+            foreach ($variants as $variant) {
+                $variant_type = $variant['variant_type'];
+
+                VariantType::where('product_id', $id)->update([
+                    'product_id' => $id,
+                    'variant_name' => $variant_type,
+                    'variant_type' => $variant_type,
+                ]);
+            }
+
             // update the single product
             if ($totalInputtedPicts > 0) { // if total input images of single product is more than 0
                 $this->updateProduct($id); // update single product
@@ -979,6 +1000,12 @@ class ProductController extends Controller
                         } else {
                             $weight = $productWeight;
                         }
+                        $JSONimgsStr = json_encode($key['images']);
+                        $JSONimgsArr = json_decode($JSONimgsStr, TRUE);
+                        $imagesCaption = array();
+                        foreach ($JSONimgsArr as $image) {
+                            $imagesCaption[] = $image['caption'];
+                        }
 
                         $stringParts = str_split($productVariant);
                         sort($stringParts, SORT_NATURAL | SORT_FLAG_CASE);
@@ -1004,6 +1031,7 @@ class ProductController extends Controller
                             'condition' => $condition,
                             'status' => $status,
                             'images' => json_encode($images),
+                            'cover' => $imagesCaption[0]
                         ]);
                     }
                 }
@@ -1029,6 +1057,7 @@ class ProductController extends Controller
                     $productWeight = array();
                     $metricMass = array();
                     $weight = array();
+                    $caption = array();
 
                     for ($i = 0; $i < count($varProdsBeenStoredInDb); $i++) {
                         array_push($prices, $varProdsBeenStoredInDb[$i]['price']);
@@ -1038,6 +1067,11 @@ class ProductController extends Controller
                         array_push($status, $varProdsBeenStoredInDb[$i]['status']);
                         array_push($productWeight, $varProdsBeenStoredInDb[$i]['product_weight']);
                         array_push($metricMass, $varProdsBeenStoredInDb[$i]['metric_mass']);
+                        $JSONimgsStr = json_encode($varProdsBeenStoredInDb[$i]['images']);
+                        $JSONimgsArr = json_decode($JSONimgsStr, TRUE);
+                        foreach ($JSONimgsArr as $image) {
+                            $caption[] = $image['caption'];
+                        }
 
                         if ($varProdsBeenStoredInDb[$i]['metric_mass'] == 'G (Gram)') {
                             $calcWeight = $varProdsBeenStoredInDb[$i]['product_weight'] / 1000;
@@ -1076,6 +1110,7 @@ class ProductController extends Controller
                             'available_stock' => str_replace(".", "", $available_stocks[$index]),
                             'condition' => $conditions[$index],
                             'status' => $status[$index],
+                            'cover' => $caption[$index]
                         ]);
                     }
                 }

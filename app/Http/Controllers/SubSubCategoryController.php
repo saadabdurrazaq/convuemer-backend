@@ -18,6 +18,12 @@ class SubSubCategoryController extends Controller
 	public function __construct(Request $request)
 	{
 		$this->request = $request;
+
+		$this->middleware('permission:View Sub Sub Categories', ['only' => ['index']]);  
+        $this->middleware('permission:Create Sub Sub Category', ['only' => ['store']]);
+        $this->middleware('permission:Update Sub Sub Category', ['only' => ['update', 'bulkAssign', 'singleAssign', 'doSingleAssign']]);
+        $this->middleware('permission:Delete Sub Sub Category', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple']]);
+		
 	}
 
 	public function index(Request $request)

@@ -158,18 +158,21 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     Route::get('sliders/restore/{id}', [SliderController::class, 'restore']);
     Route::get('sliders/restore-multiple/ids={ids}', [SliderController::class, 'restoreMultiple']);
 
-    // Manage Roles
+    // Manage Roles 
     Route::get('roles/index', [RoleController::class, 'index']); 
     Route::get('roles/create', [RoleController::class, 'create']); 
     Route::post('roles/store', [RoleController::class, 'store']);
     Route::get('roles/edit/{id}', [RoleController::class, 'edit']);
-    Route::put('roles/update/{id}', [RoleController::class, 'update']);
+    Route::put('roles/update/{id}', [RoleController::class, 'update']);  
     Route::get('roles/permissions/{permissionName}', [RoleController::class, 'check']);
 
     // Manage orders
     Route::get('orders/index', [AllOrderController::class, 'index']); 
     Route::get('orders/edit/{id}', [AllOrderController::class, 'edit']);
     Route::put('orders/update/{id}', [AllOrderController::class, 'update']);
+    Route::get('orders/search/{keyword}', [AllOrderController::class, 'searchData']); 
+    Route::delete('orders/force-delete/{id}', [AllOrderController::class, 'forceDelete']);
+    Route::get('orders/force-delete-multiple/ids={ids}', [AllOrderController::class, 'forceDeleteMultiple']);
 });
 
 Route::middleware(['auth:staff-api', 'scopes:staff'])->get('/staff', function (Request $request) {

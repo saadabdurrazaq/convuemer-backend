@@ -35,6 +35,7 @@
                         />
                       </div>
                     </div>
+                    <!-- column left -->
                     <div
                       class="col-xs-6 col-sm-6 col-md-6 panel-body table-responsive"
                       style="overflow: hidden"
@@ -45,7 +46,10 @@
                         style="border: 1px solid rgba(0, 0, 0, 0.125)"
                       >
                         <tbody>
-                          <tr v-for="permission in form.permissions.slice(0, 4)" :key="permission.id">
+                          <tr
+                            v-for="permission in form.permissions.slice(0, 4)"
+                            :key="permission.id"
+                          >
                             <td>
                               <input
                                 type="checkbox"
@@ -55,7 +59,9 @@
                                 :value="permission.id"
                                 class="product_management"
                                 data-size="small"
-                                :checked="Object.values(form.role_permissions).includes(permission.id)" 
+                                :checked="
+                                  Object.values(form.role_permissions).includes(permission.id)
+                                "
                               />
                               {{ permission.name }} <br />
                             </td>
@@ -68,7 +74,10 @@
                         style="border: 1px solid rgba(0, 0, 0, 0.125)"
                       >
                         <tbody>
-                          <tr v-for="permission in form.permissions.slice(8, 12)" :key="permission.id">
+                          <tr
+                            v-for="permission in form.permissions.slice(8, 12)"
+                            :key="permission.id"
+                          >
                             <td>
                               <input
                                 type="checkbox"
@@ -77,7 +86,63 @@
                                 data-off-color="danger"
                                 :value="permission.id"
                                 class="user_management"
-                                :checked="Object.values(form.role_permissions).includes(permission.id)"
+                                :checked="
+                                  Object.values(form.role_permissions).includes(permission.id)
+                                "
+                              />
+                              {{ permission.name }} <br />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <strong>Categories Management</strong>
+                      <table
+                        class="table table-hover table-striped dataTable"
+                        style="border: 1px solid rgba(0, 0, 0, 0.125)"
+                      >
+                        <tbody>
+                          <tr
+                            v-for="permission in form.permissions.slice(16, 20)"
+                            :key="permission.id"
+                          >
+                            <td>
+                              <input
+                                type="checkbox"
+                                name="permission[]"
+                                data-bootstrap-switch
+                                data-off-color="danger"
+                                :value="permission.id"
+                                class="user_management"
+                                :checked="
+                                  Object.values(form.role_permissions).includes(permission.id)
+                                "
+                              />
+                              {{ permission.name }} <br />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <strong>Sub Sub Categories Management</strong>
+                      <table
+                        class="table table-hover table-striped dataTable"
+                        style="border: 1px solid rgba(0, 0, 0, 0.125)"
+                      >
+                        <tbody>
+                          <tr
+                            v-for="permission in form.permissions.slice(24, 28)"
+                            :key="permission.id"
+                          >
+                            <td>
+                              <input
+                                type="checkbox"
+                                name="permission[]"
+                                data-bootstrap-switch
+                                data-off-color="danger"
+                                :value="permission.id"
+                                class="user_management"
+                                :checked="
+                                  Object.values(form.role_permissions).includes(permission.id)
+                                "
                               />
                               {{ permission.name }} <br />
                             </td>
@@ -85,6 +150,9 @@
                         </tbody>
                       </table>
                     </div>
+                    <!-- end column left -->
+
+                    <!-- column right -->
                     <div
                       class="col-xs-6 col-sm-6 col-md-6 panel-body table-responsive"
                       style="overflow: hidden"
@@ -95,7 +163,10 @@
                         style="border: 1px solid rgba(0, 0, 0, 0.125)"
                       >
                         <tbody>
-                          <tr v-for="permission in form.permissions.slice(4, 8)" :key="permission.id">
+                          <tr
+                            v-for="permission in form.permissions.slice(4, 8)"
+                            :key="permission.id"
+                          >
                             <td>
                               <input
                                 type="checkbox"
@@ -106,16 +177,103 @@
                                 v-model="roles_status"
                                 v-bind="$attrs"
                                 :value="permission.id"
-                                :checked="Object.values(form.role_permissions).includes(permission.id)"
+                                :checked="
+                                  Object.values(form.role_permissions).includes(permission.id)
+                                "
                               />
                               {{ permission.name }}
                             </td>
                           </tr>
                         </tbody>
                       </table>
+                      <strong>Brand Management</strong>
+                      <table
+                        class="table table-hover table-striped dataTable"
+                        style="border: 1px solid rgba(0, 0, 0, 0.125)"
+                      >
+                        <tbody>
+                          <tr
+                            v-for="permission in form.permissions.slice(12, 16)"
+                            :key="permission.id"
+                          >
+                            <td>
+                              <input
+                                type="checkbox"
+                                name="roles_permission"
+                                data-bootstrap-switch
+                                data-off-color="danger"
+                                class="role_management"
+                                v-model="roles_status"
+                                v-bind="$attrs"
+                                :value="permission.id"
+                                :checked="
+                                  Object.values(form.role_permissions).includes(permission.id)
+                                "
+                              />
+                              {{ permission.name }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <strong>Sub Categories Management</strong>
+                      <table
+                        class="table table-hover table-striped dataTable"
+                        style="border: 1px solid rgba(0, 0, 0, 0.125)"
+                      >
+                        <tbody>
+                          <tr
+                            v-for="permission in form.permissions.slice(20, 24)"
+                            :key="permission.id"
+                          >
+                            <td>
+                              <input
+                                type="checkbox"
+                                name="permission[]"
+                                data-bootstrap-switch
+                                data-off-color="danger"
+                                :value="permission.id"
+                                class="user_management"
+                                :checked="
+                                  Object.values(form.role_permissions).includes(permission.id)
+                                "
+                              />
+                              {{ permission.name }} <br />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <strong>Sliders Management</strong>
+                      <table
+                        class="table table-hover table-striped dataTable"
+                        style="border: 1px solid rgba(0, 0, 0, 0.125)"
+                      >
+                        <tbody>
+                          <tr
+                            v-for="permission in form.permissions.slice(28, 32)"
+                            :key="permission.id"
+                          >
+                            <td>
+                              <input
+                                type="checkbox"
+                                name="permission[]"
+                                data-bootstrap-switch
+                                data-off-color="danger"
+                                :value="permission.id"
+                                class="user_management"
+                                :checked="
+                                  Object.values(form.role_permissions).includes(permission.id)
+                                "
+                              />
+                              {{ permission.name }} <br />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
+                    <!-- end column right -->
+
                     <div class="col-xs-12 col-sm-12 col-md-12 text-right" style="margin-top: 10px">
-                      <button type="submit" class="btn btn-primary" id="loadingButton">
+                      <button :disabled="updateRole === null" type="submit" class="btn btn-primary" id="loadingButton">
                         Submit
                       </button>
                     </div>
@@ -168,6 +326,7 @@ export default {
         permissionsId: [], // required to update data
         name: '', // required to update data
       }),
+      updateRole: null,
     };
   },
   methods: {
@@ -175,7 +334,7 @@ export default {
       console.log(item); // for use: :load="log(permission.name)"
     },
     showSuccessMsg(response) {
-        console.log(response);
+      console.log(response);
       const Toast = swal.mixin({
         toast: true,
         position: 'top-end',
@@ -226,12 +385,30 @@ export default {
 
           this.getSwitchValue();
           this.detectSwitchChange();
+          this.checkPermissions('Update Role')
         });
     },
-    getSwitchValue() { 
+    checkPermissions(permissionName) {
+      const token = localStorage.getItem('token-staff');
+      this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      this.axios
+        .get('api/staff/roles/permissions/' + permissionName)
+        .then((response) => {
+          if (permissionName === 'Update Role') {
+            this.updateRole = response.data.staff;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          //
+        });
+    },
+    getSwitchValue() {
       let arrVal = [];
       Object.values(this.form.role_permissions).forEach((data) => {
-        arrVal.push({key: `${data}`})
+        arrVal.push({ key: `${data}` });
       });
       this.form.permissionsId = arrVal;
     },
@@ -270,7 +447,6 @@ export default {
           self.form.permissionsId = singleRemoveFileInfo;
         }
       });
-
     },
     update() {
       $('#loadingButton').html(
@@ -290,7 +466,7 @@ export default {
         .put(`${BASE_URL}/api/staff/roles/update/` + id)
         .then((result) => {
           let responseData = result.data;
-          $('#loadingButton').attr('disabled', false);
+          $('#loadingButton').attr('disabled', false); 
           $('.proc-regis').remove();
           $('#loadingButton').html(`Save`);
           this.showSuccessMsg(responseData);
@@ -308,6 +484,7 @@ export default {
           // prevent an unidentified permission if we rechange the permission without loading the page
           this.form.permissionsId = [];
           this.showData();
+          location.reload();
         });
     },
   },

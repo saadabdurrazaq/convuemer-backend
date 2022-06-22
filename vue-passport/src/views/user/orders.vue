@@ -321,7 +321,7 @@ export default {
           let { data } = error.response;
           console.log(data.message);
         });
-    },
+    }, 
   },
   beforeMount() {}, 
   created() {

@@ -15,9 +15,15 @@ class CategoryController extends Controller
 {
 	public $request; 
 
-	public function __construct(Request $request)
+	public function __construct(Request $request) 
 	{
 		$this->request = $request;
+
+		$this->middleware('permission:View Categories', ['only' => ['index']]);  
+        $this->middleware('permission:Create Category', ['only' => ['store']]);
+        $this->middleware('permission:Update Category', ['only' => ['update', 'assignSubCat', 'assignSubSubCat']]);
+        $this->middleware('permission:Delete Category', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple', 'forceDeleteCategory']]);
+
 	}
 
 	public function index(Request $request)

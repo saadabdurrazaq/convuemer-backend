@@ -27,6 +27,9 @@ class ProductController extends Controller
     {
         $this->request = $request;
         $this->middleware('permission:View Products', ['only' => ['index']]);
+        $this->middleware('permission:Create Product', ['only' => ['store']]);
+        $this->middleware('permission:Update Product', ['only' => ['update']]);
+        $this->middleware('permission:Delete Product', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple', 'forceDeleteProduct', 'deleteAllVarProds']]);
     }
 
     public function show($id, $slug)
@@ -495,6 +498,19 @@ class ProductController extends Controller
         ], 200);
     }
 
+    public function listProducts(Request $request)
+    {
+        $items = $request->items ?? 9;
+        $trashedProducts = Product::onlyTrashed()->count();
+        $products = Product::with('variantsProd')->orderBy('id', 'desc')->paginate($items);
+
+        return response()->json([
+            'products' => $products,
+            'total_trashed_products' => $trashedProducts,
+            'items' => $items,
+        ], 200);
+    }
+
     public function softDelete($id)
     {
         Product::findOrFail($id)->delete();
@@ -851,7 +867,7 @@ class ProductController extends Controller
         $this->storeNewVarTypeAndVarOpt($id);
     }
 
-    public function update($id)
+    public function update($id) // $id refer to product id
     {
         $this->validateFields();
 
@@ -914,13 +930,17 @@ class ProductController extends Controller
             // Update the variant type product
             $variants = $this->request->get('variants');
 
+            $variant_types = array();
             foreach ($variants as $variant) {
-                $variant_type = $variant['variant_type'];
+                $variant_types[] = $variant['variant_type'];
+            }
 
-                VariantType::where('product_id', $id)->update([
+            $getVarTypes = VariantType::where('product_id', $id)->get();
+            foreach ($getVarTypes as $index => $getVarType) {
+                $getVarType->update([
                     'product_id' => $id,
-                    'variant_name' => $variant_type,
-                    'variant_type' => $variant_type,
+                    'variant_name' => $variant_types[$index],
+                    'variant_type' => $variant_types[$index],
                 ]);
             }
 

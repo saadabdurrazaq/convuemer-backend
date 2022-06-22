@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
 
 class Product extends Model
 {
-    use HasFactory, SoftDeletes; 
+    use HasFactory, Notifiable, HasApiTokens, SoftDeletes, HasRoles; //spatie;
 
     public function orders() {
         return $this->belongsToMany('App\Models\Order');

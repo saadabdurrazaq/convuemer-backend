@@ -182,7 +182,7 @@
                           <a
                             class="btn btn-danger"
                             href=""
-                            @click.prevent="forceDelete(category.id)"
+                            @click.prevent="forceDelete(category.id)" 
                           >
                             <i class="fa fa-trash"></i> Delete
                           </a>

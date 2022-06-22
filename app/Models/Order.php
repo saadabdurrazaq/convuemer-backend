@@ -22,7 +22,7 @@ class Order extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    // orders table trying to get access to order_product table
+    // orders table trying to get access to order_product table 
     public function products() { 
         //$orderProduct = Schema::getColumnListing('order_product'); // get all fields from order_product table
         return $this->belongsToMany('App\Models\Product')->withPivot('quantity');

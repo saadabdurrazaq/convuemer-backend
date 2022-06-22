@@ -54,7 +54,7 @@ axios.interceptors.response.use(response => {
     console.log(error);
     return Promise.reject(error);
 });*/
-app.use(VueAxios, axios)
+app.use(VueAxios, axios) 
 app.component('pagination', Pagination); 
 app.component(VueNumberInput.name, VueNumberInput);
 app.config.globalProperties.$log = console.log; 

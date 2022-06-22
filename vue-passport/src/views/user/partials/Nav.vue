@@ -77,11 +77,8 @@
                     <!-- ============================================================= LOGO ============================================================= -->
                     <div class="col-xs-12 col-sm-12 col-md-3 logo-holder">
                         <div class="logo">
-                            <a href="home.html">
-                                <img
-                                    :src="require('@/assets/frontend/images/logo.png')"
-                                    alt="logo"
-                                />
+                            <a style="color: white; font-weight: bold; font-size: 28px;" href="home.html">
+                                ConVuemer
                             </a>
                         </div>
                         <!-- /.logo -->

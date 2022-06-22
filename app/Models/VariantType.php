@@ -24,6 +24,7 @@ class VariantType extends Model
 
     protected $fillable = [
         'variant_name',
+        'variant_type',
     ];
 
     protected $table = "products_variants_types";

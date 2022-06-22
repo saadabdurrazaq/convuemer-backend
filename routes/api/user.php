@@ -46,6 +46,8 @@ Route::get('product-sliders/show-featured-products', [ProductSliderController::c
 // Show single product in frontend page 
 Route::get('product/{id}/{slug}', [ProductController::class, 'show']); 
 
+Route::get('products/list-products', [ProductController::class, 'listProducts']);
+
 Route::get('couriers', [BuyCheckoutController::class, 'couriers']);
 
 Route::group(['prefix' => 'user', 'middleware' => ['auth:user-api', 'scopes:user']], function () {

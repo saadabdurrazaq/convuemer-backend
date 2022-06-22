@@ -18,6 +18,12 @@ class SubCategoryController extends Controller
 	public function __construct(Request $request)
 	{
 		$this->request = $request;
+
+		$this->middleware('permission:View Sub Categories', ['only' => ['index']]);  
+        $this->middleware('permission:Create Sub Category', ['only' => ['store']]);
+        $this->middleware('permission:Update Sub Category', ['only' => ['update']]);
+        $this->middleware('permission:Delete Sub Category', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple', 'forceDeleteSubCategory']]);
+
 	}
 
 	public function index(Request $request)
@@ -28,7 +34,7 @@ class SubCategoryController extends Controller
 
 		return response()->json([
 			'sub_categories' => $subCategories,
-			'total_trashed_sub_categories' => $trashedSubCategories,
+			'total_trashed_sub_categories' => $trashedSubCategories, 
 			'items' => $items,
 		], 200);
 	}

@@ -96,8 +96,10 @@
                         <!-- /.row -->
                     </div>
                     <!-- ============================================== WIDE PRODUCTS : END ============================================== -->
+
+                    <ProductList/>
                 </div>
-                <!-- /.homebanner-holder -->
+                
                 <!-- ============================================== CONTENT : END ============================================== -->
             </div>
             <!-- /.row -->
@@ -200,6 +202,7 @@ import Footer from './partials/Footer.vue';
 import FrontSidebar from './partials/FrontSidebar.vue';
 import ImgCarousel from './partials/ImgCarousel.vue';
 import FeaturedProducts from './partials/FeaturedProducts.vue';
+import ProductList from './partials/ProductList.vue';
 import { BASE_URL } from '@/assets/js/base-url.js';
 
 export default {
@@ -215,6 +218,7 @@ export default {
         FrontSidebar,
         ImgCarousel,
         FeaturedProducts,
+        ProductList
     },
 
     data() {

@@ -301,7 +301,7 @@
                             <th style="width: 6%">SKU</th>
                             <th style="width: 10%">Weight</th>
                             <th>Status</th>
-                            <th style="width: 100%">Images</th>
+                            <th style="width: 100%">Images (if you are not super user, you cant upload any picts for some reasons)</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -456,6 +456,7 @@
                             <td>
                               <div class="file-loading">
                                 <input
+                                  :disabled="createProduct === null"
                                   id="images"
                                   :class="'images' + variantVal.id"
                                   name="images[]"
@@ -797,7 +798,7 @@
                         </div>
                       </div>
                       <div class="col-md-3">
-                        <div class="form-group">
+                        <div class="form-group"> 
                           <input
                             type="checkbox"
                             name="permission[]"
@@ -833,13 +834,13 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                          <p class="lead section-title">Product Photo:</p>
+                          <p class="lead section-title">Product Photo (if you are not super user, you cant upload any picts for some reasons):</p>
                         </div>
                       </div>
                       <div class="col-md-12 job-info">
                         <div class="form-group">
                           <div class="file-loading">
-                            <input id="picts" name="images[]" type="file" multiple />
+                            <input :disabled="createProduct === null" id="picts" name="images[]" type="file" multiple />
                           </div>
                         </div>
                       </div>
@@ -847,7 +848,7 @@
                   </div>
                   <div class="col-md-12">
                     <div class="box-footer text-right">
-                      <button type="submit" class="btn btn-primary btn-md" id="loadingButton">
+                      <button :disabled="createProduct === null" type="submit" class="btn btn-primary btn-md" id="loadingButton">
                         Save
                       </button>
                     </div>
@@ -949,6 +950,7 @@ export default {
       title: '',
       dataFiles: [],
       varProdsImgsToBeDeleted: [], 
+      createProduct: null,
     };
   },
   methods: {
@@ -1916,8 +1918,27 @@ export default {
           $('#loadingButton').html(`Save`);
         });
     },
+    checkPermissions(permissionName) {
+      const token = localStorage.getItem('token-staff');
+      this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      this.axios
+        .get('api/staff/roles/permissions/' + permissionName)
+        .then((response) => {
+          if (permissionName === 'Create Product') {
+            this.createProduct = response.data.staff;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          //
+        });
+    },
   }, // methods:
-  created() {},
+  created() {
+    this.checkPermissions('Create Product');
+  },
   mounted() {
     this.tokenField();
     this.form.variants.splice(0, this.form.variants.length); // empty an array of dynamic variants field

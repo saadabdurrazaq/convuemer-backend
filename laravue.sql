@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 17, 2022 at 06:01 PM
+-- Generation Time: Jun 22, 2022 at 07:17 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -75,7 +75,7 @@ CREATE TABLE `buy_checkout` (
 --
 
 INSERT INTO `buy_checkout` (`id`, `user_id`, `product_id`, `product_combination_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(24, 1, 91, 138, '2022-06-12 06:17:57', '2022-06-12 06:31:57', NULL);
+(24, 1, 89, 112, '2022-06-12 06:17:57', '2022-06-22 10:01:31', NULL);
 
 -- --------------------------------------------------------
 
@@ -7473,6 +7473,7 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('062680f67ac390a1edf5042d5557fb358b47476e3cd741b2765eaf8b101c090a71dbe04495925834', 1, 3, 'MyApp', '[\"staff\"]', 1, '2022-04-05 06:33:58', '2022-04-05 06:33:58', '2023-04-05 13:33:58'),
 ('06ae0646f033447c09b17ac546a5bfb5272ff5c5ab89281e9520fa8fc707fe254e1e96a3e6a8268e', 1, 3, 'MyApp', '[\"staff\"]', 1, '2022-03-03 23:09:18', '2022-03-03 23:09:18', '2023-03-04 06:09:18'),
 ('073c107e97b330e206e8c1153f4d9a1b070a5399df0dee8ac5005f264ac590f2b387bc67fb253170', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-04-04 01:05:02', '2022-04-04 01:05:02', '2023-04-04 08:05:02'),
+('0854117821052a98c1af218c449ed750425a667f722394564fa53c30320a131b810132b997aa8637', 1, 3, 'MyApp', '[\"staff\"]', 0, '2022-06-17 23:15:34', '2022-06-17 23:15:34', '2023-06-18 06:15:34'),
 ('0ab3d1f02bd9145666ee50006ab2283b29c4d35fd5942485d98969a23dcfcda312cb6a8bd9e7be65', 1, 3, 'MyApp', '[\"staff\"]', 1, '2022-02-12 02:32:10', '2022-02-12 02:32:10', '2023-02-12 09:32:10'),
 ('0d2b8404f11bcd7419376d093cd728781e3097d64d5493ca35659030a8f48cf9c17f257ca5473bfb', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-09-29 23:44:46', '2021-09-29 23:44:46', '2022-09-30 06:44:46'),
 ('0e0b1da999bc07752ab034022113b5aa2b443e9393238fa1da22f9a980a9f6a367ac2c44ac68e60d', 1, 3, 'MyApp', '[\"staff\"]', 0, '2022-04-17 23:38:03', '2022-04-17 23:38:03', '2023-04-18 06:38:03'),
@@ -7490,6 +7491,7 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('2bb2bce61f42859c30fb339331674207a74ac4fd535a562025c67f00dbc4e88f85bc97c15f4df246', 1, 3, 'MyApp', '[\"staff\"]', 0, '2022-03-23 00:29:11', '2022-03-23 00:29:11', '2023-03-23 07:29:11'),
 ('2c47871a6df309d1a2386e8789f9af4092f36b59a79d610f02edad95d5dd1decac5561661bc8e5d1', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-22 17:03:30', '2021-07-22 17:03:30', '2022-07-23 00:03:30'),
 ('2dbf5a4b3a5aada4bd3b1204bc210a9dd35ae2645c4549b8c28eed73ccbcb1b44b4d66d97834a489', 8, 3, 'MyApp', '[\"staff\"]', 0, '2022-03-19 02:56:37', '2022-03-19 02:56:37', '2023-03-19 09:56:37'),
+('2f14dae585f402e9274261cfac730353e0fa90a1b75537145b74d255ac59579c2f3671dd86e47de5', 8, 3, 'MyApp', '[\"staff\"]', 0, '2022-06-21 02:22:19', '2022-06-21 02:22:19', '2023-06-21 09:22:19'),
 ('3131cf0c3283acb798c86cca8fe652f4d25be03e859e86d8cf5f7073b0805dc4fefe9c8cee191dc9', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-04-03 03:31:02', '2022-04-03 03:31:02', '2023-04-03 10:31:02'),
 ('32f7cd487adca71a3b4b60b2e518effb31651f53c71f1b01ec3f7f4e2966a3faac2cf1092b6ef642', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-04-04 00:53:29', '2022-04-04 00:53:29', '2023-04-04 07:53:29'),
 ('33d94bdcb27379c5236f479e4b5f7cd4e863253797dfba83e2060afe6fa38fa5755c17d4eaeea3f8', 1, 3, 'MyApp', '[\"user\"]', 0, '2021-07-04 16:56:32', '2021-07-04 16:56:32', '2022-07-04 23:56:32'),
@@ -7512,6 +7514,7 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('57a5b8f2788b12e9a8a7fda1f9516f15b95fb071fb3c0041a43b3642d774822b6c16d46aee2f208b', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 23:43:06', '2021-07-01 23:43:06', '2022-07-02 06:43:06'),
 ('5eae42ea37eb74de16d52b43d75fa109a8916a3e65898ac764c24b7a91bc2553abba5fd03c113761', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-04-02 20:09:03', '2022-04-02 20:09:03', '2023-04-03 03:09:03'),
 ('5fbbd2662320ec7848e08be6f584ae5679d311fe82be941ef314538f7324496dd6197343a05f56be', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-04 17:53:52', '2021-07-04 17:53:52', '2022-07-05 00:53:52'),
+('60762f49bcd8cfcb173d0c552578f0cb12af6dcd575310b0657fb82d0c959f9c343dcbd062068ed4', 8, 3, 'MyApp', '[\"staff\"]', 0, '2022-06-21 00:15:25', '2022-06-21 00:15:25', '2023-06-21 07:15:25'),
 ('63351b63ef81c8656384dd4d7655625cb9b74cadd04cfd07c8115d2e136798319a47545916d29f79', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-06-26 23:08:29', '2021-06-26 23:08:29', '2022-06-27 06:08:29'),
 ('66c0541d9b8d74b69d5cffcfb0ca2b485f7c716a601ff67757017e381d08999919c6efe0ffda22ab', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 19:08:29', '2021-07-01 19:08:29', '2022-07-02 02:08:29'),
 ('6737a0ee1fe2b24e431af1938103f40e460ae288600d8de050a236e37b0a8cc0c8fb2a0dad83ede8', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-04-04 20:47:50', '2022-04-04 20:47:50', '2023-04-05 03:47:50'),
@@ -7530,7 +7533,7 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('7fc9ebf145cdef5fb530bde63090a5274fb71e4f66ffb1f30be7077017849c9383ce042168491c7e', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-02 01:46:02', '2021-07-02 01:46:02', '2022-07-02 08:46:02'),
 ('8010c4b30e951ffc561a0202791f826d42e867c39114809c3a44880e7ab325aa4ebf06f08a78dadf', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-06-26 16:55:08', '2021-06-26 16:55:08', '2022-06-26 23:55:08'),
 ('816004d0a1501918c75224de1683bace4a07c7d9a6751aaa80676d3823581721e602d43bbc6cbbbe', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 16:00:43', '2021-07-01 16:00:43', '2022-07-01 23:00:43'),
-('823a92b4278f3c902ab1f1b483c4c3f609e9876a117746a9e7c7ad9ec1ceeda3d6d62233a9ff2d85', 1, 3, 'MyApp', '[\"user\"]', 0, '2022-06-11 11:39:52', '2022-06-11 11:39:52', '2023-06-11 18:39:52'),
+('823a92b4278f3c902ab1f1b483c4c3f609e9876a117746a9e7c7ad9ec1ceeda3d6d62233a9ff2d85', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-06-11 11:39:52', '2022-06-11 11:39:52', '2023-06-11 18:39:52'),
 ('83afb6a66a32f30953fb69c3586b82eb72aa4acb51b8edb6d6a3ce6ef5b1c6ac5952e9dc7e69a6b2', 1, 3, 'MyApp', '[\"staff\"]', 1, '2022-03-13 06:08:38', '2022-03-13 06:08:38', '2023-03-13 13:08:38'),
 ('844b5d78c6646b4073d3fc32c31eff6d605a4c61287a6b6219c5266606acebd9e5e3823d94308ecd', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-04-04 01:46:36', '2022-04-04 01:46:36', '2023-04-04 08:46:36'),
 ('8a57ef0bb1c75e575e733f7f6396e36cf3d25a8d71cba25042e0afda252d59e18c6b67d50d32c299', 1, 3, 'MyApp', '[\"user\"]', 0, '2021-07-04 17:37:24', '2021-07-04 17:37:24', '2022-07-05 00:37:24'),
@@ -7541,11 +7544,12 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('947b6f50330832b1bc1ea78aa1407f69833ba10f3419a71d8e9ebe6bb8d4414faf9870d60ecd095c', 1, 3, 'MyApp', '[\"staff\"]', 1, '2022-03-12 03:29:14', '2022-03-12 03:29:14', '2023-03-12 10:29:14'),
 ('95086d3b5227a140c8ecb8a687896849b0fab20fe33197575e3a6e440d23839d7ddaf1ee7a9b8a3b', 1, 3, 'MyApp', '[\"staff\"]', 1, '2022-01-29 06:58:23', '2022-01-29 06:58:23', '2023-01-29 13:58:23'),
 ('9926e0eb2e7573cc81769d73905dc360928e8ae1a27a3e6d512e444303e031648895a699591a62b8', 1, 3, 'MyApp', '[\"staff\"]', 0, '2022-04-27 22:26:37', '2022-04-27 22:26:37', '2023-04-28 05:26:37'),
-('9aa5b22941a313dd53ea424b5340386cd219342c67d51f2021d4e699908175a51bfc5483e458edf6', 1, 3, 'MyApp', '[\"staff\"]', 0, '2022-03-14 09:25:55', '2022-03-14 09:25:55', '2023-03-14 16:25:55'),
+('9aa5b22941a313dd53ea424b5340386cd219342c67d51f2021d4e699908175a51bfc5483e458edf6', 1, 3, 'MyApp', '[\"staff\"]', 1, '2022-03-14 09:25:55', '2022-03-14 09:25:55', '2023-03-14 16:25:55'),
 ('9da83d5a5ac8c71b4f1fc2d69a0c6760a42bc0158c26682605aa1cd51b0365149fba85729a4897c8', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-07-16 05:42:08', '2021-07-16 05:42:08', '2022-07-16 12:42:08'),
 ('9e52d2d5adcf894f4759b75c7a728ed76f7a24b051399ae5703fd646b828e00f605d7f4b5ddca686', 1, 3, 'MyApp', '[\"staff\"]', 0, '2021-08-01 01:24:54', '2021-08-01 01:24:54', '2022-08-01 08:24:54'),
 ('a0c6cce252cad4f1e6b7a90cce043552f171e4acb6f8213a44d775d5abf52ed664f49be1b597c84b', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-04-08 08:13:40', '2022-04-08 08:13:40', '2023-04-08 15:13:40'),
 ('a61119f8530b374492b3d0eb6ceef4836ae14d68ba46b0cbceee69d9c5b07e4b6d848cb0ca7aa625', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 16:04:59', '2021-07-01 16:04:59', '2022-07-01 23:04:59'),
+('a9e3710b22fbcb12d0a879f9914b39b4399decdfd3211c6994df1c91754754d900b05f5cbf5871be', 1, 3, 'MyApp', '[\"user\"]', 0, '2022-06-20 22:01:00', '2022-06-20 22:01:00', '2023-06-21 05:01:00'),
 ('ac3cfc5f545c8f620ed47555a1642f10fb322697208ccf4b8b1e44f825aa31da35acad43eee7759f', 1, 3, 'MyApp', '[\"user\"]', 0, '2021-07-02 22:36:22', '2021-07-02 22:36:22', '2022-07-03 05:36:22'),
 ('ac58e999d809b19552ae042cd675bd3c06f1ca57264cbbffa295717077ee057b10377def6deb6a27', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-04-04 01:42:00', '2022-04-04 01:42:00', '2023-04-04 08:42:00'),
 ('ac76161ff1e3cb6df46b727da7a6e8e369fff1cf3a6043f4f01095571c919d2ddd3bb710da062235', 1, 3, 'MyApp', '[\"user\"]', 1, '2021-07-04 16:58:28', '2021-07-04 16:58:28', '2022-07-04 23:58:28'),
@@ -7562,6 +7566,7 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('c93962ddb9be1d51c6967d11f59370576b44811a247fec900bed3c56dd5434451dc6321a27538484', 1, 3, 'MyApp', '[\"user\"]', 1, '2021-07-05 04:28:19', '2021-07-05 04:28:19', '2022-07-05 11:28:19'),
 ('caf77c200e4d7869b47e0668e77f26df0171ad3539b03521a6225fa51da70fd5967525d2cc016239', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-04-17 07:21:22', '2022-04-17 07:21:22', '2023-04-17 14:21:22'),
 ('cbccf4c62247fae432fe2c89f29a56c5e38b6754217ba04e9fdfafd0c89f277ba9fae738a551b77a', 1, 3, 'MyApp', '[\"user\"]', 0, '2022-04-20 07:19:38', '2022-04-20 07:19:38', '2023-04-20 14:19:38'),
+('cc6dbe8a27e5377690e888759e7c5c996c20f00189c510743c34d560deab1aa3e226ba67af7805df', 1, 3, 'MyApp', '[\"staff\"]', 0, '2022-06-21 02:19:18', '2022-06-21 02:19:18', '2023-06-21 09:19:18'),
 ('cd760fb809d17f6db381b7ffce9ec0cade2c3620f889672739241cbbb42917086d234e885e4290bc', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-06-26 23:28:24', '2021-06-26 23:28:24', '2022-06-27 06:28:24'),
 ('ce1c4fb38b4652103b09987b605f6c149ea383f32ef09e64f2604d13cfef43d1dc775684f70f1e27', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-03-19 10:37:44', '2022-03-19 10:37:44', '2023-03-19 17:37:44'),
 ('cebf267009a0d806439abb47f76cfa43d17afbc00fafe546d3aeec53ce63b2d36601e92c02bd3ef9', 1, 3, 'MyApp', '[\"user\"]', 1, '2021-07-04 21:04:06', '2021-07-04 21:04:06', '2022-07-05 04:04:06'),
@@ -7577,6 +7582,7 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('de3259092845076f3021704746f7395086eb7da37dc5b60ae8b851ea24176dbae28dadf7877a88e7', 1, 3, 'MyApp', '[\"user\"]', 0, '2021-06-29 06:11:22', '2021-06-29 06:11:22', '2022-06-29 13:11:22'),
 ('e202eb7d5295aa6fe06cff880485f79f47f326cd9638b56036c2a97947c2e61eeed8897c314374b8', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-22 17:01:30', '2021-07-22 17:01:30', '2022-07-23 00:01:30'),
 ('e2c6cab7512152b92dedc2b3b412984bac51c45558d9788903923c3f192630d59b15e254cdc65c78', 1, 3, 'MyApp', '[\"staff\"]', 0, '2022-03-07 00:40:20', '2022-03-07 00:40:20', '2023-03-07 07:40:20'),
+('e3de2e0b5363ce20f846e039dcd635805dd192276c0f2ebed6db2921110ad55c2c77fea839b4dc1a', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-06-20 17:10:30', '2022-06-20 17:10:30', '2023-06-21 00:10:30'),
 ('e43bb9a5a90c2929a0cb1e16b43532fe9daac2c4d73ea68135b61649e28bbcc7514bb295675e261a', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-04-04 21:21:30', '2022-04-04 21:21:30', '2023-04-05 04:21:30'),
 ('e4724961552e42e082b85d52a6a7b0d645d670f6208c4782a9b5fd539db3e968edfe8dfc67b4b714', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 17:07:07', '2021-07-01 17:07:07', '2022-07-02 00:07:07'),
 ('e8271ce44e209ce55e81f0d60e9bc5ef08f18388191545417c14c889c91e778ce585e5745b3f8902', 1, 3, 'MyApp', '[\"user\"]', 0, '2022-05-02 06:10:47', '2022-05-02 06:10:47', '2023-05-02 13:10:47'),
@@ -7584,6 +7590,7 @@ INSERT INTO `oauth_access_tokens` (`id`, `user_id`, `client_id`, `name`, `scopes
 ('ef35ec7fb0b483b894b5d19024d0727c1a88b765dbfe16fea986b81fa0f1c3005e6726561d014247', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-01 22:41:07', '2021-07-01 22:41:07', '2022-07-02 05:41:07'),
 ('f06cef4a293600abdc9d90fa773d02339015cb47948aab18216d68c8904693f4def38c71812aedce', 1, 3, 'MyApp', '[\"staff\"]', 1, '2021-07-15 03:19:19', '2021-07-15 03:19:19', '2022-07-15 10:19:19'),
 ('f2653f2853bce8e07ee695e669e42c6fcd55e9ca6d6ccb81e07fcdb0eb12bf699df51ed938e57b3a', 1, 3, 'MyApp', '[\"staff\"]', 0, '2022-04-28 08:32:21', '2022-04-28 08:32:21', '2023-04-28 15:32:21'),
+('f3d96751ee0c90db41115d91b0902ae59fce4b28648f521904bb4342635ff301879de3758bd739a3', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-06-20 17:08:49', '2022-06-20 17:08:49', '2023-06-21 00:08:49'),
 ('f42b00457a76dba8a7a493eaa1cd7f09ce5f6ede67d439f4c821ff3833d73be4e6e27b84e30df0f3', 1, 3, 'MyApp', '[\"staff\"]', 0, '2022-03-19 01:38:13', '2022-03-19 01:38:13', '2023-03-19 08:38:13'),
 ('f568e1b4423c4e19e7fd9c447386b7fffecc90c05ec5c3671b012c014bf8eeb5ca86cc55d2f0244c', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-04-03 23:30:58', '2022-04-03 23:30:58', '2023-04-04 06:30:58'),
 ('f715ef88bb40fd3dfb48217624a40b597257f8412599a0c78a39b4d82b0008da3451e1362be4b01f', 1, 3, 'MyApp', '[\"user\"]', 1, '2022-04-03 23:30:06', '2022-04-03 23:30:06', '2023-04-04 06:30:06'),
@@ -7689,43 +7696,6 @@ CREATE TABLE `orders` (
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`id`, `user_id`, `total_price`, `total_bill`, `total_quantity`, `invoice_number`, `courier_service`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(17, 1, NULL, 334780, 4, '20220604094133', 'jne-OKE', 'SUBMIT', '2022-06-04 02:41:33', '2022-06-04 02:41:34', NULL),
-(22, 1, NULL, 390000, 2, '20220605073658', 'jne-OKE', 'SUBMIT', '2022-06-05 00:36:58', '2022-06-05 00:37:00', NULL),
-(23, 1, NULL, 200000, 1, '20220612034356', 'jne-OKE', 'SUBMIT', '2022-06-11 20:43:56', '2022-06-11 20:43:58', NULL),
-(24, 1, NULL, 200000, 1, '20220612034927', 'jne-OKE', 'SUBMIT', '2022-06-11 20:49:27', '2022-06-11 20:49:28', NULL),
-(25, 1, NULL, 200000, 1, '20220612040309', 'jne-OKE', 'SUBMIT', '2022-06-11 21:03:09', '2022-06-11 21:03:10', NULL),
-(26, 1, NULL, 200000, 1, '20220612040511', 'jne-OKE', 'SUBMIT', '2022-06-11 21:05:11', '2022-06-11 21:05:12', NULL),
-(27, 1, NULL, 200000, 1, '20220612040555', 'jne-OKE', 'SUBMIT', '2022-06-11 21:05:55', '2022-06-11 21:05:56', NULL),
-(28, 1, NULL, 200000, 1, '20220612041057', 'jne-OKE', 'SUBMIT', '2022-06-11 21:10:57', '2022-06-11 21:10:58', NULL),
-(29, 1, NULL, 200000, 1, '20220612041607', 'jne-OKE', 'SUBMIT', '2022-06-11 21:16:07', '2022-06-11 21:16:10', NULL),
-(30, 1, NULL, 30000, 1, '20220612042143', 'jne-OKE', 'SUBMIT', '2022-06-11 21:21:43', '2022-06-11 21:21:44', NULL),
-(31, 1, NULL, 30000, 1, '20220612042306', 'jne-OKE', 'SUBMIT', '2022-06-11 21:23:06', '2022-06-11 21:23:07', NULL),
-(32, 1, NULL, 30000, 1, '20220612043051', 'jne-OKE', 'SUBMIT', '2022-06-11 21:30:51', '2022-06-11 21:30:52', NULL),
-(33, 1, NULL, 30000, 1, '20220612043636', 'jne-OKE', 'SUBMIT', '2022-06-11 21:36:36', '2022-06-11 21:36:37', NULL),
-(34, 1, NULL, 30000, 1, '20220612044842', 'jne-OKE', 'SUBMIT', '2022-06-11 21:48:42', '2022-06-11 21:48:43', NULL),
-(35, 1, NULL, 30000, 1, '20220612052528', 'jne-OKE', 'SUBMIT', '2022-06-11 22:25:28', '2022-06-11 22:25:29', NULL),
-(36, 1, NULL, 30000, 1, '20220612052729', 'jne-OKE', 'SUBMIT', '2022-06-11 22:27:29', '2022-06-11 22:27:30', NULL),
-(37, 1, NULL, 30000, 1, '20220612052914', 'jne-OKE', 'SUBMIT', '2022-06-11 22:29:14', '2022-06-11 22:29:16', NULL),
-(38, 1, NULL, 200000, 1, '20220612060757', 'jne-OKE', 'SUBMIT', '2022-06-11 23:07:57', '2022-06-11 23:07:59', NULL),
-(39, 1, NULL, 30000, 1, '20220612062903', 'jne-OKE', 'SUBMIT', '2022-06-11 23:29:03', '2022-06-11 23:29:05', NULL),
-(40, 1, NULL, 30000, 1, '20220612063006', 'jne-OKE', 'SUBMIT', '2022-06-11 23:30:06', '2022-06-11 23:30:08', NULL),
-(41, 1, NULL, 30000, 1, '20220612063138', 'jne-OKE', 'SUBMIT', '2022-06-11 23:31:38', '2022-06-11 23:31:40', NULL),
-(42, 1, NULL, 30000, 1, '20220612063526', 'jne-OKE', 'SUBMIT', '2022-06-11 23:35:26', '2022-06-11 23:35:27', NULL),
-(43, 1, NULL, 30000, 1, '20220612063650', 'jne-OKE', 'SUBMIT', '2022-06-11 23:36:50', '2022-06-11 23:36:51', NULL),
-(44, 1, NULL, 30000, 1, '20220612063819', 'jne-OKE', 'SUBMIT', '2022-06-11 23:38:19', '2022-06-11 23:38:20', NULL),
-(45, 1, NULL, 30000, 1, '20220612064151', 'jne-OKE', 'SUBMIT', '2022-06-11 23:41:51', '2022-06-11 23:41:52', NULL),
-(46, 1, NULL, 310000, 1, '20220612091027', 'jne-OKE', 'SUBMIT', '2022-06-12 02:10:27', '2022-06-12 02:10:28', NULL),
-(47, 1, NULL, 30000, 1, '20220612092009', 'jne-OKE', 'SUBMIT', '2022-06-12 02:20:09', '2022-06-12 02:20:10', NULL),
-(48, 1, NULL, 30000, 1, '20220612092127', 'jne-OKE', 'SUBMIT', '2022-06-12 02:21:27', '2022-06-12 02:21:29', NULL),
-(49, 1, NULL, 310000, 1, '20220612093233', 'jne-OKE', 'SUBMIT', '2022-06-12 02:32:33', '2022-06-12 02:32:35', NULL),
-(50, 1, NULL, 310000, 1, '20220612100343', 'jne-OKE', 'SUBMIT', '2022-06-12 03:03:43', '2022-06-12 03:03:44', NULL),
-(51, 1, NULL, 39900, 1, '20220612101124', 'jne-OKE', 'SUBMIT', '2022-06-12 03:11:24', '2022-06-12 03:11:25', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -7739,42 +7709,9 @@ CREATE TABLE `order_product` (
   `product_combination_id` bigint(20) UNSIGNED DEFAULT NULL,
   `quantity` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `order_product`
---
-
-INSERT INTO `order_product` (`id`, `order_id`, `product_id`, `product_combination_id`, `quantity`, `created_at`, `updated_at`) VALUES
-(15, 17, 131, NULL, 1, '2022-06-04 02:41:33', '2022-06-04 02:41:33'),
-(16, 17, 90, NULL, 1, '2022-06-04 02:41:33', '2022-06-04 02:41:33'),
-(19, 22, 72, NULL, 2, '2022-06-05 00:36:58', '2022-06-05 00:36:58'),
-(20, 23, 72, NULL, 1, '2022-06-11 20:43:56', '2022-06-11 20:43:56'),
-(21, 24, 72, NULL, 1, '2022-06-11 20:49:27', '2022-06-11 20:49:27'),
-(22, 25, 72, NULL, 1, '2022-06-11 21:03:09', '2022-06-11 21:03:09'),
-(23, 26, 72, NULL, 1, '2022-06-11 21:05:11', '2022-06-11 21:05:11'),
-(24, 27, 72, NULL, 1, '2022-06-11 21:05:55', '2022-06-11 21:05:55'),
-(25, 28, 72, NULL, 1, '2022-06-11 21:10:57', '2022-06-11 21:10:57'),
-(26, 29, 72, NULL, 1, '2022-06-11 21:16:08', '2022-06-11 21:16:08'),
-(27, 30, 131, NULL, 1, '2022-06-11 21:21:43', '2022-06-11 21:21:43'),
-(28, 31, 131, NULL, 1, '2022-06-11 21:23:06', '2022-06-11 21:23:06'),
-(29, 32, 131, NULL, 1, '2022-06-11 21:30:51', '2022-06-11 21:30:51'),
-(30, 33, 131, NULL, 1, '2022-06-11 21:36:36', '2022-06-11 21:36:36'),
-(31, 34, 131, NULL, 1, '2022-06-11 21:48:42', '2022-06-11 21:48:42'),
-(32, 35, 131, NULL, 1, '2022-06-11 22:25:28', '2022-06-11 22:25:28'),
-(33, 36, 131, NULL, 1, '2022-06-11 22:27:29', '2022-06-11 22:27:29'),
-(34, 37, 131, NULL, 1, '2022-06-11 22:29:14', '2022-06-11 22:29:14'),
-(35, 38, 72, NULL, 1, '2022-06-11 23:07:57', '2022-06-11 23:07:57'),
-(36, 39, 131, NULL, 1, '2022-06-11 23:29:03', '2022-06-11 23:29:03'),
-(37, 40, 131, NULL, 1, '2022-06-11 23:30:06', '2022-06-11 23:30:06'),
-(38, 41, 131, NULL, 1, '2022-06-11 23:31:38', '2022-06-11 23:31:38'),
-(39, 42, 131, NULL, 1, '2022-06-11 23:35:26', '2022-06-11 23:35:26'),
-(40, 43, 131, NULL, 1, '2022-06-11 23:36:50', '2022-06-11 23:36:50'),
-(41, 44, 131, NULL, 1, '2022-06-11 23:38:19', '2022-06-11 23:38:19'),
-(42, 45, 131, NULL, 1, '2022-06-11 23:41:51', '2022-06-11 23:41:51'),
-(43, 47, 131, NULL, 1, '2022-06-12 02:20:09', '2022-06-12 02:20:09'),
-(44, 48, 131, NULL, 1, '2022-06-12 02:21:27', '2022-06-12 02:21:27');
 
 -- --------------------------------------------------------
 
@@ -7789,20 +7726,9 @@ CREATE TABLE `order_product_combination` (
   `product_combination_id` bigint(20) UNSIGNED DEFAULT NULL,
   `quantity` bigint(20) UNSIGNED DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `order_product_combination`
---
-
-INSERT INTO `order_product_combination` (`id`, `order_id`, `product_id`, `product_combination_id`, `quantity`, `created_at`, `updated_at`) VALUES
-(5, 17, NULL, 136, 1, '2022-06-04 02:41:33', '2022-06-04 02:41:33'),
-(6, 17, NULL, 137, 1, '2022-06-04 02:41:33', '2022-06-04 02:41:33'),
-(9, 46, NULL, 139, 1, '2022-06-12 02:10:27', '2022-06-12 02:10:27'),
-(10, 49, NULL, 139, 1, '2022-06-12 02:32:33', '2022-06-12 02:32:33'),
-(11, 50, NULL, 139, 1, '2022-06-12 03:03:43', '2022-06-12 03:03:43'),
-(12, 51, NULL, 110, 1, '2022-06-12 03:11:24', '2022-06-12 03:11:24');
 
 -- --------------------------------------------------------
 
@@ -7844,17 +7770,37 @@ CREATE TABLE `permissions` (
 
 INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
 (1, 'Create Product', 'staff-api', '2022-03-14 03:38:08', '2022-03-14 03:38:08'),
-(2, 'Edit Product', 'staff-api', '2022-03-14 03:38:50', '2022-03-14 03:38:50'),
+(2, 'Update Product', 'staff-api', '2022-03-14 03:38:50', '2022-03-14 03:38:50'),
 (3, 'View Products', 'staff-api', '2022-03-14 14:44:33', '2022-03-14 14:44:33'),
 (4, 'Delete Product', 'staff-api', '2022-03-14 14:45:29', '2022-03-14 14:45:29'),
 (5, 'Create Role', 'staff-api', '2022-03-14 15:21:02', '2022-03-14 15:21:02'),
 (6, 'Update Role', 'staff-api', '2022-03-14 15:22:00', '2022-03-14 15:22:00'),
-(7, 'Edit Role', 'staff-api', '2022-03-14 15:23:00', '2022-03-14 15:23:00'),
+(7, 'View Roles', 'staff-api', '2022-03-14 15:23:00', '2022-03-14 15:23:00'),
 (8, 'Delete Role', 'staff-api', '2022-03-15 03:10:13', '2022-03-15 03:10:13'),
 (9, 'View Staffs', 'staff-api', '2022-03-14 14:47:08', '2022-03-14 14:47:08'),
 (10, 'Create Staff', 'staff-api', '2022-03-14 14:47:31', '2022-03-14 14:47:31'),
 (11, 'Edit Staff', 'staff-api', '2022-03-14 14:48:06', '2022-03-14 14:48:06'),
-(12, 'Delete Staff', 'staff-api', '2022-03-14 14:48:25', '2022-03-14 14:48:25');
+(12, 'Delete Staff', 'staff-api', '2022-03-14 14:48:25', '2022-03-14 14:48:25'),
+(13, 'Create Brand', 'staff-api', '2022-06-21 13:56:58', '2022-06-22 13:56:58'),
+(14, 'Update Brand', 'staff-api', '2022-06-21 13:57:27', '2022-06-22 13:57:27'),
+(15, 'View Brands', 'staff-api', '2022-06-21 13:57:59', '2022-06-22 13:57:59'),
+(16, 'Delete Brand', 'staff-api', '2022-06-21 13:58:57', '2022-06-22 13:58:57'),
+(17, 'Create Category', 'staff-api', '2022-06-22 14:22:52', '2022-06-22 14:22:52'),
+(18, 'Update Category', 'staff-api', '2022-06-21 14:23:37', '2022-06-22 14:23:37'),
+(19, 'View Categories', 'staff-api', '2022-06-21 14:24:27', '2022-06-22 14:24:27'),
+(20, 'Delete Category', 'staff-api', '2022-06-21 14:25:23', '2022-06-22 14:25:23'),
+(21, 'Create Sub Category', 'staff-api', '2022-03-14 14:47:08', '2022-05-02 06:21:57'),
+(22, 'Update Sub Category', 'staff-api', '2022-03-14 14:47:08', '2022-05-02 06:21:57'),
+(23, 'View Sub Categories', 'staff-api', '2022-03-14 14:47:08', '2022-05-02 06:21:57'),
+(24, 'Delete Sub Category', 'staff-api', '2022-03-14 14:47:08', '2022-05-02 06:21:57'),
+(25, 'Create Sub Sub Category', 'staff-api', '2022-03-14 14:47:08', '2022-03-14 14:47:08'),
+(26, 'Update Sub Sub Category', 'staff-api', '2022-03-14 14:47:08', '2022-03-14 14:47:08'),
+(27, 'View Sub Sub Categories', 'staff-api', '2022-03-14 14:47:08', '2022-05-02 06:21:57'),
+(28, 'Delete Sub Sub Category', 'staff-api', '2022-03-14 14:47:08', '2022-05-02 06:21:57'),
+(29, 'Create Slider', 'staff-api', '2022-03-14 14:47:08', '2022-05-02 06:21:57'),
+(30, 'Update Slider', 'staff-api', '2022-03-14 14:47:08', '2022-05-02 06:21:57'),
+(31, 'View Sliders', 'staff-api', '2022-03-14 14:47:08', '2022-05-02 06:21:57'),
+(32, 'Delete Slider', 'staff-api', '2022-03-14 14:47:08', '2022-05-02 06:21:57');
 
 -- --------------------------------------------------------
 
@@ -7986,12 +7932,12 @@ INSERT INTO `products_combinations` (`id`, `url_id`, `product_id`, `product_key`
 (71, 82, 82, '6226d32827c27', 'Iphone 12 Pro Silver 128 Gb', 'Silver-128 GB', 'iphone-12-pro-silver-128-gb', 'iphone-12-pro', '128begilrsv', 15999000, 's128', 300, 'G (Gram)', 1, 5, 'prod-comb', 'New', 'Active', '[{\"key\":\"1715023674225279.jpg0\",\"caption\":\"1715023674225279.jpg\",\"size\":38121,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715023674225279.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715023674225279.jpg\",\"type\":\"image\"},{\"key\":\"1715023674228279.jpg1\",\"caption\":\"1715023674228279.jpg\",\"size\":47910,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715023674228279.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715023674228279.jpg\",\"type\":\"image\"},{\"key\":\"1715023674230279.jpg2\",\"caption\":\"1715023674230279.jpg\",\"size\":40474,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715023674230279.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715023674230279.jpg\",\"type\":\"image\"},{\"key\":\"1715023674233279.jpg3\",\"caption\":\"1715023674233279.jpg\",\"size\":55575,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715023674233279.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715023674233279.jpg\",\"type\":\"image\"}]', '1715023674225279.jpg', NULL, '2022-05-28 00:45:06', NULL),
 (72, 82, 82, '6226d32829371', 'Iphone 12 Pro Silver 256 Gb', 'Silver-256 GB', 'iphone-12-pro-silver-256-gb', 'iphone-12-pro', '256begilrsv', 18499000, 's256', 300, 'G (Gram)', 1, 5, 'prod-comb', 'New', 'Active', '[{\"key\":\"1715023682249750.jpg0\",\"caption\":\"1715023682249750.jpg\",\"size\":38121,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715023682249750.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715023682249750.jpg\",\"type\":\"image\"},{\"key\":\"1715023682252750.jpg1\",\"caption\":\"1715023682252750.jpg\",\"size\":47910,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715023682252750.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715023682252750.jpg\",\"type\":\"image\"},{\"key\":\"1715023682255750.jpg2\",\"caption\":\"1715023682255750.jpg\",\"size\":40474,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715023682255750.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715023682255750.jpg\",\"type\":\"image\"},{\"key\":\"1715023682261751.jpg3\",\"caption\":\"1715023682261751.jpg\",\"size\":55575,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715023682261751.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715023682261751.jpg\",\"type\":\"image\"}]', '1715023682249750.jpg', NULL, '2022-05-28 00:45:06', NULL),
 (73, 82, 82, '6226d3282accd', 'Iphone 12 Pro Silver 512 Gb', 'Silver-512 GB', 'iphone-12-pro-silver-512-gb', 'iphone-12-pro', '125begilrsv', 22499000, 's512', 300, 'G (Gram)', 1, 5, 'prod-comb', 'New', 'Active', '[{\"key\":\"1715023690015780.jpg0\",\"caption\":\"1715023690015780.jpg\",\"size\":38121,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715023690015780.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715023690015780.jpg\",\"type\":\"image\"},{\"key\":\"1715023690018780.jpg1\",\"caption\":\"1715023690018780.jpg\",\"size\":47910,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715023690018780.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715023690018780.jpg\",\"type\":\"image\"},{\"key\":\"1715023690027781.jpg2\",\"caption\":\"1715023690027781.jpg\",\"size\":40474,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715023690027781.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715023690027781.jpg\",\"type\":\"image\"},{\"key\":\"1715401096932541.jpg0\",\"caption\":\"1715401096932541.jpg\",\"size\":55575,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715401096932541.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715401096932541.jpg\",\"type\":\"image\"}]', '1715023690015780.jpg', NULL, '2022-05-28 00:45:06', NULL),
-(88, 86, 86, '6226d30f024c0', 'Bolt Cat Food 20 Kg Tuna Fish', '20 KG-Tuna-Fish', 'bolt-cat-food-20-kg-tuna-fish', 'bolt-cat-food', '02afghiknstu', 380000, '20kgtf', 20, 'Kg (Kilogram)', 20, 165, 'prod-comb', 'New', 'Active', '[{\"key\":\"1726443364232697.jpg0\",\"caption\":\"1726443364232697.jpg\",\"size\":40302,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1726443364232697.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1726443364232697.jpg\",\"type\":\"image\"}]', '1726443364232697.jpg', NULL, '2022-06-12 04:14:02', NULL),
-(89, 86, 86, '6226d30f03c70', 'Bolt Cat Food 20 Kg Tuna Donut', '20 KG-Tuna-Donut', 'bolt-cat-food-20-kg-tuna-donut', 'bolt-cat-food', '02adgknnottuu', 380000, '20kgtd', 20, 'Kg (Kilogram)', 20, 5, 'prod-comb', 'New', 'Active', '[{\"key\":\"1715498003880320.jpg0\",\"caption\":\"1715498003880320.jpg\",\"size\":23610,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715498003880320.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715498003880320.jpg\",\"type\":\"image\"}]', '1715498003880320.jpg', NULL, '2022-06-12 04:14:02', NULL),
-(90, 86, 86, '6226d30f053b5', 'Bolt Cat Food 20 Kg Salmon Round', '20 KG-Salmon-Round', 'bolt-cat-food-20-kg-salmon-round', 'bolt-cat-food', '02adgklmnnoorsu', 380000, '20kgsl', 20, 'Kg (Kilogram)', 20, 5, 'prod-comb', 'New', 'Active', '[{\"key\":\"1715498047931914.jpg0\",\"caption\":\"1715498047931914.jpg\",\"size\":37111,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715498047931914.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715498047931914.jpg\",\"type\":\"image\"}]', '1715498047931914.jpg', NULL, '2022-06-12 04:14:02', NULL),
-(91, 86, 86, '6226d30f06a5f', 'Bolt Cat Food 8 Kg Tuna Fish', '8 KG-Tuna-Fish', 'bolt-cat-food-8-kg-tuna-fish', 'bolt-cat-food', '8afghiknstu', 160000, '8kg', 8, 'Kg (Kilogram)', 8, 3, 'prod-comb', 'New', 'Active', '[{\"key\":\"1715498086895352.jpg0\",\"caption\":\"1715498086895352.jpg\",\"size\":40302,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715498086895352.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715498086895352.jpg\",\"type\":\"image\"}]', '1715498086895352.jpg', NULL, '2022-06-12 04:14:02', NULL),
-(92, 86, 86, '6226d30f08178', 'Bolt Cat Food 8 Kg Tuna Donut', '8 KG-Tuna-Donut', 'bolt-cat-food-8-kg-tuna-donut', 'bolt-cat-food', '8adgknnottuu', 160000, '8kgtd', 8, 'Kg (Kilogram)', 8, 7, 'prod-comb', 'New', 'Active', '[{\"key\":\"1715498017954576.jpg0\",\"caption\":\"1715498017954576.jpg\",\"size\":35124,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715498017954576.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715498017954576.jpg\",\"type\":\"image\"}]', '1715498017954576.jpg', NULL, '2022-06-12 04:14:02', NULL),
-(93, 86, 86, '6226d30f09779', 'Bolt Cat Food 8 Kg Salmon Round', '8 KG-Salmon-Round', 'bolt-cat-food-8-kg-salmon-round', 'bolt-cat-food', '8adgklmnnoorsu', 160000, '8kg', 8, 'Kg (Kilogram)', 8, 3, 'prod-comb', 'New', 'Active', '[{\"key\":\"1715498095754445.jpg0\",\"caption\":\"1715498095754445.jpg\",\"size\":37111,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715498095754445.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715498095754445.jpg\",\"type\":\"image\"}]', '1715498095754445.jpg', NULL, '2022-06-12 04:14:02', NULL),
+(88, 86, 86, '6226d30f024c0', 'Bolt Cat Food 20 Kg Tuna Fish', '20 KG-Tuna-Fish', 'bolt-cat-food-20-kg-tuna-fish', 'bolt-cat-food', '02afghiknstu', 380000, '20kgtf', 20, 'Kg (Kilogram)', 20, 165, 'prod-comb', 'New', 'Active', '[{\"key\":\"1726443364232697.jpg0\",\"caption\":\"1726443364232697.jpg\",\"size\":40302,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1726443364232697.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1726443364232697.jpg\",\"type\":\"image\"}]', '1726443364232697.jpg', NULL, '2022-06-22 02:53:53', NULL),
+(89, 86, 86, '6226d30f03c70', 'Bolt Cat Food 20 Kg Tuna Donut', '20 KG-Tuna-Donut', 'bolt-cat-food-20-kg-tuna-donut', 'bolt-cat-food', '02adgknnottuu', 380000, '20kgtd', 20, 'Kg (Kilogram)', 20, 5, 'prod-comb', 'New', 'Active', '[{\"key\":\"1715498003880320.jpg0\",\"caption\":\"1715498003880320.jpg\",\"size\":23610,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715498003880320.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715498003880320.jpg\",\"type\":\"image\"}]', '1715498003880320.jpg', NULL, '2022-06-22 02:53:53', NULL),
+(90, 86, 86, '6226d30f053b5', 'Bolt Cat Food 20 Kg Salmon Round', '20 KG-Salmon-Round', 'bolt-cat-food-20-kg-salmon-round', 'bolt-cat-food', '02adgklmnnoorsu', 380000, '20kgsl', 20, 'Kg (Kilogram)', 20, 5, 'prod-comb', 'New', 'Active', '[{\"key\":\"1715498047931914.jpg0\",\"caption\":\"1715498047931914.jpg\",\"size\":37111,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715498047931914.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715498047931914.jpg\",\"type\":\"image\"}]', '1715498047931914.jpg', NULL, '2022-06-22 02:53:53', NULL),
+(91, 86, 86, '6226d30f06a5f', 'Bolt Cat Food 8 Kg Tuna Fish', '8 KG-Tuna-Fish', 'bolt-cat-food-8-kg-tuna-fish', 'bolt-cat-food', '8afghiknstu', 160000, '8kg', 8, 'Kg (Kilogram)', 8, 3, 'prod-comb', 'New', 'Active', '[{\"key\":\"1715498086895352.jpg0\",\"caption\":\"1715498086895352.jpg\",\"size\":40302,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715498086895352.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715498086895352.jpg\",\"type\":\"image\"}]', '1715498086895352.jpg', NULL, '2022-06-22 02:53:53', NULL),
+(92, 86, 86, '6226d30f08178', 'Bolt Cat Food 8 Kg Tuna Donut', '8 KG-Tuna-Donut', 'bolt-cat-food-8-kg-tuna-donut', 'bolt-cat-food', '8adgknnottuu', 160000, '8kgtd', 8, 'Kg (Kilogram)', 8, 5, 'prod-comb', 'New', 'Active', '[{\"key\":\"1715498017954576.jpg0\",\"caption\":\"1715498017954576.jpg\",\"size\":35124,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715498017954576.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715498017954576.jpg\",\"type\":\"image\"}]', '1715498017954576.jpg', NULL, '2022-06-22 02:53:53', NULL),
+(93, 86, 86, '6226d30f09779', 'Bolt Cat Food 8 Kg Salmon Round', '8 KG-Salmon-Round', 'bolt-cat-food-8-kg-salmon-round', 'bolt-cat-food', '8adgklmnnoorsu', 160000, '8kg', 8, 'Kg (Kilogram)', 8, 3, 'prod-comb', 'New', 'Active', '[{\"key\":\"1715498095754445.jpg0\",\"caption\":\"1715498095754445.jpg\",\"size\":37111,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715498095754445.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715498095754445.jpg\",\"type\":\"image\"}]', '1715498095754445.jpg', NULL, '2022-06-22 02:53:53', NULL),
 (94, 87, 87, '6226d305a4e2c', 'Eiger X Chimbali Ws Gloves Black M', 'Black-M', 'eiger-x-chimbali-ws-gloves-black-m', 'eiger-x-chimbali-ws-gloves', 'abcklm', 149000, '910006046', 300, 'G (Gram)', 1, 10, 'prod-comb', 'New', 'Active', '[{\"key\":\"1715508078112823.jpg0\",\"caption\":\"1715508078112823.jpg\",\"size\":69036,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715508078112823.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715508078112823.jpg\",\"type\":\"image\"},{\"key\":\"1715508078116823.jpg1\",\"caption\":\"1715508078116823.jpg\",\"size\":86537,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715508078116823.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715508078116823.jpg\",\"type\":\"image\"},{\"key\":\"1715508078119823.jpg2\",\"caption\":\"1715508078119823.jpg\",\"size\":114865,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715508078119823.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715508078119823.jpg\",\"type\":\"image\"},{\"key\":\"1715508078122823.jpg3\",\"caption\":\"1715508078122823.jpg\",\"size\":60954,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715508078122823.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715508078122823.jpg\",\"type\":\"image\"},{\"key\":\"1715508078124824.jpg4\",\"caption\":\"1715508078124824.jpg\",\"size\":86002,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715508078124824.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715508078124824.jpg\",\"type\":\"image\"}]', '1715508078112823.jpg', NULL, '2022-05-28 00:45:06', NULL),
 (95, 87, 87, '6226d305a62ee', 'Eiger X Chimbali Ws Gloves Black L', 'Black-L', 'eiger-x-chimbali-ws-gloves-black-l', 'eiger-x-chimbali-ws-gloves', 'abckll', 149000, '910006046', 300, 'G (Gram)', 1, 10, 'prod-comb', 'Second', 'Active', '[{\"key\":\"1715508086313878.jpg0\",\"caption\":\"1715508086313878.jpg\",\"size\":69036,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715508086313878.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715508086313878.jpg\",\"type\":\"image\"},{\"key\":\"1715508086317878.jpg1\",\"caption\":\"1715508086317878.jpg\",\"size\":86537,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715508086317878.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715508086317878.jpg\",\"type\":\"image\"},{\"key\":\"1715508086320878.jpg2\",\"caption\":\"1715508086320878.jpg\",\"size\":114865,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715508086320878.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715508086320878.jpg\",\"type\":\"image\"},{\"key\":\"1715508086322878.jpg3\",\"caption\":\"1715508086322878.jpg\",\"size\":60954,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715508086322878.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715508086322878.jpg\",\"type\":\"image\"},{\"key\":\"1715508086324878.jpg4\",\"caption\":\"1715508086324878.jpg\",\"size\":86002,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715508086324878.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715508086324878.jpg\",\"type\":\"image\"}]', '1715508086313878.jpg', NULL, '2022-05-28 00:45:06', NULL),
 (96, 87, 87, '6226d305a779d', 'Eiger X Chimbali Ws Gloves Black Xl', 'Black-XL', 'eiger-x-chimbali-ws-gloves-black-xl', 'eiger-x-chimbali-ws-gloves', 'abckllx', 149000, '910006046', 300, 'G (Gram)', 1, 10, 'prod-comb', 'New', 'Active', '[{\"key\":\"1715508095974589.jpg0\",\"caption\":\"1715508095974589.jpg\",\"size\":69036,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715508095974589.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715508095974589.jpg\",\"type\":\"image\"},{\"key\":\"1715508095977589.jpg1\",\"caption\":\"1715508095977589.jpg\",\"size\":86537,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715508095977589.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715508095977589.jpg\",\"type\":\"image\"},{\"key\":\"1715508095985590.jpg2\",\"caption\":\"1715508095985590.jpg\",\"size\":114865,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715508095985590.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715508095985590.jpg\",\"type\":\"image\"},{\"key\":\"1715508095988590.jpg3\",\"caption\":\"1715508095988590.jpg\",\"size\":60954,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715508095988590.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715508095988590.jpg\",\"type\":\"image\"},{\"key\":\"1715508095991590.jpg4\",\"caption\":\"1715508095991590.jpg\",\"size\":86002,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1715508095991590.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1715508095991590.jpg\",\"type\":\"image\"}]', '1715508095974589.jpg', NULL, '2022-05-28 00:45:06', NULL),
@@ -8020,8 +7966,8 @@ INSERT INTO `products_combinations` (`id`, `url_id`, `product_id`, `product_key`
 (136, 132, 132, '628b36e470ddb', 'Intech Multi Function Wireless Chopper Pemotong Bawang Rechargeable Light Green', 'Light Green', 'intech-multi-function-wireless-chopper-pemotong-bawang-rechargeable-light-green', 'intech-multi-function-wireless-chopper-pemotong-bawang-rechargeable', 'eegghilnrt', 119940, 'imfwlg', 700, 'G (Gram)', 1, 71, 'prod-comb', 'New', 'Active', '[{\"key\":\"1735524753538401.png0\",\"caption\":\"1735524753538401.png\",\"size\":396875,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735524753538401.png\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735524753538401.png\",\"type\":\"image\"}]', '1735524753538401.png', NULL, '2022-06-13 06:03:03', NULL),
 (137, 132, 132, '628b36e471e8e', 'Intech Multi Function Wireless Chopper Pemotong Bawang Rechargeable Dark Green', 'Dark Green', 'intech-multi-function-wireless-chopper-pemotong-bawang-rechargeable-dark-green', 'intech-multi-function-wireless-chopper-pemotong-bawang-rechargeable', 'adeegknrr', 119940, 'imfwdg', 700, 'G (Gram)', 1, 78, 'prod-comb', 'New', 'Active', '[{\"key\":\"1733600901508764.png0\",\"caption\":\"1733600901508764.png\",\"size\":56798,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1733600901508764.png\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1733600901508764.png\",\"type\":\"image\"},{\"key\":\"1733600901510171.png1\",\"caption\":\"1733600901510171.png\",\"size\":48763,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1733600901510171.png\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1733600901510171.png\",\"type\":\"image\"},{\"key\":\"1733600901511571.png2\",\"caption\":\"1733600901511571.png\",\"size\":43702,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1733600901511571.png\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1733600901511571.png\",\"type\":\"image\"}]', '1733600894284573.png', NULL, '2022-06-13 05:57:18', NULL),
 (138, 91, 91, NULL, 'Zoff Powder Coriander Powder', 'Coriander Powder', 'zoff-powder-coriander-powder', 'zoff-powder', 'acddeeinooprrrw', 50000, 'zcp', 5, 'G (Gram)', 1, 10, 'prod-comb', 'New', 'Inactive', '[{\"key\":\"1735524228609016.png0\",\"caption\":\"1735524228609016.png\",\"size\":396875,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735524228609016.png\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735524228609016.png\",\"type\":\"image\"}]', '1735524228609016.png', NULL, '2022-06-13 05:54:42', NULL),
-(139, 136, 136, '62a4a7f527194', 'Wildhorn Carter Leather Wallet For Men Brown', 'Brown', 'wildhorn-carter-leather-wallet-for-men-brown', 'wildhorn-carter-leather-wallet-for-men', 'bnorw', 300000, 'wcbr', 150, 'G (Gram)', 1, 87, 'prod-comb', 'New', 'Active', '[{\"key\":\"1735349229858976.jpg0\",\"caption\":\"1735349229858976.jpg\",\"size\":26241,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735349229858976.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735349229858976.jpg\",\"type\":\"image\"},{\"key\":\"1735349229860295.jpg1\",\"caption\":\"1735349229860295.jpg\",\"size\":59275,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735349229860295.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735349229860295.jpg\",\"type\":\"image\"},{\"key\":\"1735349229861559.jpg2\",\"caption\":\"1735349229861559.jpg\",\"size\":15776,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735349229861559.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735349229861559.jpg\",\"type\":\"image\"},{\"key\":\"1735349229862884.jpg3\",\"caption\":\"1735349229862884.jpg\",\"size\":32695,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735349229862884.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735349229862884.jpg\",\"type\":\"image\"}]', '1735349229858976.jpg', NULL, '2022-06-12 03:03:43', NULL),
-(140, 136, 136, '62a4a7f528843', 'Wildhorn Carter Leather Wallet For Men Blue', 'Blue', 'wildhorn-carter-leather-wallet-for-men-blue', 'wildhorn-carter-leather-wallet-for-men', 'belu', 300000, 'wcbl', 150, 'G (Gram)', 1, 90, 'prod-comb', 'New', 'Active', '[{\"key\":\"1735349240628035.jpg0\",\"caption\":\"1735349240628035.jpg\",\"size\":43325,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735349240628035.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735349240628035.jpg\",\"type\":\"image\"},{\"key\":\"1735349240629157.jpg1\",\"caption\":\"1735349240629157.jpg\",\"size\":47922,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735349240629157.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735349240629157.jpg\",\"type\":\"image\"},{\"key\":\"1735349240630505.jpg2\",\"caption\":\"1735349240630505.jpg\",\"size\":94368,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735349240630505.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735349240630505.jpg\",\"type\":\"image\"}]', '1735349240628035.jpg', NULL, NULL, NULL);
+(139, 136, 136, '62a4a7f527194', 'Wildhorn Carter Leather Wallet For Men Brown', 'Brown', 'wildhorn-carter-leather-wallet-for-men-brown', 'wildhorn-carter-leather-wallet-for-men', 'bnorw', 300000, 'wcbr', 150, 'G (Gram)', 1, 86, 'prod-comb', 'New', 'Active', '[{\"key\":\"1735349229858976.jpg0\",\"caption\":\"1735349229858976.jpg\",\"size\":26241,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735349229858976.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735349229858976.jpg\",\"type\":\"image\"},{\"key\":\"1735349229860295.jpg1\",\"caption\":\"1735349229860295.jpg\",\"size\":59275,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735349229860295.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735349229860295.jpg\",\"type\":\"image\"},{\"key\":\"1735349229861559.jpg2\",\"caption\":\"1735349229861559.jpg\",\"size\":15776,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735349229861559.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735349229861559.jpg\",\"type\":\"image\"},{\"key\":\"1735349229862884.jpg3\",\"caption\":\"1735349229862884.jpg\",\"size\":32695,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735349229862884.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735349229862884.jpg\",\"type\":\"image\"}]', '1735349229858976.jpg', NULL, '2022-06-21 06:36:52', NULL),
+(140, 136, 136, '62a4a7f528843', 'Wildhorn Carter Leather Wallet For Men Blue', 'Blue', 'wildhorn-carter-leather-wallet-for-men-blue', 'wildhorn-carter-leather-wallet-for-men', 'belu', 300000, 'wcbl', 150, 'G (Gram)', 1, 90, 'prod-comb', 'New', 'Active', '[{\"key\":\"1735349240628035.jpg0\",\"caption\":\"1735349240628035.jpg\",\"size\":43325,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735349240628035.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735349240628035.jpg\",\"type\":\"image\"},{\"key\":\"1735349240629157.jpg1\",\"caption\":\"1735349240629157.jpg\",\"size\":47922,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735349240629157.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735349240629157.jpg\",\"type\":\"image\"},{\"key\":\"1735349240630505.jpg2\",\"caption\":\"1735349240630505.jpg\",\"size\":94368,\"downloadUrl\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/storage\\/app\\/public\\/products\\/1735349240630505.jpg\",\"url\":\"http:\\/\\/localhost\\/my-project\\/laravue\\/api\\/products\\/delete-images\\/1735349240630505.jpg\",\"type\":\"image\"}]', '1735349229860295.jpg', NULL, '2022-06-21 06:36:52', NULL);
 
 -- --------------------------------------------------------
 
@@ -8107,15 +8053,15 @@ CREATE TABLE `products_variants_types` (
 INSERT INTO `products_variants_types` (`id`, `product_id`, `variant_name`, `variant_type`, `created_at`, `updated_at`, `deleted_at`) VALUES
 (78, 82, 'Color', 'Color', NULL, NULL, NULL),
 (79, 82, 'Capacity', 'Capacity', NULL, NULL, NULL),
-(89, 86, 'Favor-Shape', 'Favor-Shape', NULL, '2022-06-12 04:13:34', NULL),
-(90, 86, 'Favor-Shape', 'Favor-Shape', NULL, '2022-06-12 04:13:34', NULL),
+(89, 86, 'Size', 'Size', NULL, '2022-06-22 02:53:12', NULL),
+(90, 86, 'Favor-shape', 'Favor-shape', NULL, '2022-06-22 02:52:53', NULL),
 (91, 87, 'Color', 'Color', NULL, NULL, NULL),
 (92, 87, 'Size', 'Size', NULL, NULL, NULL),
 (93, 88, 'Color', 'Color', NULL, NULL, NULL),
 (94, 88, 'Size', 'Size', NULL, NULL, NULL),
 (97, 89, 'Color', 'Color', NULL, NULL, NULL),
 (130, 91, 'Flavor', 'Flavor', NULL, '2022-06-12 04:31:25', NULL),
-(131, 136, 'Color', 'Color', NULL, NULL, NULL),
+(131, 136, 'Color', 'Color', NULL, '2022-06-21 06:36:52', NULL),
 (133, 132, 'Color', 'Color', NULL, NULL, NULL),
 (135, 122, 'Size', 'Size', NULL, NULL, NULL);
 
@@ -8743,17 +8689,44 @@ CREATE TABLE `role_has_permissions` (
 INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
 (1, 23),
 (2, 23),
+(3, 21),
 (3, 23),
 (4, 23),
 (5, 23),
 (6, 23),
+(7, 21),
 (7, 23),
 (8, 23),
 (9, 21),
 (9, 23),
 (10, 23),
 (11, 23),
-(12, 23);
+(12, 23),
+(13, 23),
+(14, 23),
+(15, 21),
+(15, 23),
+(16, 23),
+(17, 23),
+(18, 23),
+(19, 21),
+(19, 23),
+(20, 23),
+(21, 23),
+(22, 23),
+(23, 21),
+(23, 23),
+(24, 23),
+(25, 23),
+(26, 23),
+(27, 21),
+(27, 23),
+(28, 23),
+(29, 23),
+(30, 23),
+(31, 21),
+(31, 23),
+(32, 23);
 
 -- --------------------------------------------------------
 
@@ -8776,6 +8749,7 @@ CREATE TABLE `sessions` (
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
 ('8vquyj10IeCXyhg6zXfnfz5Sx2zLsNPqoHVyNQaw', NULL, '::1', 'PostmanRuntime/7.29.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiUlp4c1phenBLcHUwUGJhV2hkYk85MVFhVHczMmVpSGFielBrNkF2ZCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1653743442),
+('cF0HTR08G5hArIiVwQRvhego9P8Ly9kr1ZfL6QaR', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.124 Safari/537.36 Edg/102.0.1245.44', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiWklYZHRaTnB4MzlENzhEUDdBSnFjSVJ1dU1QcWFBalhyRDlQTWNiQiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1655802982),
 ('jqSeOZOInm3FLTWAmd6VdlP71s4FwDx7CVviCw1H', NULL, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiMzhXRFU3cDh0WXBOcGpjWW95bVNBUU55cWVIRFVDSUtvSkRycmNMdyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1653745250),
 ('N5EACIqN8D6QqcwnGym0PntAZEQzDBnqQWFlhyqg', NULL, '::1', 'PostmanRuntime/7.29.0', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiTDRVRDR1N2tSekx1dWFTME9SVDh1dzkwQmhnVlladXB6Z3V1VkJpdyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NDE6Imh0dHA6Ly9sb2NhbGhvc3QvbXktcHJvamVjdC9sYXJhdnVlL2xvZ2luIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==', 1655388831);
 
@@ -8799,13 +8773,6 @@ CREATE TABLE `shipping_addresses` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `shipping_addresses`
---
-
-INSERT INTO `shipping_addresses` (`id`, `address_id`, `label`, `address`, `province_residence`, `regency_residence`, `district_residence`, `village_residence`, `kode_pos`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(27, 1, 'Home', 'Jl. Abu Bakar As-Shiddiq No.16 RT 005 RW 004', '32', '3274', '3274040', '3274040001', '45123', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -8832,10 +8799,10 @@ CREATE TABLE `sliders` (
 --
 
 INSERT INTO `sliders` (`id`, `slider_image`, `slider_header`, `title`, `description`, `button_text`, `link`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES
-(1, '1721038127344005.png', 'Top Brands', 'New Collections', 'Lorom ipsum dolor sit amet, consectetur adipiscing elit.', 'Shop Now!', 'http://localhost:8080/staff/sliders/index', 'Active', '2022-01-04 08:24:19', '2022-01-04 23:59:37', NULL),
-(2, '1721097160416835.jpg', 'Spring 2019', 'Best Sellers', 'Curabitur aliquet placerat felis vitae congue. Etiam id diam est.', 'Buy Now!', 'https://www.tokopedia.com/aksesorisgeek/lenovo-thinkpad-x240-core-i7-ssd-240gb-only', 'Active', '2022-01-05 00:02:38', '2022-01-05 00:02:42', NULL),
-(3, '1721097629482673.jpg', 'Phone & Tablets', 'iPhone 13 Pro', 'Aliquam tellus ex, ornare eget tristique eget, fermentum sit amet arcu.', 'Grab it Fast!', 'http://localhost:8080', 'Active', '2022-01-05 00:10:05', '2022-01-05 00:10:09', NULL),
-(4, '1721098222488741.png', 'Food Contest', 'Organic Foods', 'Proin nibh justo, venenatis quis nulla eu, semper elementum magna', 'Book Now!', 'http://localhost:8080', 'Active', '2022-01-05 00:19:31', '2022-01-05 00:19:35', NULL);
+(1, '1721038127344005.png', 'Top Brands', 'New Collections', 'Lorom ipsum dolor sit amet, consectetur adipiscing elit.', 'Shop Now!', 'http://localhost:8080/staff/sliders/index', 'Active', '2022-01-04 08:24:19', '2022-06-21 22:55:19', NULL),
+(2, '1721097160416835.jpg', 'Spring 2019', 'Best Sellers', 'Curabitur aliquet placerat felis vitae congue. Etiam id diam est.', 'Buy Now!', 'https://www.tokopedia.com/aksesorisgeek/lenovo-thinkpad-x240-core-i7-ssd-240gb-only', 'Active', '2022-01-05 00:02:38', '2022-06-21 22:55:19', NULL),
+(3, '1721097629482673.jpg', 'Phone & Tablets', 'iPhone 13 Pro', 'Aliquam tellus ex, ornare eget tristique eget, fermentum sit amet arcu.', 'Grab it Fast!', 'http://localhost:8080', 'Active', '2022-01-05 00:10:05', '2022-06-21 22:55:19', NULL),
+(4, '1721098222488741.png', 'Food Contest', 'Organic Foods', 'Proin nibh justo, venenatis quis nulla eu, semper elementum magna', 'Book Now!', 'http://localhost:8080', 'Active', '2022-01-05 00:19:31', '2022-06-21 22:55:19', NULL);
 
 -- --------------------------------------------------------
 
@@ -8894,7 +8861,7 @@ INSERT INTO `sub_categories` (`id`, `category_id`, `subcategory_name`, `subcateg
 (62, 160, 'Eat and Drink Equipment', 'eat-and-drink-equipment', NULL, '2022-02-15 05:44:13', NULL),
 (63, 160, 'Other', 'other', NULL, '2022-02-15 05:44:13', NULL),
 (64, 161, 'Seasonings & Ingredients', 'seasonings-&-ingredients', NULL, '2022-02-21 23:18:46', NULL),
-(70, 166, 'Others', 'others', NULL, '2022-06-11 06:40:52', NULL);
+(70, 166, 'Others', 'others', NULL, '2022-06-21 21:57:22', NULL);
 
 -- --------------------------------------------------------
 
@@ -8930,7 +8897,7 @@ INSERT INTO `sub_sub_categories` (`id`, `category_id`, `subcategory_id`, `subsub
 (24, 160, 63, 'Other', 'other', NULL, '2022-02-15 05:44:21', NULL),
 (25, 161, 64, 'Seasoning', 'seasoning', NULL, '2022-02-21 23:18:53', NULL),
 (26, 161, 64, 'Cooking Oil', 'cooking-oil', NULL, '2022-05-01 01:32:49', NULL),
-(38, 166, 70, 'Others', 'others', NULL, '2022-06-11 06:40:59', NULL);
+(38, 166, 70, 'Others', 'others', NULL, '2022-06-21 22:45:03', NULL);
 
 -- --------------------------------------------------------
 
@@ -84363,7 +84330,7 @@ ALTER TABLE `oauth_personal_access_clients`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `order_product`
@@ -84375,13 +84342,13 @@ ALTER TABLE `order_product`
 -- AUTO_INCREMENT for table `order_product_combination`
 --
 ALTER TABLE `order_product_combination`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`

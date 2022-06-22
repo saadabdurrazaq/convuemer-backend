@@ -14,9 +14,14 @@ class SliderController extends Controller
 {
 	public $request;
 
-	public function __construct(Request $request)
+	public function __construct(Request $request) 
 	{
 		$this->request = $request;
+
+		$this->middleware('permission:View Sliders', ['only' => ['index']]);  
+        $this->middleware('permission:Create Slider', ['only' => ['store']]);
+        $this->middleware('permission:Update Slider', ['only' => ['update']]);
+        $this->middleware('permission:Delete Slider', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple', 'softDeleteSlider', 'forceDeleteSlider']]);
 	}
 
 	public function index(Request $request)
@@ -58,7 +63,7 @@ class SliderController extends Controller
 		]);
 	}
 
-	public function searchSlider($keyword)
+	public function searchSlider($keyword) 
 	{
 		$items = $this->request->items ?? 5;
 		$sliders = Slider::where('title', 'LIKE', "%{$keyword}%")->paginate($items);

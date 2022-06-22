@@ -1,7 +1,7 @@
 <template>
     <div class="login-box">
         <div class="login-logo">
-            <a href="#">User Login</a>
+            <a href="#">Staff Login</a>
         </div>
 
         <div style="display: none" id="errMsg" class="box no-border">

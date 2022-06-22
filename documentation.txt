@@ -274,6 +274,7 @@ m. app/Http/Controllers/StaffController.php
 n. src\views\staff\users
 o. Example to apply permission: src\views\staff\partials\Sidebar.vue 
    then run php artisan permission:cache-reset 
+p. Clear spatie cache: php artisan cache:forget spatie.permission.cache
 
 =====================================================================
 
@@ -314,8 +315,7 @@ BUGS AND IMPROVEMENT:
 
 4. In edit product page > add variant product > upload image variant product > leave the new variant product field empty > hit upload button > input all the variant product fields > hit upload button > Duplicate variant product image appear. 
 5. In edit product page > add variant product > upload image variant product > leave the new variant product field empty > hit upload button > delete image variant product. 
-6. Improvement features in all orders and user orders
-7. Implement RBAC in each feature. 
+6. add pagination in user orders 
 
 NEXT FEATURES: 
 1. Change password
@@ -327,17 +327,4 @@ NEXT FEATURES:
 7. Register
 8. Payment.
 9. Dynamic footer and header. 
-
-ERROR: 
-ikea
-straw
-inisfree
-bolt
-
-
-<a class="btn btn-upper btn-block m-t-20" :href="$router.resolve({name: 'checkout'}).href">Checkout</a>
-
-
-
-
 

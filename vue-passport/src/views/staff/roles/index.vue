@@ -132,7 +132,7 @@
                             >,
                           </div>
                         </td>
-                        <td style="text-align: center; width: 30%">
+                        <td style="text-align: center; width: 30%"> 
                           <router-link
                             :to="{
                               name: 'roles-edit',
@@ -142,9 +142,6 @@
                             style="margin-right: 7px"
                             ><i class="fa fa-edit"></i> Edit
                           </router-link>
-                          <a class="btn btn-warning" href="" @click.prevent="softDelete(role.id)">
-                            <i class="fa fa-trash"></i> Trash
-                          </a>
                         </td>
                       </tr>
                     </tbody>

@@ -10,13 +10,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Storage;
 use DB;
 
-class BrandController extends Controller
+class BrandController extends Controller 
 {
 	public $request;
 
 	public function __construct(Request $request)
 	{
 		$this->request = $request;
+
+		$this->middleware('permission:View Brands', ['only' => ['index']]);  
+        $this->middleware('permission:Create Brand', ['only' => ['store']]);
+        $this->middleware('permission:Update Brand', ['only' => ['update']]);
+        $this->middleware('permission:Delete Brand', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple', 'forceDeleteBrand', 'softDeleteBrand']]);
 	}
 
 	public function index(Request $request)
@@ -118,7 +123,7 @@ class BrandController extends Controller
 		}
 	}
 
-	public function softDeleteBrand($id)
+	public function softDeleteBrand($id) 
 	{
 		$brand = Brand::findOrFail($id);
 		$brand->delete();

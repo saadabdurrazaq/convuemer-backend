@@ -9,7 +9,7 @@
                     <div class="col-md-6 col-sm-6 sign-in">
                         <div class="col-md-12 col-sm-12">
                             <h4 class="">Sign in</h4>
-                            <p class="">Hello, Welcome to your account.</p>
+                            <p class="">Hello, Welcome to your account.</p> 
                             <div class="social-sign-in outer-top-xs">
                                 <a href="#" class="facebook-sign-in"
                                     ><i class="fa fa-facebook"></i> Sign In with Facebook</a
@@ -362,5 +362,15 @@ export default {
 <style>
 @import '~@/assets/frontend/css/bootstrap.min.css';
 @import '~@/assets/frontend/css/main-blue-green.css';
+@import '~@/assets/frontend/css/animate.min.css';
 @import '~@/assets/frontend/css/blue-green.css';
+@import '~@/assets/frontend/css/bootstrap-select.min.css';
+@import '~@/assets/frontend/css/bootstrap.min.css';
+@import '~@/assets/frontend/css/font-awesome.css';
+@import '~@/assets/frontend/css/lightbox.css';
+@import '~@/assets/frontend/css/loading.css';
+@import '~@/assets/frontend/css/owl.carousel.css';
+@import '~@/assets/frontend/css/owl.transitions.css';
+@import '~@/assets/frontend/css/rateit.css';
+
 </style>

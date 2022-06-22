@@ -7,7 +7,7 @@
       <Breadcrumbs />
       <!-- End title and breadacrumbs -->
       <div class="content">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center"> 
           <div class="col-md-12">
             <div class="card card-outline card-info">
               <div class="card-body">
@@ -35,6 +35,8 @@
                         />
                       </div>
                     </div>
+
+                    <!-- column left -->
                     <div
                       class="col-xs-6 col-sm-6 col-md-6 panel-body table-responsive"
                       style="overflow: hidden"
@@ -82,7 +84,52 @@
                           </tr>
                         </tbody>
                       </table>
+                      <strong>Categories Management</strong>
+                      <table
+                        class="table table-hover table-striped dataTable"
+                        style="border: 1px solid rgba(0, 0, 0, 0.125)"
+                      >
+                        <tbody>
+                          <tr v-for="permission in permissions.slice(16, 20)" :key="permission.id">
+                            <td>
+                              <input
+                                type="checkbox"
+                                name="permission[]"
+                                data-bootstrap-switch
+                                data-off-color="danger"
+                                :value="permission.id"
+                                class="user_management"
+                              />
+                              {{ permission.name }} <br />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <strong>Sub Sub Categories Management</strong>
+                      <table
+                        class="table table-hover table-striped dataTable"
+                        style="border: 1px solid rgba(0, 0, 0, 0.125)"
+                      >
+                        <tbody>
+                          <tr v-for="permission in permissions.slice(24, 28)" :key="permission.id">
+                            <td>
+                              <input
+                                type="checkbox"
+                                name="permission[]"
+                                data-bootstrap-switch
+                                data-off-color="danger"
+                                :value="permission.id"
+                                class="user_management"
+                              />
+                              {{ permission.name }} <br />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
+                    <!-- end column left -->
+
+                    <!-- column right -->
                     <div
                       class="col-xs-6 col-sm-6 col-md-6 panel-body table-responsive"
                       style="overflow: hidden"
@@ -110,9 +157,80 @@
                           </tr>
                         </tbody>
                       </table>
+                      <strong>Brand Management</strong>
+                      <table
+                        class="table table-hover table-striped dataTable"
+                        style="border: 1px solid rgba(0, 0, 0, 0.125)"
+                      >
+                        <tbody>
+                          <tr v-for="permission in permissions.slice(12, 16)" :key="permission.id">
+                            <td>
+                              <input
+                                type="checkbox"
+                                name="roles_permission"
+                                data-bootstrap-switch
+                                data-off-color="danger"
+                                class="role_management"
+                                v-model="roles_status"
+                                v-bind="$attrs"
+                                :value="permission.id"
+                              />
+                              {{ permission.name }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <strong>Sub Categories Management</strong>
+                      <table
+                        class="table table-hover table-striped dataTable"
+                        style="border: 1px solid rgba(0, 0, 0, 0.125)"
+                      >
+                        <tbody>
+                          <tr v-for="permission in permissions.slice(20, 24)" :key="permission.id">
+                            <td>
+                              <input
+                                type="checkbox"
+                                name="roles_permission"
+                                data-bootstrap-switch
+                                data-off-color="danger"
+                                class="role_management"
+                                v-model="roles_status"
+                                v-bind="$attrs"
+                                :value="permission.id"
+                              />
+                              {{ permission.name }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <strong>Sliders Management</strong>
+                      <table
+                        class="table table-hover table-striped dataTable"
+                        style="border: 1px solid rgba(0, 0, 0, 0.125)"
+                      >
+                        <tbody>
+                          <tr v-for="permission in permissions.slice(28, 32)" :key="permission.id">
+                            <td>
+                              <input
+                                type="checkbox"
+                                name="roles_permission"
+                                data-bootstrap-switch
+                                data-off-color="danger"
+                                class="role_management"
+                                v-model="roles_status"
+                                v-bind="$attrs"
+                                :value="permission.id"
+                              />
+                              {{ permission.name }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
+                    <!-- end column right -->
+
                     <div class="col-xs-12 col-sm-12 col-md-12 text-right" style="margin-top: 10px">
-                      <button type="submit" class="btn btn-primary" id="loadingButton">
+                      <button :disabled="createRole === null" type="submit" class="btn btn-primary" id="loadingButton">
                         Submit
                       </button>
                     </div>
@@ -163,6 +281,7 @@ export default {
         name: '',
         permissions: [],
       }),
+      createRole: null,
     };
   },
   methods: {
@@ -220,6 +339,24 @@ export default {
           $('.user_management').bootstrapSwitch();
 
           this.detectSwitchChange();
+          this.checkPermissions('Create Role');
+        });
+    },
+    checkPermissions(permissionName) {
+      const token = localStorage.getItem('token-staff');
+      this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      this.axios
+        .get('api/staff/roles/permissions/' + permissionName)
+        .then((response) => {
+          if (permissionName === 'Create Role') {
+            this.createRole = response.data.staff;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          //
         });
     },
     detectSwitchChange() {

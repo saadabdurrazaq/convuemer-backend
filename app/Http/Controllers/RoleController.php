@@ -16,19 +16,17 @@ class RoleController extends Controller
      *  
      * @return \Illuminate\Http\Response
      */
-    // function __construct()
-    // {
-    //     $this->middleware('permission:View Roles|Create Roles|Edit Roles|Delete Roles', ['only' => ['index', 'store']]);
-    //     $this->middleware('permission:Create Roles', ['only' => ['create', 'store']]);
-    //     $this->middleware('permission:Edit Roles', ['only' => ['edit', 'update']]);
-    //     $this->middleware('permission:Delete Roles', ['only' => ['destroy']]);
-    //     $this->middleware(['auth', 'verified']);
-    // }
+    function __construct()
+    {
+        $this->middleware('permission:View Roles', ['only' => ['index']]);
+        $this->middleware('permission:Create Role', ['only' => ['store']]);
+        $this->middleware('permission:Update Role', ['only' => ['update']]);
+    }
 
     function check($permissionName) {
         $staff = Auth::guard('staff-api')->user();
         
-        if (! $staff->hasPermissionTo($permissionName)) {
+        if (! $staff->hasPermissionTo($permissionName)) { // $staff->hasRole('Super User')
             abort(403);
         }
 

@@ -19,10 +19,14 @@ class StaffController extends Controller
 {
     public $request;
 
-    public function __construct(Request $request) 
+    public function __construct(Request $request)  
     {
-        $this->request = $request;
-        $this->middleware('permission:View Staffs', ['only' => ['index']]);
+        $this->request = $request; 
+        
+        $this->middleware('permission:View Staffs', ['only' => ['index']]);  
+        $this->middleware('permission:Create Staff', ['only' => ['store']]);
+        $this->middleware('permission:Edit Staff', ['only' => ['update']]);
+        $this->middleware('permission:Delete Staff', ['only' => ['destroy', 'deleteMultiple']]);
     }
 
     /**

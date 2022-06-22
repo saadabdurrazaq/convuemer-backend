@@ -87,7 +87,7 @@
             </router-link>
           </li>
           <li class="nav-item" v-if="viewProducts !== null">
-            <router-link :to="{ name: 'products-index' }" class="nav-link" href="#">
+            <router-link :to="{ name: 'products-index' }" class="nav-link" href="#"> 
               <i class="nav-icon fas fa-object-group"></i>
               <p>Products</p>
             </router-link>
@@ -215,7 +215,7 @@ export default {
       const token = localStorage.getItem('token-staff');
       this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
       this.axios
-        .get('api/staff/roles/permissions/' + permissionName)
+        .get('api/staff/roles/permissions/' + permissionName) 
         .then((response) => {
             if(permissionName === 'View Products') {
                 this.viewProducts = response.data.staff;

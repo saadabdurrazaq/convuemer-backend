@@ -149,6 +149,33 @@
                           </tr>
                         </tbody>
                       </table>
+                      <strong>Password Management</strong>
+                      <table
+                        class="table table-hover table-striped dataTable"
+                        style="border: 1px solid rgba(0, 0, 0, 0.125)"
+                      >
+                        <tbody>
+                          <tr
+                            v-for="permission in form.permissions.slice(32, 33)"
+                            :key="permission.id"
+                          >
+                            <td>
+                              <input
+                                type="checkbox"
+                                name="permission[]"
+                                data-bootstrap-switch
+                                data-off-color="danger"
+                                :value="permission.id"
+                                class="user_management"
+                                :checked="
+                                  Object.values(form.role_permissions).includes(permission.id)
+                                "
+                              />
+                              {{ permission.name }} <br />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                     <!-- end column left -->
 

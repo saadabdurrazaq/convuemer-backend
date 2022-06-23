@@ -26,7 +26,7 @@ class CategoryController extends Controller
 
 	}
 
-	public function index(Request $request)
+	public function index(Request $request) 
 	{
 		$items = $request->items ?? 5;
 		$trashedCategories = Category::onlyTrashed()->count();

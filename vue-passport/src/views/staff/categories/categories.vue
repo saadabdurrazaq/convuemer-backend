@@ -870,7 +870,7 @@ export default {
         page = 1;
       }
 
-      this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      this.axios.defaults.headers.common.Authorization = `Bearer ${token}`; 
       this.axios
         .get('api/staff/categories', {
           params: {

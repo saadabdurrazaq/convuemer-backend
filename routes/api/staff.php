@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
@@ -43,6 +44,9 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     Route::get('dashboard', [LoginController::class, 'staffDashboard']);
     Route::get('staff/home', [LoginController::class, 'staffDashboard']);
     Route::post('logout', [LoginController::class, 'logoutStaff']);  
+
+    // Change password
+    Route::put('change-password-staff', [ChangePasswordController::class, 'changePasswordStaff']);
 
     // CRUD staff.  
     Route::get('staff-management', [StaffController::class, 'index']);

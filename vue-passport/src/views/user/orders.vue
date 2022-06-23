@@ -12,7 +12,7 @@
                 style="background-color: white; margin-top: 20px; margin-bottom: 20px"
               >
                 <!-- Profile card -->
-                <div v-for="item in items" :key="item.id">
+                <div v-for="item in orders" :key="item.id">
                   <template v-if="item.products.length > 0">
                     <div
                       class="container col-md-12"
@@ -266,7 +266,7 @@ export default {
     return {
       user: '',
       BASE_URL: BASE_URL,
-      items: [],
+      orders: [],
       products: [],
       prodCombs: [],
     };
@@ -313,7 +313,7 @@ export default {
         .get('api/user/my-order', config)
         .then((response) => {
           let { data } = response.data;
-          this.items = data;
+          this.orders = data;
           this.products = data[0].products;
           this.prodCombs = data[0].variants_prod;
         })
@@ -321,14 +321,13 @@ export default {
           let { data } = error.response;
           console.log(data.message);
         });
-    }, 
+    },  
   },
   beforeMount() {}, 
   created() {
-    //
+    this.checkAuth();
   },
   mounted() {
-    this.checkAuth();
     let data = this.$route.params.dataUser; 
     console.log("data is", data); 
     if (swal.isVisible()) {

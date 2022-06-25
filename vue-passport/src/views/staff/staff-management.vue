@@ -653,7 +653,7 @@ export default {
         })
         .finally(() => {
           //
-        });
+        }); 
     },
 
     showEntries(page) {

@@ -87,6 +87,18 @@ class LoginController extends Controller
         }
     }
 
+    public function checkRole(Request $request) 
+    {
+        $user = Auth::user()->getRoleNames();
+
+        if ($user) {
+            return response()->json([
+                'success' => true,
+                'data' => $user,
+            ]);
+        }
+    }
+
     public function logoutUser()
     {
         $user = Auth::user()->token();

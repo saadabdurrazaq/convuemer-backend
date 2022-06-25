@@ -43,6 +43,7 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     // authenticated staff routes here 
     Route::get('dashboard', [LoginController::class, 'staffDashboard']);
     Route::get('staff/home', [LoginController::class, 'staffDashboard']);
+    Route::get('get-role/user', [LoginController::class, 'checkRole']);
     Route::post('logout', [LoginController::class, 'logoutStaff']);  
 
     // Change password

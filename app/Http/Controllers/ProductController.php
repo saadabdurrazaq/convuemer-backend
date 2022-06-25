@@ -27,9 +27,9 @@ class ProductController extends Controller
     {
         $this->request = $request;
         $this->middleware('permission:View Products', ['only' => ['index']]);
-        $this->middleware('permission:Create Product', ['only' => ['store']]);
+        $this->middleware('permission:Create Product', ['only' => ['store', 'storeImages']]);
         $this->middleware('permission:Update Product', ['only' => ['update']]);
-        $this->middleware('permission:Delete Product', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple', 'forceDeleteProduct', 'deleteAllVarProds']]);
+        $this->middleware('permission:Delete Product', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple', 'forceDeleteProduct', 'deleteAllVarProds', 'deleteImages']]);
     }
 
     public function show($id, $slug)
@@ -89,7 +89,7 @@ class ProductController extends Controller
             $fileSize = $_FILES[$input]['size'][$i]; // the file size
 
             //Make sure we have a file path
-            if ($tmpFilePath != "") {
+            if ($tmpFilePath != "") { 
                 //Setup our new file path
                 $newFilePath = $path . $fileName;
                 $newFileUrl = 'http://localhost/my-project/laravue/storage/app/public/products/' . $fileName;

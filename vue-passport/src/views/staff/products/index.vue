@@ -219,10 +219,10 @@
                         </td>
                         <td style="text-align: center; width: 30%">
                           <router-link
-                            :to=" deleteProduct !== null ? {
+                            :to="{
                               name: 'products-edit',
                               params: { id: product.id },
-                            } : '' "
+                            }"
                             class="btn btn-info"
                             style="margin-right: 7px"
                             ><i class="fa fa-edit"></i> Edit

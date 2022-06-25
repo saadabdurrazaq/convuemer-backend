@@ -8,10 +8,29 @@
           <div class="container">
             <div class="row justify-content-center">
               <div class="col-md-8">
+                <!-- warning -->
+                <div v-show="role" id="errMsg" class="box no-border errMsg">
+                  <div class="box-tools">
+                    <p class="alert alert-warning alert-dismissible">
+                      But unfortunately you are not super user. So, you can't perform any actions for some reasons. You can only view the contents, no more than that. 
+                      Sorry for your inconvenience!
+                      <button
+                        type="button"
+                        @click.prevent="closeMsg"
+                        class="close"
+                        data-hide="alert"
+                        aria-label="Close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </p>
+                  </div>
+                </div>
+                <!-- end warning -->
                 <div class="card">
                   <div class="card-header">Dashboard</div>
                   <div class="card-body">
-                    Selamat datang <strong>{{ staffData.data.name }}</strong>
+                    Welcome to ConVuemer,  <strong>{{ staffData.data.name }}</strong>
                     <br />
                   </div>
                 </div>
@@ -52,6 +71,7 @@ export default {
         name: '',
         url: '',
       }),
+      role: false,
     };
   },
   methods: {
@@ -59,7 +79,7 @@ export default {
       // state token
       const token = localStorage.getItem('token-staff');
       let staffData = JSON.parse(localStorage.getItem('staff-data'));
-      this.staffData = staffData; 
+      this.staffData = staffData;
 
       //inisialisasi vue router on Composition API
       const router = useRouter();
@@ -67,8 +87,28 @@ export default {
         return router.push({
           name: 'staff-login',
         });
+      } else {
+        this.checkRoles();
       }
     },
+    checkRoles() {
+      const token = localStorage.getItem('token-staff');
+      this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      this.axios
+        .get('api/staff/get-role/user')
+        .then((response) => {
+          let responseData = response.data;
+          if (responseData.data[0] !== 'Super User') {
+            this.role = true;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          //
+        });
+    }
   },
   created() {
     this.checkAuth();

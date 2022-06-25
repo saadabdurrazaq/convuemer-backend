@@ -339,7 +339,7 @@
                             <th style="width: 6%">SKU</th>
                             <th style="width: 10%">Weight</th>
                             <th>Status</th>
-                            <th style="width: 100%">Images</th>
+                            <th style="width: 100%">Images (if you are not super user, you cant upload and delete any picts for some reason)</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -533,6 +533,7 @@
                             <td>
                               <div class="file-loading">
                                 <input
+                                  :disabled="updateProduct === null"
                                   id="images"
                                   :class="'images' + variantVal.id"
                                   name="images[]"
@@ -1005,19 +1006,19 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                          <p class="lead section-title">Product Photo:</p>
+                          <p class="lead section-title">Product Photo: (If you are not super user, you cant upload and delete any picts for some reason)</p>
                         </div>
                       </div>
                       <div class="col-md-12 job-info">
                         <div class="form-group">
                           <div class="file-loading">
-                            <input id="picts" name="images[]" type="file" multiple />
+                            <input :disabled="updateProduct === null" id="picts" name="images[]" type="file" multiple />
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-12">
+                  <div class="col-md-12"> 
                     <div class="box-footer text-right">
                       <button :disabled="updateProduct === null" type="submit" class="btn btn-primary btn-md" id="loadingButton">
                         Update
@@ -2545,7 +2546,7 @@ export default {
       this.getRadioButtonVarProdsVal();
       this.getVarProdsBeenStoredInDb(); 
 
-      this.form.isVariantExists = $('#variant_type').length;
+      this.form.isVariantExists = $('#variant_type').length; 
       let variants = JSON.stringify(this.form.variants); 
 
       let formData = new FormData();

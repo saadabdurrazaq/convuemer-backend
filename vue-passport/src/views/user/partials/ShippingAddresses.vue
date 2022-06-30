@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <div class="col-md-4">
-        <div id="custom-search-input" style="margin-bottom:20px; margin-right:15px; float:left;">
+        <div id="custom-search-input" style="margin-bottom: 20px; margin-right: 15px; float: left">
           <div class="input-group col-md-12">
             <input type="text" class="search-query form-control" placeholder="Search" />
             <span class="input-group-btn">
@@ -13,11 +13,11 @@
           </div>
         </div>
       </div>
-      <div class="col-md-8" style="width:550px;">
+      <div class="col-md-8" style="width: 550px">
         <div id="custom-search-input" style="margin-bottom: 20px">
           <div class="input-group col-md-12">
             <a
-              style="margin: auto 0 auto auto; float:right"
+              style="margin: auto 0 auto auto; float: right"
               href="#"
               class="btn btn-primary btn-lg active"
               role="button"
@@ -33,7 +33,7 @@
         <div
           v-for="user_address in user_addresses"
           :key="user_address.id"
-          style="margin-bottom: 20px; width: 97.5%;"
+          style="margin-bottom: 20px; width: 97.5%"
         >
           <div
             class="container"
@@ -47,7 +47,14 @@
           >
             <div
               class="content"
-              style="position: relative; width: 100%; height:90%; float: left; padding: 5px 15px; box-sizing: border-box"
+              style="
+                position: relative;
+                width: 100%;
+                height: 90%;
+                float: left;
+                padding: 5px 15px;
+                box-sizing: border-box;
+              "
             >
               <h3>{{ user_address.label }}</h3>
               <br />
@@ -56,7 +63,7 @@
               }}, {{ user_address.regency_residence_name }},
               {{ user_address.province_residence_name }},
               {{ user_address.kode_pos }}
-              
+
               <div style="float-left; position: absolute;bottom: 0;">
                 <a
                   aria-pressed="true"
@@ -85,7 +92,7 @@
     </div>
 
     <!-- modal -->
-    <form @submit.prevent="isFormCreate ? store() : update()" novalidate> 
+    <form @submit.prevent="isFormCreate ? store() : update()" novalidate>
       <div
         class="modal animated fadeIn fade"
         id="modal_address"
@@ -213,7 +220,7 @@
                         v-bind:key="regency.id"
                         :selected="regency.id === regency_id"
                       >
-                        {{ regency.name }} 
+                        {{ regency.name }}
                       </option>
                     </select>
                     <div
@@ -269,13 +276,13 @@
                     >
                       <option :value="null" disabled selected>=== Select Village ===</option>
                       <option
-                        v-for="village in villages[0]" 
+                        v-for="village in villages[0]"
                         :value="village.id"
                         :data-index="village.id"
                         v-bind:key="village.id"
                         :selected="village.id === village_id"
                       >
-                        {{ village.name }} 
+                        {{ village.name }}
                       </option>
                     </select>
                     <div
@@ -329,6 +336,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import jQuery from 'jquery';
 const $ = jQuery;
 window.$ = $;
@@ -344,8 +352,8 @@ export default {
   },
   data() {
     return {
-      loadingForm: false, 
-      user: '',
+      loadingForm: false,
+      userData: '',
       defaultSelected: true,
       user_addresses: {},
       province_id: null,
@@ -369,17 +377,25 @@ export default {
       }),
     };
   },
+  computed: {
+    ...mapGetters({
+      guest: 'auth/guest',
+      user: 'auth/user',
+    }),
+  },
   methods: {
     checkAuth() {
-      // state token
-      const token = localStorage.getItem('token-user');
+      let config = {
+        headers: {
+          Authorization: 'Bearer ' + this.user.token,
+        },
+      };
 
       //get data user
-      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
       axios
-        .get('http://localhost/my-project/laravue/api/user')
+        .get('api/user', config)
         .then((response) => {
-          this.user = response.data;
+          this.userData = response.data;
           this.loadStoredAddresses();
         })
         .catch((error) => {
@@ -482,10 +498,10 @@ export default {
     },
     loadStoredAddresses() {
       this.axios
-        .get('api/user/shipping-addresses/index/' + this.user.id)
+        .get('api/user/shipping-addresses/index/' + this.userData.id)
         .then((response) => {
           let responseData = response.data;
-          this.user_addresses = responseData.data; 
+          this.user_addresses = responseData.data;
         })
         .catch((error) => {
           console.log(error);
@@ -560,7 +576,7 @@ export default {
           this.showSuccessMsg(response);
         })
         .catch((err) => {
-          // sweet alert fail 
+          // sweet alert fail
           swal.fire({
             icon: 'error',
             title: 'Oops...',

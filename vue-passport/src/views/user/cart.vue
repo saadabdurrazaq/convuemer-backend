@@ -180,7 +180,7 @@ export default {
     },
     changeItem(item) {
       if (this.newValue > this.oldValue) {
-        for (let i = this.oldValue; i < this.newValue; i++) { 
+        for (let i = this.oldValue; i < this.newValue; i++) {
           this.addCart(item);
           if (i == this.newValue - 1) {
             this.newValue = 0;

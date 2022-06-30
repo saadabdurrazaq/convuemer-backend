@@ -75,7 +75,14 @@
                       </div>
                       <div style="float: right; width: 75%">
                         <div style="margin-top: 2%; margin-bottom: 10%; font-size: 1.5vw">
-                          {{ new Intl.DateTimeFormat("en-GB", { year: "numeric", month: "long", day: "2-digit" }).format(new Date(item.created_at)) }} | Invoice: {{ item.invoice_number }}
+                          {{
+                            new Intl.DateTimeFormat('en-GB', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: '2-digit',
+                            }).format(new Date(item.created_at))
+                          }}
+                          | Invoice: {{ item.invoice_number }}
 
                           <!-- three dot menu -->
                           <div
@@ -103,15 +110,15 @@
                         </div>
                         <div style="float: left; margin-top: -6%">
                           <h4 style="font-size: 2vw">
-                          <a
-                            :href="
-                              $router.resolve({
-                                name: 'product-show',
-                                params: { id: prod.url_id, slug: prod.url },
-                              }).href
-                            "
-                            >{{ prod.product_name }}</a
-                          >
+                            <a
+                              :href="
+                                $router.resolve({
+                                  name: 'product-show',
+                                  params: { id: prod.url_id, slug: prod.url },
+                                }).href
+                              "
+                              >{{ prod.product_name }}</a
+                            >
                           </h4>
                         </div>
                         <div style="float: right">
@@ -175,14 +182,21 @@
                               width: 100%;
                               height: 100%;
                               border-top-left-radius: 5px;
-                              border-bottom-left-radius: 5px; 
+                              border-bottom-left-radius: 5px;
                             "
                           />
                         </div>
                       </div>
                       <div style="float: right; width: 75%">
                         <div style="margin-top: 2%; margin-bottom: 10%; font-size: 1.5vw">
-                          {{ new Intl.DateTimeFormat("en-GB", { year: "numeric", month: "long", day: "2-digit" }).format(new Date(item.created_at)) }} | Invoice: {{ item.invoice_number }}
+                          {{
+                            new Intl.DateTimeFormat('en-GB', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: '2-digit',
+                            }).format(new Date(item.created_at))
+                          }}
+                          | Invoice: {{ item.invoice_number }}
 
                           <!-- three dot menu -->
                           <div
@@ -209,16 +223,16 @@
                           </div>
                         </div>
                         <div style="float: left; margin-top: -6%">
-                           <h4 style="font-size: 2vw">
-                          <a
-                            :href="
-                              $router.resolve({
-                                name: 'product-show',
-                                params: { id: prodComb.url_id, slug: prodComb.url },
-                              }).href
-                            "
-                            >{{ prodComb.product_name }}</a
-                          >
+                          <h4 style="font-size: 2vw">
+                            <a
+                              :href="
+                                $router.resolve({
+                                  name: 'product-show',
+                                  params: { id: prodComb.url_id, slug: prodComb.url },
+                                }).href
+                              "
+                              >{{ prodComb.product_name }}</a
+                            >
                           </h4>
                         </div>
                         <div style="float: right">
@@ -242,6 +256,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import jQuery from 'jquery';
 const $ = jQuery;
 window.$ = $;
@@ -264,20 +279,25 @@ export default {
   },
   data() {
     return {
-      user: '',
+      userData: '',
       BASE_URL: BASE_URL,
       orders: [],
       products: [],
       prodCombs: [],
     };
   },
+  computed: {
+    ...mapGetters({
+      user: 'auth/user',
+    }),
+  },
   methods: {
     checkAuth() {
       // state token
-      const token = localStorage.getItem('token-user');
+      const token = this.user.token;
 
       const router = useRouter();
-      if (!token) { 
+      if (!token) {
         return router.push({
           name: 'user-login',
         });
@@ -288,7 +308,7 @@ export default {
       axios
         .get('api/user')
         .then((response) => {
-          this.user = response.data; 
+          this.userData = response.data;
         })
         .catch((error) => {
           console.log(error.response.data);
@@ -302,7 +322,7 @@ export default {
         });
     },
     dataOrder() {
-      const token = localStorage.getItem('token-user');
+      const token = this.user.token;
 
       let config = {
         headers: {
@@ -321,15 +341,15 @@ export default {
           let { data } = error.response;
           console.log(data.message);
         });
-    },  
+    },
   },
-  beforeMount() {}, 
+  beforeMount() {},
   created() {
     this.checkAuth();
   },
   mounted() {
-    let data = this.$route.params.dataUser; 
-    console.log("data is", data); 
+    let data = this.$route.params.dataUser;
+    console.log('data is', data);
     if (swal.isVisible()) {
       document.querySelector('body').setAttribute('class', 'swal2-toast-shown swal2-shown');
     }

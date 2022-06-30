@@ -1,11 +1,11 @@
 import Vuex from 'vuex'
 import cart from '@/modules/cart' 
-// import auth from '@/modules/auth'
+import auth from '@/modules/auth'
 // import dialog from '@/modules/dialog'
 // import region from '@/modules/region'
 import VuexPersist from 'vuex-persist'
 
-const vuexPersist = new VuexPersist({ 
+const vuexPersist = new VuexPersist({  
   key: 'product-cart',
   storage: localStorage 
 })
@@ -38,7 +38,7 @@ export default new Vuex.Store({
   },
   modules: {
     cart,
-    // auth,
+    auth,
     // dialog,
     // region
   }

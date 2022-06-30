@@ -2,18 +2,18 @@
   <div class="col-xs-12 col-sm-12 col-md-3 sidebar">
     <br />
     <div class="side-menu animate-dropdown outer-bottom-xs">
-      <div style="display:flex; justify-content:center;">
+      <div style="display: flex; justify-content: center">
         <img
           class="card-img-top"
-          style="border-radius: 50%; margin-top:10px;"
+          style="border-radius: 50%; margin-top: 10px"
           height="100"
           width="100"
           :src="require('@/assets/avatar/fb-male.jpg')"
           alt="User Image"
         />
-      </div> 
+      </div>
       <br />
-      <div style="margin-left: 10px; margin-right: 10px; height:250px">
+      <div style="margin-left: 10px; margin-right: 10px; height: 250px">
         <ul class="list-group list-group-flush">
           <router-link :to="{ name: 'user-home' }" class="btn btn-sm btn-block" href="#"
             >Home</router-link
@@ -35,6 +35,7 @@
   <!-- // end col md 2 -->
 </template>
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import image from 'admin-lte/dist/img/AdminLTELogo.png';
@@ -44,54 +45,54 @@ export default {
   data: function () {
     return {
       image: image,
+      router: useRouter(),
     };
   },
-  setup() {
-    //state token
-    const token = localStorage.getItem('token-user');
-    let userData = JSON.parse(localStorage.getItem('user-data'));
-
-    //inisialisasi vue router on Composition API
-    const router = useRouter();
-
-    //mounted properti
-    onMounted(() => {
-      //check Token exist
-      if (!token) {
-        return router.push({
-          name: 'user-login',
-        });
-      }
-    });
+  computed: {
+    ...mapGetters({
+      guest: 'auth/guest',
+      user: 'auth/user',
+    }),
+  },
+  methods: {
+    ...mapActions({
+      setAuth: 'auth/set',
+    }),
 
     //method logout
-    function logout() {
+    logout() {
       //logout
-      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      let config = {
+        headers: {
+          Authorization: 'Bearer ' + this.user.token,
+        },
+      };
       axios
-        .post('http://localhost/my-project/laravue/api/user/logout')
+        .post('api/user/logout', {}, config)
         .then((response) => {
           if (response.data.success) {
-            //remove localStorage
-            localStorage.removeItem('token-user'); 
-            localStorage.removeItem('user-data');
+            this.setAuth({});
 
-            //redirect ke halaman login-staff
-            return router.push({
+            //redirect to login
+            return this.router.push({
               name: 'user-login',
             });
           }
         })
         .catch((error) => {
-          console.log(error.response.data);
+          console.log(error);
         });
+    },
+  },
+  beforeMount() {},
+  created() {},
+  mounted() {
+    const token = this.user.token;
+    if (!token) {
+      return this.router.push({
+        name: 'user-login',
+      });
     }
-
-    return {
-      token, // <-- state token
-      userData, // <-- state user
-      logout,
-    };
   },
 };
 </script>

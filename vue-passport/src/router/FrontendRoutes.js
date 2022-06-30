@@ -1,3 +1,5 @@
+import store from '../store'
+
 const ShippingAddresses = () => import('../views/user/partials/ShippingAddresses.vue')
 
 const frontendRoutes = [
@@ -29,26 +31,15 @@ const frontendRoutes = [
         name: 'user-login',
         component: () => import( /* webpackChunkName: "login" */ '@/views/user/auth/login-user.vue'),
         meta: {
-            breadcrumb: [ 
+            breadcrumb: [  
                 { name: 'Home', link: '/', home: 'home' },
                 { name: 'Login' }
             ],
             pageTitle: "Login" 
         },
         beforeEnter: (to, from, next) => {
-            if (localStorage.getItem('token-user')) {
+            if (!store.getters['auth/guest']) {  
                 next('/user/home'); // when user already login and trying to access login page. 
-            }
-            next();
-        }
-    },
-    { 
-        path: '/user/change-password',
-        name: 'user-change-password',
-        component: () => import( /* webpackChunkName: "login" */ '@/views/user/ChangePassword.vue'),
-        beforeEnter: (to, from, next) => {
-            if (!localStorage.getItem('token-user')) {
-                next('/user/login');
             }
             next();
         }
@@ -58,13 +49,13 @@ const frontendRoutes = [
         name: 'user-home',
         component: () => import( /* webpackChunkName: "dashboard" */ '@/views/user/home.vue'),
         beforeEnter: (to, from, next) => {
-            if (localStorage.getItem('token-user')) {
-                next();
-            } else {
+            if (store.getters['auth/guest']) {
                 next({
                     path: '/user/login',
                     query: { redirect: to.fullPath }
                 })
+            } else {
+                next(); 
             }
         },
         children: [
@@ -87,7 +78,7 @@ const frontendRoutes = [
             pageTitle: "Cart"
         },
         beforeEnter: (to, from, next) => {
-            if (localStorage.getItem('token-user')) {
+            if (!store.getters['auth/guest']) {
                 next();
             } else {
                 next({
@@ -109,7 +100,7 @@ const frontendRoutes = [
             pageTitle: "Checkout"
         },
         beforeEnter: (to, from, next) => {
-            if (localStorage.getItem('token-user')) {
+            if (!store.getters['auth/guest']) {
                 next();
             } else {
                 next({
@@ -131,7 +122,7 @@ const frontendRoutes = [
             pageTitle: "Checkout"
         },
         beforeEnter: (to, from, next) => {
-            if (localStorage.getItem('token-user')) {
+            if (!store.getters['auth/guest']) {
                 next();
             } else {
                 next({
@@ -154,7 +145,7 @@ const frontendRoutes = [
             pageTitle: "Show Product"
         },
         beforeEnter: (to, from, next) => {
-            if (localStorage.getItem('token-user')) {
+            if (!store.getters['auth/guest']) {
                 next(); // if token-user is exist, then bring user to orders page
             } else {
                 next({
@@ -162,6 +153,17 @@ const frontendRoutes = [
                     query: { redirect: to.fullPath }
                 })
             }
+        }
+    },
+    { 
+        path: '/user/change-password',
+        name: 'user-change-password',
+        component: () => import( /* webpackChunkName: "login" */ '@/views/user/ChangePassword.vue'),
+        beforeEnter: (to, from, next) => {
+            if (!localStorage.getItem('token-user')) {
+                next('/user/login');
+            }
+            next();
         }
     },
 ]

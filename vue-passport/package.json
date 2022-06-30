@@ -18,6 +18,8 @@
     "@popperjs/core": "^2.9.2",
     "@sipec/vue3-tags-input": "^3.0.4",
     "@splidejs/vue-splide": "^0.5.6",
+    "@vue/composition-api": "^1.6.3",
+    "@vueblocks/vue-use-core": "^0.2.11",
     "admin-lte": "^3.1.0",
     "axios": "^0.21.1",
     "bootstrap": "^5.1.3",

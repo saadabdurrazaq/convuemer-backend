@@ -15,7 +15,7 @@ import 'admin-lte/plugins/fontawesome-free/css/all.min.css'
 import 'admin-lte/plugins/jquery/jquery.min.js'
 import '@/assets/js/bootstrap.js';
 import 'admin-lte/dist/js/adminlte.min.js' 
-import '@/assets/js/bootstrap-switch.js';
+import '@/assets/js/bootstrap-switch.js'; 
 
 const options = {
     color: "#bffaf3",

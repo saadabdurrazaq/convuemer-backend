@@ -10,23 +10,23 @@ use DB;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\SubCategory;
 use App\Models\SubSubCategory;
+use App\Models\Product;
 
-class CategoryController extends Controller  
+class CategoryController extends Controller
 {
-	public $request; 
+	public $request;
 
-	public function __construct(Request $request) 
+	public function __construct(Request $request)
 	{
 		$this->request = $request;
 
-		$this->middleware('permission:View Categories', ['only' => ['index']]);  
-        $this->middleware('permission:Create Category', ['only' => ['store']]);
-        $this->middleware('permission:Update Category', ['only' => ['update', 'assignSubCat', 'assignSubSubCat']]);
-        $this->middleware('permission:Delete Category', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple', 'forceDeleteCategory']]);
-
+		$this->middleware('permission:View Categories', ['only' => ['index']]);
+		$this->middleware('permission:Create Category', ['only' => ['store']]);
+		$this->middleware('permission:Update Category', ['only' => ['update', 'assignSubCat', 'assignSubSubCat']]);
+		$this->middleware('permission:Delete Category', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple', 'forceDeleteCategory']]);
 	}
 
-	public function index(Request $request) 
+	public function index(Request $request)
 	{
 		$items = $request->items ?? 5;
 		$trashedCategories = Category::onlyTrashed()->count();
@@ -165,7 +165,7 @@ class CategoryController extends Controller
 
 		if ($subCatHasCat) {
 			$subCategories = SubCategory::with('category')
-				->OrWhereHas('category', function ($q) use ($id) { 
+				->OrWhereHas('category', function ($q) use ($id) {
 					$q->where('id', $id);
 				})
 				->orWhereDoesntHave('category')
@@ -525,8 +525,16 @@ class CategoryController extends Controller
 	public function forceDeleteCategory($id)
 	{
 		$category = Category::withTrashed()->findOrFail($id);
-
 		$catId = $category->id;
+		$product = Product::withTrashed()->where('category_id', $catId);
+
+		if ($product) {
+			$product->update([
+				'category_id' => null,
+				'subcategory_id' => null,
+				'subsubcategory_id' => null,
+			]);
+		}
 
 		$subSubCat = SubSubCategory::with('category')->withTrashed()
 			->WhereHas('category', function ($q) {

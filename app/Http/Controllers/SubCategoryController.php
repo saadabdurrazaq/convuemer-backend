@@ -10,6 +10,7 @@ use App\Models\Category;
 use Symfony\Component\HttpFoundation\Response;
 use DB;
 use Illuminate\Support\Str;
+use App\Models\Product;
 
 class SubCategoryController extends Controller
 {
@@ -19,11 +20,10 @@ class SubCategoryController extends Controller
 	{
 		$this->request = $request;
 
-		$this->middleware('permission:View Sub Categories', ['only' => ['index']]);  
-        $this->middleware('permission:Create Sub Category', ['only' => ['store']]);
-        $this->middleware('permission:Update Sub Category', ['only' => ['update']]);
-        $this->middleware('permission:Delete Sub Category', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple', 'forceDeleteSubCategory']]);
-
+		$this->middleware('permission:View Sub Categories', ['only' => ['index']]);
+		$this->middleware('permission:Create Sub Category', ['only' => ['store']]);
+		$this->middleware('permission:Update Sub Category', ['only' => ['update']]);
+		$this->middleware('permission:Delete Sub Category', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple', 'forceDeleteSubCategory']]);
 	}
 
 	public function index(Request $request)
@@ -34,7 +34,7 @@ class SubCategoryController extends Controller
 
 		return response()->json([
 			'sub_categories' => $subCategories,
-			'total_trashed_sub_categories' => $trashedSubCategories, 
+			'total_trashed_sub_categories' => $trashedSubCategories,
 			'items' => $items,
 		], 200);
 	}
@@ -207,14 +207,21 @@ class SubCategoryController extends Controller
 	public function forceDeleteSubCategory($id)
 	{
 		$subCategory = SubCategory::withTrashed()->findOrFail($id);
- 
 		$subCatId = $subCategory->id;
-
 		$subSubCat = SubSubCategory::with('subCategory')->withTrashed()
 			->WhereHas('subCategory', function ($q) {
-				$q->withTrashed(); 
+				$q->withTrashed();
 			})
 			->where('subcategory_id', $subCatId);
+		$product = Product::withTrashed()->where('subcategory_id', $subCatId);
+
+		if ($product) {
+			$product->update([
+				'category_id' => null,
+				'subcategory_id' => null,
+				'subsubcategory_id' => null,
+			]);
+		}
 
 		if ($subSubCat) {
 			$subSubCat->update([

@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Brand;
+use App\Models\Product;
 use Image;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Storage;
 use DB;
 
-class BrandController extends Controller 
+class BrandController extends Controller
 {
 	public $request;
 
@@ -18,10 +19,10 @@ class BrandController extends Controller
 	{
 		$this->request = $request;
 
-		$this->middleware('permission:View Brands', ['only' => ['index']]);  
-        $this->middleware('permission:Create Brand', ['only' => ['store']]);
-        $this->middleware('permission:Update Brand', ['only' => ['update']]);
-        $this->middleware('permission:Delete Brand', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple', 'forceDeleteBrand', 'softDeleteBrand']]);
+		$this->middleware('permission:View Brands', ['only' => ['index']]);
+		$this->middleware('permission:Create Brand', ['only' => ['store']]);
+		$this->middleware('permission:Update Brand', ['only' => ['update']]);
+		$this->middleware('permission:Delete Brand', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple', 'forceDeleteBrand', 'softDeleteBrand']]);
 	}
 
 	public function index(Request $request)
@@ -123,7 +124,7 @@ class BrandController extends Controller
 		}
 	}
 
-	public function softDeleteBrand($id) 
+	public function softDeleteBrand($id)
 	{
 		$brand = Brand::findOrFail($id);
 		$brand->delete();
@@ -162,6 +163,11 @@ class BrandController extends Controller
 	public function forceDeleteBrand($id)
 	{
 		$brand = Brand::withTrashed()->findOrFail($id);
+		$product = Product::withTrashed()->where('brand_id', $id);
+
+		$product->update([
+			'brand_id' => null,
+		]);
 
 		$old_img = DB::table('brands')->select('brand_image')->where('id', $id)->pluck('brand_image')->toArray();
 		if ($old_img[0] !== null) {

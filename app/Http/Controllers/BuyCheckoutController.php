@@ -7,16 +7,16 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Staff;
 use App\Models\Product;
-use App\Models\ProductCombination; 
+use App\Models\ProductCombination;
 use App\Models\Order;
 use App\Models\ProductOrder;
 use App\Models\ProductCombOrder;
 use Hash;
 use Validator;
-use Auth; 
+use Auth;
 use DB;
 
-class BuyCheckoutController extends Controller 
+class BuyCheckoutController extends Controller
 {
     public function insertData(Request $request)
     {
@@ -67,7 +67,7 @@ class BuyCheckoutController extends Controller
     {
         $userId = Auth::user()->id;
         $checkStuff = BuyCheckout::where('user_id', $userId)->get();
-       
+
         if (count($checkStuff) > 0) {
             BuyCheckout::withTrashed()->where('user_id', $userId)->forceDelete();
 
@@ -76,7 +76,6 @@ class BuyCheckoutController extends Controller
                 'message' => 'Product updated successfully!',
             ]);
         }
-
     }
 
     public function getData(Request $request)
@@ -122,7 +121,7 @@ class BuyCheckoutController extends Controller
     protected function getServices($data)
     {
         $url_cost = "https://api.rajaongkir.com/starter/cost";
-        $key="6d5e3d17ee9a7bffb8503a7fe4ffd74b";
+        $key = "6d5e3d17ee9a7bffb8503a7fe4ffd74b";
         $postdata = http_build_query($data);
         $curl = curl_init();
         curl_setopt_array($curl, [
@@ -133,10 +132,10 @@ class BuyCheckoutController extends Controller
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => $postdata, 
+            CURLOPT_POSTFIELDS => $postdata,
             CURLOPT_HTTPHEADER => [
                 "content-type: application/x-www-form-urlencoded",
-                "key: ".$key
+                "key: " . $key
             ],
         ]);
         $response = curl_exec($curl);
@@ -178,15 +177,15 @@ class BuyCheckoutController extends Controller
                 $availStock = 0;
                 foreach ($products as $product) {
                     $availStock = $product['available_stock'];
-                    if($product['metric_mass'] == 'G (Gram)') {
-                        $weightGram = $product['product_weight'] * $total_quantity; 
+                    if ($product['metric_mass'] == 'G (Gram)') {
+                        $weightGram = $product['product_weight'] * $total_quantity;
                         $gramToKg = $weightGram / 1000;
                         $firstNum = strval($gramToKg)[0];
                         $roundNum = floor($gramToKg);
-                        foreach(explode(".", $gramToKg) as $row) {   
-                            $numAfterComma = $row;    
+                        foreach (explode(".", $gramToKg) as $row) {
+                            $numAfterComma = $row;
                         }
-                        $firstNumAfterComma = strval($numAfterComma)[0]; 
+                        $firstNumAfterComma = strval($numAfterComma)[0];
 
                         if ($firstNum == 0) {
                             $weight = 1;
@@ -283,8 +282,8 @@ class BuyCheckoutController extends Controller
 
             // validasi kelengkapan data
             $this->validate($request, [
-                'courier' => 'required', 
-                'service' => 'required', 
+                'courier' => 'required',
+                'service' => 'required',
                 'products' => 'required',
             ]);
 
@@ -301,53 +300,53 @@ class BuyCheckoutController extends Controller
                 'total_weight_kg' => 0,
                 'weight'    => 0,
             ];
-            
+
             DB::beginTransaction();
             try {
                 // prepare data
                 $origin = 153; // Jakarta Selatan
                 $destination = $request->city_id;
-                if($destination<=0) $error++;
+                if ($destination <= 0) $error++;
                 $courier = $request->courier;
                 $service = $request->service;
-                $products = json_decode($request->products, true); 
+                $products = json_decode($request->products, true);
                 $total_quantity = $request->total_quantity;
-                
+
                 // create order
                 $order = new Order;
                 $order->user_id = $user->id;
                 $order->total_bill = 0;
                 $order->invoice_number = date('YmdHis');
-                $order->courier_service = $courier.'-'.$service;
+                $order->courier_service = $courier . '-' . $service;
                 $order->total_quantity = $total_quantity;
                 $order->status = 'SUBMIT';
 
-                if($order->save()){
+                if ($order->save()) {
                     $total_price = 0;
                     $total_weight = 0;
 
                     // start foreach
-                    foreach($products as $product) { 
+                    foreach ($products as $product) {
                         $id = (int) $product['id'];
                         $quantity = $total_quantity;
-                        
-                        if($product['product_type'] == 'prod') {
-                            $product = Product::find($id); 
 
-                            if($product->available_stock >= $quantity){
+                        if ($product['product_type'] == 'prod') {
+                            $product = Product::find($id);
+
+                            if ($product->available_stock >= $quantity) {
                                 // calculate weight
                                 $total['price'] += $product->price * $quantity;
 
                                 if ($product->metric_mass == 'G (Gram)') {
-                                    $total['weight_gram'] += $product->product_weight * $quantity; 
-                                    $total['gram_to_kg'] =  $total['weight_gram'] / 1000; 
+                                    $total['weight_gram'] += $product->product_weight * $quantity;
+                                    $total['gram_to_kg'] =  $total['weight_gram'] / 1000;
                                     $total['first_num'] = strval($total['gram_to_kg'])[0];
                                     $total['round_num'] = floor($total['gram_to_kg']);
-                                    foreach(explode(".", $total['gram_to_kg']) as $row) {   
-                                        $total['num_after_comma'] = $row;    
+                                    foreach (explode(".", $total['gram_to_kg']) as $row) {
+                                        $total['num_after_comma'] = $row;
                                     }
-                                    $firstNumAfterComma = strval($total['num_after_comma'])[0]; 
-            
+                                    $firstNumAfterComma = strval($total['num_after_comma'])[0];
+
                                     if ($total['first_num'] == 0) {
                                         $totalWeightGram = 1;
                                         $total['total_weight_gram_to_kg'] = $totalWeightGram;
@@ -368,7 +367,7 @@ class BuyCheckoutController extends Controller
                                 } else {
                                     $total['total_weight_kg'] += $product->weight * $quantity;
                                 }
-                                $total['weight'] = $total['total_weight_gram_to_kg'] + $total['total_weight_kg']; 
+                                $total['weight'] = $total['total_weight_gram_to_kg'] + $total['total_weight_kg'];
                                 // end calculate weight
 
                                 $product_order = new ProductOrder;
@@ -376,31 +375,29 @@ class BuyCheckoutController extends Controller
                                 $product_order->order_id = $order->id;
                                 $product_order->quantity = $quantity;
 
-                                if($product_order->save()){
+                                if ($product_order->save()) {
                                     $product->available_stock = $product->available_stock - $quantity;
-                                    $product->save(); 
+                                    $product->save();
                                 }
-                            }
-                            else{
+                            } else {
                                 $error++;
                                 throw new \Exception('Out of stock');
                             }
-                        }
-                        else if($product['product_type'] == 'prod-comb') {
-                            $prodCom = ProductCombination::find($id); 
-                            if($prodCom->available_stock >= $quantity){
+                        } else if ($product['product_type'] == 'prod-comb') {
+                            $prodCom = ProductCombination::find($id);
+                            if ($prodCom->available_stock >= $quantity) {
                                 // calculate weight
                                 $total['price'] += $prodCom->price * $quantity;
                                 if ($prodCom->metric_mass == 'G (Gram)') {
-                                    $total['weight_gram'] += $prodCom->product_weight * $quantity; 
-                                    $total['gram_to_kg'] =  $total['weight_gram'] / 1000;   
+                                    $total['weight_gram'] += $prodCom->product_weight * $quantity;
+                                    $total['gram_to_kg'] =  $total['weight_gram'] / 1000;
                                     $total['first_num'] = strval($total['gram_to_kg'])[0];
-                                    $total['round_num'] = floor($total['gram_to_kg']); 
-                                    foreach(explode(".", $total['gram_to_kg']) as $row) {   
-                                        $total['num_after_comma'] = $row;    
+                                    $total['round_num'] = floor($total['gram_to_kg']);
+                                    foreach (explode(".", $total['gram_to_kg']) as $row) {
+                                        $total['num_after_comma'] = $row;
                                     }
-                                    $firstNumAfterCommaProdComb = strval($total['num_after_comma'])[0]; 
-            
+                                    $firstNumAfterCommaProdComb = strval($total['num_after_comma'])[0];
+
                                     if ($total['first_num'] == 0) {
                                         $totalWeightGram = 1;
                                         $total['total_weight_gram_to_kg'] = $totalWeightGram;
@@ -421,25 +418,23 @@ class BuyCheckoutController extends Controller
                                 } else {
                                     $total['total_weight_kg'] += $prodCom->weight * $quantity;
                                 }
-                                $total['weight'] = $total['total_weight_gram_to_kg'] + $total['total_weight_kg']; 
+                                $total['weight'] = $total['total_weight_gram_to_kg'] + $total['total_weight_kg'];
                                 // end calculate weight
 
                                 $prodCom_order = new ProductCombOrder;
                                 $prodCom_order->product_combination_id = $prodCom->id;
                                 $prodCom_order->order_id = $order->id;
-                                $prodCom_order->quantity = $quantity; 
+                                $prodCom_order->quantity = $quantity;
 
-                                if($prodCom_order->save()){
+                                if ($prodCom_order->save()) {
                                     $prodCom->available_stock = $prodCom->available_stock - $quantity;
-                                    $prodCom->save(); 
+                                    $prodCom->save();
                                 }
-                            }
-                            else{
+                            } else {
                                 $error++;
                                 throw new \Exception('Out of stock');
                             }
-                        }
-                        else{
+                        } else {
                             $error++;
                             throw new \Exception('Product is not found');
                         }
@@ -448,43 +443,43 @@ class BuyCheckoutController extends Controller
 
                     $totalBill = 0;
                     $weight = $total['weight'] * 1000;
-                    if($weight <= 0) {
+                    if ($weight <= 0) {
                         $error++;
                         throw new \Exception('Weight null');
                     }
                     $data = [
-                        "origin"        => $origin, 
-                        "destination"   => $destination, 
-                        "weight"        => $weight, 
+                        "origin"        => $origin,
+                        "destination"   => $destination,
+                        "weight"        => $weight,
                         "courier"       => $courier
                     ];
-                    $data_cost = $this->getServices($data);           
-                    if ($data_cost['error']){
-                        $error++; 
+                    $data_cost = $this->getServices($data);
+                    if ($data_cost['error']) {
+                        $error++;
                         throw new \Exception('Courier service unavailable');
                     }
 
                     $response = json_decode($data_cost['response']);
                     $costs = $response->rajaongkir->results[0]->costs;
                     $service_cost = 0;
-                    foreach($costs as $cost){
+                    foreach ($costs as $cost) {
                         $service_name = $cost->service;
-                        if($service == $service_name){
+                        if ($service == $service_name) {
                             $service_cost = $cost->cost[0]->value;
                             break;
                         }
                     }
-                    if ($service_cost<=0){
+                    if ($service_cost <= 0) {
                         $error++;
                         throw new \Exception('Service cost invalid');
-                    } 
+                    }
 
                     $total_bill = $total['price'] + $service_cost;
 
                     // update total bill order
                     $order->total_bill = $total_bill;
-                    if($order->save()){
-                        if($error==0){
+                    if ($order->save()) {
+                        if ($error == 0) {
                             DB::commit();
                             $status = 'success';
                             $message = 'Transaction success';
@@ -493,18 +488,16 @@ class BuyCheckoutController extends Controller
                                 'total_bill' => $total_bill,
                                 'invoice_number' => $order->invoice_number,
                             ];
-                        }
-                        else{
-                            $message = 'There are '.$error.' errors';
+                        } else {
+                            $message = 'There are ' . $error . ' errors';
                         }
                     }
-                }         
+                }
             } catch (\Exception $e) {
                 $message = $e->getMessage();
                 DB::rollback();
             }
-        }
-        else{
+        } else {
             $message = "User not found";
         }
 
@@ -513,6 +506,5 @@ class BuyCheckoutController extends Controller
             'message' => $message,
             'data' => $data
         ], 200);
-        
     }
 }

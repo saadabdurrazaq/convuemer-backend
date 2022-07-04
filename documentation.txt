@@ -312,10 +312,10 @@ BUGS AND IMPROVEMENT:
 1. In frontend page, if the request page is not reloaded there is conflict style between featured product slider and show product slider
 2. http://localhost:8080/user/checkout if cart is updated, the product cart in that page also must be updated if user select courier. The same in cart checkout. 
 3. In http://localhost:8080/cart if we remove one of product. And in the previous page, if we hit add to cart button in condition cart data, the old cart data must be updated, before update the new one. 
-
-4. In edit product page > add variant product > upload image variant product > leave the new variant product field empty > hit upload button > input all the variant product fields > hit upload button > Duplicate variant product image appear. 
-5. In edit product page > add variant product > upload image variant product > leave the new variant product field empty > hit upload button > delete image variant product. 
-6. add pagination in user orders 
+4. add pagination in user orders 
+5. Shipping calculation in cart checkout
+6. Image permissions 
+7. problem in addedNewVarProds fileInputVariants() edit page, conflict occurs sometimes if the new product combination is added
 
 NEXT FEATURES: 
 1. Change password
@@ -327,4 +327,3 @@ NEXT FEATURES:
 7. Register
 8. Payment.
 9. Dynamic footer and header. 
-

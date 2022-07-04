@@ -13,6 +13,7 @@ use App\Models\ImageGallery;
 use App\Models\ImageGalleryProductCombination;
 use Illuminate\Support\Str;
 use App\Models\SubCategory;
+use App\Models\Order;
 use DB;
 use Image;
 use Mockery\Undefined;
@@ -27,9 +28,9 @@ class ProductController extends Controller
     {
         $this->request = $request;
         $this->middleware('permission:View Products', ['only' => ['index']]);
-        $this->middleware('permission:Create Product', ['only' => ['store', 'storeImages']]);
+        $this->middleware('permission:Create Product', ['only' => ['store']]);
         $this->middleware('permission:Update Product', ['only' => ['update']]);
-        $this->middleware('permission:Delete Product', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple', 'forceDeleteProduct', 'deleteAllVarProds', 'deleteImages']]);
+        $this->middleware('permission:Delete Product', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple', 'forceDeleteProduct', 'deleteAllVarProds']]);
     }
 
     public function show($id, $slug)
@@ -89,12 +90,12 @@ class ProductController extends Controller
             $fileSize = $_FILES[$input]['size'][$i]; // the file size
 
             //Make sure we have a file path
-            if ($tmpFilePath != "") { 
+            if ($tmpFilePath != "") {
                 //Setup our new file path
                 $newFilePath = $path . $fileName;
-                $newFileUrl = 'http://localhost/my-project/laravue/storage/app/public/products/' . $fileName;
+                $newFileUrl = 'http://localhost/my-project/laravue-backend/storage/app/public/products/' . $fileName; // the url path will be stored in database, and the stored data will be used to preview the image
 
-                //Upload the file into the new path
+                //Upload the file into the new path  
                 if (move_uploaded_file($tmpFilePath, $newFilePath)) {
                     $fileId = $fileName . $i; // some unique key to identify the file
                     $preview[] = '<img class="kv-preview-data file-preview-image" src="' . $newFileUrl . '">'; //$newFileUrl;
@@ -103,7 +104,7 @@ class ProductController extends Controller
                         'caption' => $fileName,
                         'size' => $fileSize,
                         'downloadUrl' => $newFileUrl, // the url to download the file
-                        'url' => 'http://localhost/my-project/laravue/api/products/delete-images/' . $fileName, // server api to delete the file based on key
+                        'url' => 'http://localhost/my-project/laravue-backend/api/products/delete-images/' . $fileName, // the url path will be stored in database, and the stored data will be used to delete the image
                     ];
                 } else {
                     $errors[] = $fileName;
@@ -610,15 +611,158 @@ class ProductController extends Controller
         ]);
     }
 
+    public function deleteProdCombOrder($id)
+    {
+        $orders = array();
+        $duplicateOrderIds = array();
+
+        $prodCombId = DB::table('products_combinations')->select('id')->where('product_id', $id)->pluck('id'); // all id of prod comb related with specific product
+        $relatedOrdersFromProdComb = ProductCombination::whereIn('id', $prodCombId)->with('orders')->get();
+        if ($relatedOrdersFromProdComb) {
+            foreach ($relatedOrdersFromProdComb as $relatedOrder) {
+                $orders[] = $relatedOrder['orders'];
+            }
+
+            // remove an empty array
+            foreach ($orders as $key => $order) {
+                if (count($order) === 0) {
+                    unset($orders[$key]);
+                }
+            }
+
+            // getting order id
+            foreach ($orders as $key => $order) {
+                foreach ($order as $key2 => $ord) {
+                    $duplicateOrderIds[] = $order[$key2]['id'];
+                }
+            }
+        }
+        $orderIds = array_unique($duplicateOrderIds);
+
+        // delete product combination orders
+        if (count($orderIds) > 0) {
+            foreach ($orderIds as $orderId) {
+                $order = Order::withTrashed()->findOrFail($orderId);
+
+                $orderProductCombination = DB::table('order_product_combination')->whereIn('product_combination_id', $prodCombId); // all id of prod comb related with specific product
+                if ($orderProductCombination) {
+                    $orderProductCombination->delete();
+                }
+
+                if (!$order->products()->exists() && !$order->variantsProd()->exists()) {
+                    // delete orders
+                    $order->forceDelete();
+                } else {
+                    // update total quantity 
+                    $totalQty = count($order->products) + count($order->variantsProd);
+                    Order::withTrashed()->findOrFail($orderId)->update([
+                        'total_quantity' => $totalQty,
+                    ]);
+                }
+            }
+        }
+
+        // delete buy_checkout
+        $buyCheckOut = DB::table('buy_checkout')->where('product_id', $id);
+        if ($buyCheckOut) {
+            $buyCheckOut->delete();
+        }
+    }
+
     public function forceDeleteProduct($id)
     {
         $product = Product::withTrashed()->findOrFail($id);
+        $imagesProduct = Product::withTrashed()->where('id', $id)->get('images');
+        $varProds = ProductCombination::withTrashed()->where('product_id', $id);
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+
+        $orders = array();
+        $duplicateOrderIds = array();
+
+        $prodCombId = DB::table('products_combinations')->select('id')->where('product_id', $id)->pluck('id'); // all id of prod comb related with specific product
+        $relatedOrdersFromProdComb = ProductCombination::whereIn('id', $prodCombId)->with('orders')->get();
+        if ($relatedOrdersFromProdComb) {
+            foreach ($relatedOrdersFromProdComb as $relatedOrder) {
+                $orders[] = $relatedOrder['orders'];
+            }
+
+            // remove an empty array
+            foreach ($orders as $key => $order) {
+                if (count($order) === 0) {
+                    unset($orders[$key]);
+                }
+            }
+
+            // getting order id
+            foreach ($orders as $key => $order) {
+                foreach ($order as $key2 => $ord) {
+                    $duplicateOrderIds[] = $order[$key2]['id'];
+                }
+            }
+        }
+
+        $relatedOrdersFromProd = Product::withTrashed()->where('id', $id)->with('orders')->get();
+        if ($relatedOrdersFromProd) {
+            foreach ($relatedOrdersFromProd as $relatedOrder) {
+                $orders[] = $relatedOrder['orders'];
+            }
+
+            // remove an empty array
+            foreach ($orders as $key => $order) {
+                if (count($order) === 0) {
+                    unset($orders[$key]);
+                }
+            }
+
+            // getting order id
+            foreach ($orders as $key => $order) {
+                foreach ($order as $key2 => $ord) {
+                    $duplicateOrderIds[] = $order[$key2]['id'];
+                }
+            }
+        }
+
+        $orderIds = array_unique($duplicateOrderIds);
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+
+        if (count($orderIds) > 0) {
+            foreach ($orderIds as $orderId) {
+                $order = Order::withTrashed()->findOrFail($orderId);
+
+                $orderProduct = DB::table('order_product')->where('product_id', $id);
+                if ($orderProduct) {
+                    $orderProduct->delete();
+                }
+
+                $orderProductCombination = DB::table('order_product_combination')->whereIn('product_combination_id', $prodCombId); // all id of prod comb related with specific product
+                if ($orderProductCombination) {
+                    $orderProductCombination->delete();
+                }
+
+                if (!$order->products()->exists() && !$order->variantsProd()->exists()) {
+                    // delete orders
+                    $order->forceDelete();
+                } else {
+                    // update total quantity 
+                    $totalQty = count($order->products) + count($order->variantsProd);
+                    Order::withTrashed()->findOrFail($orderId)->update([
+                        'total_quantity' => $totalQty,
+                    ]);
+                }
+            }
+        }
+
+        // delete buy_checkout
+        $buyCheckOut = DB::table('buy_checkout')->where('product_id', $id);
+        if ($buyCheckOut) {
+            $buyCheckOut->delete();
+        }
 
         // Delete product images. 
-        $imagesProduct = Product::withTrashed()->where('id', $id)->get('images');
         $this->deleteStoredImages($imagesProduct);
 
-        $varProds = ProductCombination::withTrashed()->where('product_id', $id);
         if ($varProds) {
             // Delete variant product images. 
             $this->deleteAllVarProdsImagesInDb($id);
@@ -643,7 +787,7 @@ class ProductController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Product deleted successfully.',
+                'message' => 'Product successfully deleted!'
             ]);
         }
     }
@@ -714,22 +858,50 @@ class ProductController extends Controller
     {
         $imagesUpdated =  $this->request->get('imagesUpdated');
 
-        $JSONimgsStr = json_encode($imagesUpdated);
-        $JSONimgsArr = json_decode($JSONimgsStr, TRUE);
-        $imagesCaption = array();
-        foreach ($JSONimgsArr as $image) {
-            $imagesCaption[] = $image['caption'];
-        }
+        if ($imagesUpdated === null) {
+            $prod = ProductCombination::where('id', $id);
+            $prod->update([
+                'images' => null,
+            ]);
+        } else {
+            $JSONimgsStr = json_encode($imagesUpdated);
+            $JSONimgsArr = json_decode($JSONimgsStr, TRUE);
+            $imagesCaption = array();
+            foreach ($JSONimgsArr as $image) {
+                $imagesCaption[] = $image['caption'];
+            }
 
-        $prod = ProductCombination::where('id', $id);
-        $prod->update([
-            'images' => json_encode($imagesUpdated),
-            'cover' => $imagesCaption[0]
-        ]);
+            $prod = ProductCombination::where('id', $id);
+            $prod->update([
+                'images' => json_encode($imagesUpdated),
+                'cover' => $imagesCaption[0]
+            ]);
+        }
 
         return response()->json([
             'success' => true,
             'message' => 'Product images succesfully updated!',
+        ]);
+    }
+
+    public function updateVarProdUrlImages()
+    {
+        $imagesUpdated =  $this->request->get('varProdImages');
+        $varProdIds = $this->request->get('varProdIds');
+
+        foreach ($varProdIds as $index => $varProdId) {
+            $prod = ProductCombination::where('id', $varProdId);
+
+            if ($prod) {
+                $prod->update([
+                    'images' => json_encode($imagesUpdated[$index]),
+                ]);
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Images API has been updated successfully!',
         ]);
     }
 
@@ -956,6 +1128,8 @@ class ProductController extends Controller
 
             // Do this action if variant is deleted from the view. 
             if ($variantIsDeleted == 'Yes') {
+                $this->deleteProdCombOrder($id);
+
                 // delete all variant product images
                 $this->deleteAllVarProdsImagesInDb($id);
 
@@ -971,6 +1145,8 @@ class ProductController extends Controller
 
             // if one or some of variant options is deleted from the view, do this action. 
             if ($varProdsImgsToBeDeleted !== null && $variantIsDeleted == 'No') {
+                $this->deleteProdCombOrder($id);
+
                 // delete variant product images file that has been uploaded. 
                 $this->deleteSelectedVarProdsImages();
 
@@ -1145,6 +1321,7 @@ class ProductController extends Controller
                 $this->updateProduct($id);
 
                 if ($variantIsDeleted == 'Yes') {
+                    $this->deleteProdCombOrder($id);
                     $this->deleteAllVarProdsImagesInDb($id);
                     $this->deleteAllVarProds($id);
                 }

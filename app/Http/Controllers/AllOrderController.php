@@ -22,8 +22,8 @@ class AllOrderController extends Controller
         $items = $request->items ?? 5;
 
         $orders = Order::with('user')
-            ->with('products')
-            ->with('variantsProd')
+            ->with(['products' => fn ($q) => $q->withTrashed()])
+            ->with(['variantsProd' => fn ($q) => $q->withTrashed()])
             ->orderBy('id', 'desc')
             ->paginate($items);
 
@@ -36,22 +36,24 @@ class AllOrderController extends Controller
         ], 200);
     }
 
-    public function searchData($keyword) 
-	{
-		$items = $this->request->items ?? 5; 
-		$orders = Order::with('user')
-        ->with('products')
-        ->with('variantsProd')->where('invoice_number', 'LIKE', "%{$keyword}%")->paginate($items);
+    public function searchData($keyword)
+    {
+        $items = $this->request->items ?? 5;
+        $orders = Order::with('user')
+            ->with('products')
+            ->with(['variantsProd' => fn ($q) => $q->withTrashed()])
+            ->where('invoice_number', 'LIKE', "%{$keyword}%")->paginate($items);
 
-		return response()->json([
-			'orders' => $orders,
-			'items' => $items,
-		], Response::HTTP_OK);
-	}
+        return response()->json([
+            'orders' => $orders,
+            'items' => $items,
+        ], Response::HTTP_OK);
+    }
 
     public function edit(Request $request, $id)
     {
-        $order = Order::with('user')->with('products')->with('variantsProd')->where('id', '=', $id)
+        $order = Order::with('user')->with(['products' => fn ($q) => $q->withTrashed()])->with(['variantsProd' => fn ($q) => $q->withTrashed()])
+            ->where('id', '=', $id)
             ->orderBy('id', 'DESC')
             ->get();
 
@@ -63,13 +65,13 @@ class AllOrderController extends Controller
 
     public function update(Request $request, $id)
     {
-        $order = Order::findOrFail($id); 
+        $order = Order::findOrFail($id);
     }
 
     public function forceDeleteOrder($id)
-	{
-		$order = Order::withTrashed()->findOrFail($id);
-		$orderProduct = DB::table('order_product')->where('order_id', $id);
+    {
+        $order = Order::withTrashed()->findOrFail($id);
+        $orderProduct = DB::table('order_product')->where('order_id', $id);
         $orderProductCombination = DB::table('order_product_combination')->where('order_id', $id);
 
         if ($orderProduct) {
@@ -83,36 +85,35 @@ class AllOrderController extends Controller
         if ($order) {
             $order->forceDelete();
         }
+    }
 
-	}
+    public function forceDelete($id)
+    {
+        $order = Order::withTrashed()->findOrFail($id);
 
-	public function forceDelete($id)
-	{
-		$order = Order::withTrashed()->findOrFail($id);
+        if ($order) {
+            $this->forceDeleteOrder($id);
+            return response()->json([
+                'success' => true,
+                'message' => 'Order deleted successfully.',
+            ]);
+        }
+    }
 
-		if ($order) {
-			$this->forceDeleteOrder($id);
-			return response()->json([
-				'success' => true,
-				'message' => 'Order deleted successfully.',
-			]);
-		}
-	}
+    public function forceDeleteMultiple(Request $request)
+    {
+        $get_ids = $request->ids;
+        $ids = explode(',', $get_ids);
 
-	public function forceDeleteMultiple(Request $request)
-	{
-		$get_ids = $request->ids;
-		$ids = explode(',', $get_ids);
+        // precess request one by one
+        foreach ($ids as $id) {
+            $order = Order::withTrashed()->findOrFail($id);
 
-		// precess request one by one
-		foreach ($ids as $id) {
-			$order = Order::withTrashed()->findOrFail($id);
+            if ($order) {
+                $this->forceDeleteOrder($id);
+            }
+        }
 
-			if ($order) {
-				$this->forceDeleteOrder($id);
-			}
-		}
-
-		return response()->json(['success' => 'Order deleted successfully.']);
-	}
+        return response()->json(['success' => 'Order deleted successfully.']);
+    }
 }

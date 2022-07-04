@@ -10,8 +10,9 @@ use App\Models\SubSubCategory;
 use Symfony\Component\HttpFoundation\Response;
 use DB;
 use Illuminate\Support\Str;
+use App\Models\Product;
 
-class SubSubCategoryController extends Controller 
+class SubSubCategoryController extends Controller
 {
 	public $request;
 
@@ -19,11 +20,10 @@ class SubSubCategoryController extends Controller
 	{
 		$this->request = $request;
 
-		$this->middleware('permission:View Sub Sub Categories', ['only' => ['index']]);  
-        $this->middleware('permission:Create Sub Sub Category', ['only' => ['store']]);
-        $this->middleware('permission:Update Sub Sub Category', ['only' => ['update', 'bulkAssign', 'singleAssign', 'doSingleAssign']]);
-        $this->middleware('permission:Delete Sub Sub Category', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple']]);
-		
+		$this->middleware('permission:View Sub Sub Categories', ['only' => ['index']]);
+		$this->middleware('permission:Create Sub Sub Category', ['only' => ['store']]);
+		$this->middleware('permission:Update Sub Sub Category', ['only' => ['update', 'bulkAssign', 'singleAssign', 'doSingleAssign']]);
+		$this->middleware('permission:Delete Sub Sub Category', ['only' => ['softDelete', 'softDeleteMultiple', 'forceDelete', 'forceDeleteMultiple']]);
 	}
 
 	public function index(Request $request)
@@ -426,14 +426,24 @@ class SubSubCategoryController extends Controller
 	public function forceDelete($id)
 	{
 		$subSubCategory = SubSubCategory::withTrashed()->findOrFail($id);
+		$product = Product::withTrashed()->where('subsubcategory_id', $id);
+
+		if ($product) {
+			$product->update([
+				'category_id' => null,
+				'subcategory_id' => null,
+				'subsubcategory_id' => null,
+			]);
+		}
 
 		if ($subSubCategory) {
 			$subSubCategory->forceDelete();
-			return response()->json([
-				'success' => true,
-				'message' => 'Sub sub category deleted successfully.',
-			]);
 		}
+
+		return response()->json([
+			'success' => true,
+			'message' => 'Sub sub category deleted successfully.',
+		]);
 	}
 
 	public function forceDeleteMultiple(Request $request)

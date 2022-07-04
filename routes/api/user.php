@@ -31,11 +31,11 @@ Route::post('user/register', [RegisterController::class, 'register']);
 
 Route::get('json-provinces', [AddressController::class, 'provinces']); // api/json-provinces
 Route::get('json-regencies/{id}', [AddressController::class, 'regencies']);
-Route::get('json-districts/{id}', [AddressController::class, 'districts']); 
+Route::get('json-districts/{id}', [AddressController::class, 'districts']);
 Route::get('json-village/{id}', [AddressController::class, 'villages']);
 
 // Megamenu frontend
-Route::get('mega-menu/get-menu-data', [MegaMenuController::class, 'getMenuData']); 
+Route::get('mega-menu/get-menu-data', [MegaMenuController::class, 'getMenuData']);
 
 // Sliders
 Route::get('sliders/show', [SliderController::class, 'show']);
@@ -44,7 +44,7 @@ Route::get('sliders/show', [SliderController::class, 'show']);
 Route::get('product-sliders/show-featured-products', [ProductSliderController::class, 'showFeaturedProduct']);
 
 // Show single product in frontend page 
-Route::get('product/{id}/{slug}', [ProductController::class, 'show']); 
+Route::get('product/{id}/{slug}', [ProductController::class, 'show']);
 
 Route::get('products/list-products', [ProductController::class, 'listProducts']);
 
@@ -54,13 +54,13 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth:user-api', 'scopes:user
     // authenticated staff routes here 
     Route::get('dashboard', [LoginController::class, 'userDashboard']);
     Route::post('logout', [LoginController::class, 'logoutUser']);
-    Route::post('change-password', [ProfileUserController::class, 'changePassword']); 
+    Route::post('change-password', [ProfileUserController::class, 'changePassword']);
 
     // Shipping addresses
-    Route::post('shipping-addresses/store', [ShippingAddressesController::class, 'store']); 
+    Route::post('shipping-addresses/store', [ShippingAddressesController::class, 'store']);
     Route::get('shipping-addresses/index/{id}', [ShippingAddressesController::class, 'index']);
-    Route::put('shipping-addresses/update/{id}', [ShippingAddressesController::class, 'update']); 
-    Route::delete('shipping-addresses/force-delete/{id}', [ShippingAddressesController::class, 'forceDelete']); 
+    Route::put('shipping-addresses/update/{id}', [ShippingAddressesController::class, 'update']);
+    Route::delete('shipping-addresses/force-delete/{id}', [ShippingAddressesController::class, 'forceDelete']);
 
     // Buy checkout
     Route::post('buy-checkout/insert-data', [BuyCheckoutController::class, 'insertData']);
@@ -79,4 +79,4 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth:user-api', 'scopes:user
 
 Route::middleware(['auth:user-api', 'scopes:user'])->get('/user', function (Request $request) {
     return $request->user();
-}); 
+});

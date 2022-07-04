@@ -28,7 +28,7 @@ use App\Http\Controllers\AllOrderController;
 |
 */
 
-Route::post('staff/login', [LoginController::class, 'staffLogin'])->name('staffLogin'); 
+Route::post('staff/login', [LoginController::class, 'staffLogin'])->name('staffLogin');
 
 // Product store and delete images
 Route::post('products/store-images', [ProductController::class, 'storeImages']);
@@ -44,7 +44,7 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     Route::get('dashboard', [LoginController::class, 'staffDashboard']);
     Route::get('staff/home', [LoginController::class, 'staffDashboard']);
     Route::get('get-role/user', [LoginController::class, 'checkRole']);
-    Route::post('logout', [LoginController::class, 'logoutStaff']);  
+    Route::post('logout', [LoginController::class, 'logoutStaff']);
 
     // Change password
     Route::put('change-password-staff', [ChangePasswordController::class, 'changePasswordStaff']);
@@ -146,6 +146,7 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     Route::get('products/edit/{id}', [ProductController::class, 'edit']); // used in edit.vue
     Route::put('products/update-images/{id}', [ProductController::class, 'updateImages']);
     Route::put('products/update-variant-product-images/{id}', [ProductController::class, 'updateVarProdImages']);
+    Route::put('products/update-variant-product-url-images/{id}', [ProductController::class, 'updateVarProdUrlImages']);
     Route::put('products/update/{id}', [ProductController::class, 'update']);
 
     // CRUD sliders
@@ -164,18 +165,18 @@ Route::group(['prefix' => 'staff', 'middleware' => ['auth:staff-api', 'scopes:st
     Route::get('sliders/restore-multiple/ids={ids}', [SliderController::class, 'restoreMultiple']);
 
     // Manage Roles 
-    Route::get('roles/index', [RoleController::class, 'index']); 
-    Route::get('roles/create', [RoleController::class, 'create']); 
+    Route::get('roles/index', [RoleController::class, 'index']);
+    Route::get('roles/create', [RoleController::class, 'create']);
     Route::post('roles/store', [RoleController::class, 'store']);
     Route::get('roles/edit/{id}', [RoleController::class, 'edit']);
-    Route::put('roles/update/{id}', [RoleController::class, 'update']);  
+    Route::put('roles/update/{id}', [RoleController::class, 'update']);
     Route::get('roles/permissions/{permissionName}', [RoleController::class, 'check']);
 
     // Manage orders
-    Route::get('orders/index', [AllOrderController::class, 'index']); 
+    Route::get('orders/index', [AllOrderController::class, 'index']);
     Route::get('orders/edit/{id}', [AllOrderController::class, 'edit']);
     Route::put('orders/update/{id}', [AllOrderController::class, 'update']);
-    Route::get('orders/search/{keyword}', [AllOrderController::class, 'searchData']); 
+    Route::get('orders/search/{keyword}', [AllOrderController::class, 'searchData']);
     Route::delete('orders/force-delete/{id}', [AllOrderController::class, 'forceDelete']);
     Route::get('orders/force-delete-multiple/ids={ids}', [AllOrderController::class, 'forceDeleteMultiple']);
 });

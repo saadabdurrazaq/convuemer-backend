@@ -13,9 +13,10 @@ class Product extends Model
 {
     use HasFactory, Notifiable, HasApiTokens, SoftDeletes, HasRoles; //spatie;
 
-    public function orders() {
+    public function orders()
+    {
         return $this->belongsToMany('App\Models\Order');
-    } 
+    }
 
     public function category()
     {
@@ -35,7 +36,7 @@ class Product extends Model
         return $this->belongsTo(SubSubCategory::class, 'subsubcategory_id', 'id');
     }
 
-    public function variants() 
+    public function variants()
     {
         // one product has many variants types
         return $this->hasMany(VariantType::class); // , 'product_variant_id', 'id'
@@ -64,8 +65,8 @@ class Product extends Model
         'long_desc',
         'min_order',
         'price',
-        'available_stock', 
-        'product_slug', 
+        'available_stock',
+        'product_slug',
         'url',
         'url_id',
         'product_cond',
